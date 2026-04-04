@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nóminas — Hope Electric</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f5f4;--bg2:#ffffff;--bg3:#f0efea;
+  --border:#e5e5e3;--border2:#d1d0cc;
+  --text:#1a1a1a;--text2:#666662;--text3:#999996;
+  --green:#0f6e56;--green-bg:#e1f5ee;
+  --blue:#185fa5;--blue-bg:#e6f1fb;
+  --amber:#854f0b;--amber-bg:#faeeda;
+  --red:#a32d2d;--red-bg:#fcebeb;
+  --gray-bg:#f1efe8;--gray-text:#5f5e5a;
+  --radius:8px;--radius-lg:12px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh}
+
+/* LOGIN */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg)}
+.login-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:36px 32px;width:340px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.login-logo{font-size:18px;font-weight:600;color:var(--text);margin-bottom:4px}
+.login-sub{font-size:12px;color:var(--text2);margin-bottom:28px}
+.login-card label{font-size:12px;color:var(--text2);display:block;margin-bottom:4px}
+.login-card input{width:100%;padding:9px 12px;border:0.5px solid var(--border2);border-radius:var(--radius);font-size:14px;color:var(--text);background:var(--bg3);outline:none;margin-bottom:14px}
+.login-card input:focus{border-color:#888}
+.login-btn{width:100%;padding:10px;background:var(--text);color:#fff;border:none;border-radius:var(--radius);font-size:14px;cursor:pointer;margin-top:4px}
+.login-btn:hover{opacity:.85}
+.login-err{color:var(--red);font-size:12px;margin-top:8px;text-align:center;display:none}
+
+/* APP */
+.app{display:none;flex-direction:column;min-height:100vh}
+.topbar{background:var(--bg2);border-bottom:0.5px solid var(--border);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:sticky;top:0;z-index:10}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.topbar h1{font-size:15px;font-weight:600}
+.period-pill{display:flex;align-items:center;gap:6px;background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--radius);padding:4px 11px;font-size:12px;color:var(--text2)}
+.period-pill strong{color:var(--text);font-size:12px}
+.logout-btn{font-size:12px;color:var(--text2);cursor:pointer;padding:4px 10px;border:0.5px solid var(--border);border-radius:var(--radius);background:none}
+.logout-btn:hover{background:var(--bg3)}
+.tabs{display:flex;background:var(--bg2);border-bottom:0.5px solid var(--border);padding:0 20px;overflow-x:auto}
+.tab{padding:9px 15px;font-size:13px;cursor:pointer;color:var(--text2);border-bottom:2px solid transparent;white-space:nowrap;flex-shrink:0}
+.tab.active{color:var(--text);border-bottom-color:var(--text);font-weight:500}
+.content{padding:16px 20px;flex:1}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* CARDS */
+.cards-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:14px}
+.mcard{background:var(--bg3);border-radius:var(--radius);padding:11px}
+.mcard .lbl{font-size:11px;color:var(--text2);margin-bottom:3px}
+.mcard .val{font-size:19px;font-weight:500}
+.mcard .sub{font-size:11px;color:var(--text2);margin-top:1px}
+
+/* PANELS */
+.panel{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:14px}
+.phead{padding:10px 16px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.phead h2{font-size:13px;font-weight:500}
+.phead-r{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+/* FORMS */
+select,input[type=text],input[type=number],input[type=date]{font-size:13px;padding:5px 9px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--bg3);color:var(--text);outline:none}
+select:focus,input:focus{border-color:#888}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{padding:7px 11px;text-align:left;font-size:11px;font-weight:500;color:var(--text2);border-bottom:0.5px solid var(--border);background:var(--bg3);white-space:nowrap}
+tbody tr{border-bottom:0.5px solid var(--border)}
+tbody tr:last-child{border:none}
+tbody tr:hover{background:var(--bg3)}
+td{padding:7px 11px;vertical-align:middle}
+tfoot td{padding:7px 11px;background:var(--bg3)}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+
+/* BADGES */
+.badge{display:inline-block;font-size:11px;padding:2px 7px;border-radius:var(--radius);font-weight:500;white-space:nowrap}
+.b-omana{background:var(--green-bg);color:var(--green)}
+.b-santa{background:var(--blue-bg);color:var(--blue)}
+.b-casa{background:var(--amber-bg);color:var(--amber)}
+.b-otro{background:var(--gray-bg);color:var(--gray-text)}
+.b-activo{background:#eaf3de;color:#3b6d11}
+.b-pendiente{background:var(--blue-bg);color:var(--blue)}
+.b-pagado{background:var(--gray-bg);color:var(--gray-text)}
+.b-cerrada{background:var(--green-bg);color:var(--green)}
+.prestamo-badge{display:inline-flex;background:var(--amber-bg);color:var(--amber);font-size:11px;padding:2px 7px;border-radius:var(--radius)}
+.pending-badge{display:inline-flex;background:var(--blue-bg);color:var(--blue);font-size:11px;padding:2px 7px;border-radius:var(--radius)}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;font-size:12px;border-radius:var(--radius);border:0.5px solid var(--border2);background:var(--bg2);color:var(--text);cursor:pointer;white-space:nowrap}
+.btn:hover{background:var(--bg3)}
+.btn-primary{background:var(--text);color:#fff;border-color:var(--text)}
+.btn-primary:hover{opacity:.82}
+.btn-sm{padding:3px 9px;font-size:11px}
+.btn-delete{padding:3px 9px;font-size:11px;color:var(--red);border-color:var(--border);background:var(--bg2)}
+.btn-delete:hover{background:var(--red-bg);border-color:#f09595}
+.btn-row{display:flex;gap:8px;justify-content:flex-end}
+
+/* OVERLAY / MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:100;align-items:flex-start;justify-content:center;padding:40px 12px;overflow-y:auto}
+.overlay.open{display:flex}
+.modal{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius-lg);width:500px;max-width:98vw;padding:20px;margin:auto}
+.modal h3{font-size:14px;font-weight:500;margin-bottom:14px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.fg label{font-size:11px;color:var(--text2);display:block;margin-bottom:3px}
+.fg input,.fg select{width:100%}
+.fg .full{grid-column:1/-1}
+.inicio-opts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.inicio-opt{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:var(--radius);border:0.5px solid var(--border);cursor:pointer;font-size:12px;background:var(--bg3);color:var(--text2);flex:1;min-width:110px}
+.inicio-opt.selected{border-color:#888;background:var(--bg2);color:var(--text);font-weight:500}
+.inicio-opt .dot{width:8px;height:8px;border-radius:50%;background:var(--border2);flex-shrink:0}
+.inicio-opt.selected .dot{background:var(--text)}
+.preview-box{background:var(--bg3);border-radius:var(--radius);padding:11px;margin-bottom:12px;font-size:13px}
+.preview-row{display:flex;justify-content:space-between;padding:2px 0;font-size:12px}
+.preview-row span:first-child{color:var(--text2)}
+.calc-row{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;border-bottom:0.5px solid var(--border)}
+.calc-row:last-child{border:none;font-weight:500;font-size:14px;padding-top:6px}
+.calc-row span:first-child{color:var(--text2)}
+.nom-emp-hdr{padding:12px 16px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--blue-bg);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:var(--blue);flex-shrink:0}
+.nom-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;padding:12px 16px}
+.nf label{font-size:11px;color:var(--text2);display:block;margin-bottom:3px}
+.nf input{width:100%}
+.nom-result{margin:0 16px 14px;border-radius:var(--radius);background:var(--bg3);padding:11px}
+.confirm-box{background:var(--bg3);border-radius:var(--radius);padding:12px;margin-bottom:12px}
+.confirm-box .row{display:flex;justify-content:space-between;padding:3px 0;font-size:13px}
+.confirm-box .row span:first-child{color:var(--text2)}
+.del-box{background:var(--red-bg);border:0.5px solid #f09595;border-radius:var(--radius);padding:14px;margin-bottom:14px}
+.del-box .name{font-size:15px;font-weight:500;color:var(--red);margin-bottom:6px}
+.del-box .line{font-size:12px;color:#791f1f;padding:2px 0}
+.detail-header{padding:12px 16px;background:var(--bg3);border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.prog-bar-bg{background:var(--bg3);border-radius:4px;height:5px;min-width:70px;overflow:hidden}
+.prog-bar{height:5px;border-radius:4px;background:#1d9e75}
+.empty{padding:28px;text-align:center;color:var(--text2);font-size:13px}
+.loading{padding:28px;text-align:center;color:var(--text2);font-size:13px}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--border2);border-top-color:var(--text);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:#fff;padding:10px 16px;border-radius:var(--radius);font-size:13px;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="login-wrap">
+  <div class="login-card">
+    <div class="login-logo">Hope Electric</div>
+    <div class="login-sub">Sistema de nóminas</div>
+    <label>Usuario</label>
+    <input type="text" id="login-user" placeholder="usuario" autocomplete="username">
+    <label>Contraseña</label>
+    <input type="password" id="login-pass" placeholder="contraseña" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">Entrar</button>
+    <div class="login-err" id="login-err">Usuario o contraseña incorrectos</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="app-wrap">
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1>Hope Electric — Nóminas</h1>
+      <div class="period-pill"><span>Semana:</span><strong id="period-txt">—</strong><span id="period-dias"></span></div>
+    </div>
+    <button class="logout-btn" onclick="doLogout()">Cerrar sesión</button>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="sw('dashboard')">Dashboard</div>
+    <div class="tab" onclick="sw('nomina')">Nómina actual</div>
+    <div class="tab" onclick="sw('historial')">Historial</div>
+    <div class="tab" onclick="sw('prestamos')">Préstamos</div>
+    <div class="tab" onclick="sw('empleados')">Empleados</div>
+  </div>
+
+  <div class="content">
+    <!-- DASHBOARD -->
+    <div id="t-dashboard" class="tab-content active">
+      <div class="cards-row" id="dash-cards"></div>
+      <div class="panel">
+        <div class="phead"><h2 id="dash-nom-title">Nómina en curso</h2><button class="btn btn-primary" onclick="openCierre()">Cerrar semana y pagar</button></div>
+        <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>Empleado</th><th>Obra</th><th class="num">Base</th><th class="num">Deducc.</th><th class="num">Extras</th><th class="num">Préstamo</th><th class="num">Total</th></tr></thead>
+          <tbody id="dash-tbody"></tbody>
+          <tfoot><tr><td colspan="2" style="font-weight:500;font-size:12px">Total</td><td class="num" id="dft-base" style="font-weight:500"></td><td class="num" id="dft-ded" style="color:var(--red)"></td><td class="num" id="dft-ext" style="color:var(--green)"></td><td class="num" id="dft-prest" style="color:var(--amber)"></td><td class="num" id="dft-total" style="font-weight:500;font-size:14px"></td></tr></tfoot>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- NÓMINA ACTUAL -->
+    <div id="t-nomina" class="tab-content">
+      <div class="panel">
+        <div class="phead"><h2 id="nom-panel-title">Nómina en curso</h2>
+          <div class="phead-r">
+            <select id="nom-filtro-obra" onchange="renderNomina()"><option value="">Todas las obras</option><option>OMANA</option><option>SANTA</option><option>CASA</option></select>
+            <button class="btn btn-primary" onclick="openCierre()">Cerrar semana y pagar</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>Empleado</th><th>Obra</th><th class="num">Base</th><th>Faltas</th><th>H. extras</th><th class="num">Gasolina</th><th class="num">Préstamo</th><th class="num">Desc.</th><th class="num">Se debe</th><th class="num">Total</th><th></th></tr></thead>
+          <tbody id="nom-tbody"></tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- HISTORIAL -->
+    <div id="t-historial" class="tab-content">
+      <div class="cards-row" id="hist-cards"></div>
+      <div class="panel">
+        <div class="phead"><h2>Nóminas cerradas</h2></div>
+        <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>Período</th><th>Del</th><th>Al (sábado)</th><th class="num">Empleados</th><th class="num">Total pagado</th><th class="num">Desc. préstamos</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="hist-tbody"></tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRÉSTAMOS -->
+    <div id="t-prestamos" class="tab-content">
+      <div class="cards-row" id="prest-cards"></div>
+      <div class="panel">
+        <div class="phead"><h2>Préstamos</h2>
+          <div class="phead-r">
+            <select id="prest-filtro" onchange="renderPrestamos()"><option value="">Todos</option><option value="activo">Activos</option><option value="pendiente">Pendientes</option><option value="pagado">Liquidados</option></select>
+            <button class="btn btn-primary" onclick="openPrestModal()">+ Nuevo préstamo</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>Empleado</th><th>Obra</th><th class="num">Préstamo</th><th class="num">Desc./sem</th><th>Inicia cobro</th><th class="num">Pagado</th><th class="num">Saldo</th><th>Letras rest.</th><th>Progreso</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="prest-tbody"></tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- EMPLEADOS -->
+    <div id="t-empleados" class="tab-content">
+      <div class="panel">
+        <div class="phead"><h2>Empleados</h2>
+          <div class="phead-r">
+            <input type="text" id="emp-search" placeholder="Buscar..." oninput="renderEmpleados()" style="width:150px">
+            <select id="emp-obra-f" onchange="renderEmpleados()"><option value="">Todas las obras</option><option>OMANA</option><option>SANTA</option><option>CASA</option></select>
+            <button class="btn btn-primary" onclick="openEmpModal()">+ Nuevo empleado</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>#</th><th>Nombre</th><th>Puesto</th><th>Obra</th><th class="num">Salario/sem</th><th class="num">Diario</th><th>Préstamo activo</th><th></th></tr></thead>
+          <tbody id="emp-tbody"></tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MODAL: EDITAR NÓMINA -->
+<div class="overlay" id="overlay-nom">
+<div class="modal">
+  <h3 id="nom-modal-title">Editar nómina</h3>
+  <div class="nom-emp-hdr" id="nom-emp-hdr"></div>
+  <div class="nom-fields">
+    <div class="nf"><label>Faltas (días)</label><input type="number" id="ne-faltas" min="0" max="6" value="0" oninput="recalcNom()"></div>
+    <div class="nf"><label>Horas extras</label><input type="number" id="ne-hext" min="0" value="0" oninput="recalcNom()"></div>
+    <div class="nf"><label>Gasolina</label><input type="number" id="ne-gas" min="0" value="0" oninput="recalcNom()"></div>
+    <div class="nf"><label>Descuentos</label><input type="number" id="ne-desc" min="0" value="0" oninput="recalcNom()"></div>
+    <div class="nf"><label>Se le debe</label><input type="number" id="ne-debe" min="0" value="0" oninput="recalcNom()"></div>
+    <div class="nf"><label>Desc. préstamo (auto)</label><input type="number" id="ne-prest" min="0" value="0" readonly style="opacity:.55"></div>
+  </div>
+  <div class="nom-result" id="nom-result"></div>
+  <div class="btn-row"><button class="btn" onclick="closeOv('overlay-nom')">Cancelar</button><button class="btn btn-primary" onclick="saveNomEntry()">Guardar</button></div>
+</div>
+</div>
+
+<!-- MODAL: NUEVO PRÉSTAMO -->
+<div class="overlay" id="overlay-prest">
+<div class="modal" style="width:520px">
+  <h3>Nuevo préstamo</h3>
+  <div class="fg">
+    <div class="full"><label>Empleado</label><select id="pf-emp" style="width:100%" onchange="calcPrestPrev()"></select></div>
+    <div><label>Monto total ($)</label><input type="number" id="pf-monto" min="0" placeholder="2000" oninput="calcPrestPrev()"></div>
+    <div><label>Descuento semanal ($)</label><input type="number" id="pf-cuota" min="0" placeholder="500" oninput="calcPrestPrev()"></div>
+    <div class="full"><label>¿Cuándo inicia el descuento?</label>
+      <div class="inicio-opts">
+        <div class="inicio-opt selected" data-val="esta" onclick="selectInicio('esta')"><div class="dot"></div><div><div style="font-size:12px">Esta semana</div><div id="lbl-esta" style="font-size:11px;opacity:.7"></div></div></div>
+        <div class="inicio-opt" data-val="siguiente" onclick="selectInicio('siguiente')"><div class="dot"></div><div><div style="font-size:12px">Siguiente semana</div><div id="lbl-sig" style="font-size:11px;opacity:.7"></div></div></div>
+        <div class="inicio-opt" data-val="otra" onclick="selectInicio('otra')"><div class="dot"></div><div><div style="font-size:12px">Otra fecha</div><div style="font-size:11px;opacity:.7">Elige el sábado</div></div></div>
+      </div>
+      <div id="fecha-custom-wrap" style="display:none;margin-top:8px">
+        <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px">Sábado de inicio</label>
+        <input type="date" id="pf-fecha-custom" style="width:100%" onchange="calcPrestPrev()">
+      </div>
+    </div>
+    <div class="full"><label>Nota (opcional)</label><input type="text" id="pf-nota" placeholder="Anticipo, emergencia..."></div>
+  </div>
+  <div id="prest-preview" class="preview-box"><div style="color:var(--text2);font-size:12px">Completa los campos para ver el resumen</div></div>
+  <div class="btn-row"><button class="btn" onclick="closeOv('overlay-prest')">Cancelar</button><button class="btn btn-primary" onclick="savePrestamo()">Registrar préstamo</button></div>
+</div>
+</div>
+
+<!-- MODAL: ELIMINAR PRÉSTAMO -->
+<div class="overlay" id="overlay-delete-prest">
+<div class="modal" style="width:420px">
+  <h3>Eliminar préstamo</h3>
+  <div class="del-box" id="delete-prest-info"></div>
+  <p style="font-size:13px;color:var(--text2);margin-bottom:16px">Esta acción no se puede deshacer. ¿Confirmas que deseas eliminar este préstamo?</p>
+  <div class="btn-row">
+    <button class="btn" onclick="closeOv('overlay-delete-prest')">Cancelar</button>
+    <button class="btn" style="background:#e24b4a;color:#fff;border-color:#e24b4a" onclick="confirmarEliminarPrestamo()">Sí, eliminar</button>
+  </div>
+</div>
+</div>
+
+<!-- MODAL: EMPLEADO -->
+<div class="overlay" id="overlay-emp">
+<div class="modal">
+  <h3 id="emp-modal-title">Nuevo empleado</h3>
+  <div class="fg">
+    <div class="full"><label>Nombre completo</label><input type="text" id="ef-nombre" style="width:100%;text-transform:uppercase"></div>
+    <div><label>Puesto</label><input type="text" id="ef-puesto"></div>
+    <div><label>Obra</label><select id="ef-obra"><option>OMANA</option><option>SANTA</option><option>CASA</option><option>OTRO</option></select></div>
+    <div><label>Salario semanal ($)</label><input type="number" id="ef-salario" oninput="document.getElementById('ef-diario').value=Math.round((+this.value||0)/6)"></div>
+    <div><label>Diario (auto)</label><input type="number" id="ef-diario" readonly style="opacity:.55"></div>
+  </div>
+  <div class="btn-row"><button class="btn" onclick="closeOv('overlay-emp')">Cancelar</button><button class="btn btn-primary" onclick="saveEmp()">Guardar</button></div>
+</div>
+</div>
+
+<!-- MODAL: CERRAR SEMANA -->
+<div class="overlay" id="overlay-cierre">
+<div class="modal" style="width:540px">
+  <h3>Cerrar semana y registrar pago</h3>
+  <div id="cierre-body"></div>
+  <div class="btn-row" id="cierre-btns"></div>
+</div>
+</div>
+
+<!-- MODAL: DETALLE HISTORIAL -->
+<div class="overlay" id="overlay-detail">
+<div class="modal" style="width:680px;padding:0;overflow:hidden">
+  <div class="detail-header">
+    <div><div style="font-size:14px;font-weight:500" id="det-title"></div><div style="font-size:12px;color:var(--text2)" id="det-subtitle"></div></div>
+    <button class="btn" onclick="closeOv('overlay-detail')">Cerrar</button>
+  </div>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>Empleado</th><th>Puesto</th><th>Obra</th><th class="num">Base</th><th class="num">Faltas</th><th class="num">H.ext</th><th class="num">Gas.</th><th class="num">Préstamo</th><th class="num">Desc.</th><th class="num">Se debe</th><th class="num">Total</th></tr></thead>
+      <tbody id="det-tbody"></tbody>
+      <tfoot><tr><td colspan="3" style="padding:7px 11px;font-weight:500;font-size:12px">Total</td><td class="num" id="det-ft-base" style="font-weight:500"></td><td colspan="5"></td><td></td><td class="num" id="det-ft-total" style="font-weight:500;font-size:14px"></td></tr></tfoot>
+    </table>
+  </div>
+</div>
+</div>
+
+<script>
+// =============================================
+// CONFIGURACIÓN SUPABASE
+// =============================================
+const SUPABASE_URL = 'https://ixfxvofdmyhmczchhwjc.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml4Znh2b2ZkbXlobWN6Y2hoandjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxNTEwNjUsImV4cCI6MjA5MDcyNzA2NX0.KRC9dz5CXG2WNvMCPMVuV8o2gdNPXpzbQ9M6cKIftco';
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// =============================================
+// LOGIN
+// =============================================
+const CREDS = { usuario: 'Admin', password: 'Hotmail123' };
+let loggedIn = false;
+
+function doLogin() {
+  const u = document.getElementById('login-user').value.trim();
+  const p = document.getElementById('login-pass').value;
+  if (u === CREDS.usuario && p === CREDS.password) {
+    loggedIn = true;
+    sessionStorage.setItem('nominas_auth', '1');
+    document.getElementById('login-wrap').style.display = 'none';
+    document.getElementById('app-wrap').style.display = 'flex';
+    initApp();
+  } else {
+    document.getElementById('login-err').style.display = 'block';
+  }
+}
+
+function doLogout() {
+  sessionStorage.removeItem('nominas_auth');
+  location.reload();
+}
+
+// =============================================
+// HELPERS
+// =============================================
+const $ = id => document.getElementById(id);
+const fmt = n => '$' + (Math.round(n || 0)).toLocaleString('es-MX');
+function getLunes(d) { const day = d.getDay(); const diff = day === 0 ? -6 : 1 - day; const l = new Date(d); l.setDate(d.getDate() + diff); l.setHours(0,0,0,0); return l; }
+function getSabado(l) { const s = new Date(l); s.setDate(l.getDate() + 5); return s; }
+function fmtD(d) { if (!d) return '—'; const dt = d instanceof Date ? d : new Date(d); return dt.toLocaleDateString('es-MX', {day:'numeric',month:'short',year:'numeric'}); }
+function fmtDS(d) { if (!d) return '—'; const dt = d instanceof Date ? d : new Date(d+'T00:00:00'); return dt.toLocaleDateString('es-MX', {day:'2-digit',month:'2-digit',year:'numeric'}); }
+function toISO(d) { const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),dd=String(d.getDate()).padStart(2,'0'); return `${y}-${m}-${dd}`; }
+function fromISO(s) { if (!s) return null; const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
+function obc(o) { const m={OMANA:'b-omana',SANTA:'b-santa',CASA:'b-casa'}; return m[(o||'').toUpperCase()]||'b-otro'; }
+
+function showToast(msg, dur=2500) {
+  const t = $('toast'); t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), dur);
+}
+
+// =============================================
+// STATE
+// =============================================
+let empleados = [], prestamos = [], semanas = [], entradas = [];
+let currentLunes, currentSabado;
+let nomina = {}; // {empId: {faltas,hext,gas,desc,debe}}
+let editEmpId = null, editNomEmpId = null, inicioSel = 'esta', prestToDelete = null;
+
+// =============================================
+// INIT
+// =============================================
+async function initApp() {
+  currentLunes = getLunes(new Date());
+  currentSabado = getSabado(currentLunes);
+  updatePeriod();
+  await loadAll();
+  // Buscar o crear semana abierta
+  let semAbierta = semanas.find(s => !s.cerrada);
+  if (!semAbierta) {
+    const { data } = await db.from('semanas_nomina').insert([{
+      desde: toISO(currentLunes), hasta: toISO(currentSabado), cerrada: false
+    }]).select().single();
+    if (data) { semanas.unshift(data); semAbierta = data; }
+  } else {
+    currentLunes = fromISO(semAbierta.desde) || currentLunes;
+    currentSabado = fromISO(semAbierta.hasta) || currentSabado;
+    updatePeriod();
+  }
+  // Cargar entradas de la semana abierta
+  if (semAbierta) {
+    const { data } = await db.from('entradas_nomina').select('*').eq('semana_id', semAbierta.id);
+    if (data) {
+      data.forEach(e => {
+        nomina[e.empleado_id] = { faltas: e.faltas, hext: e.horas_extras, gas: e.gasolina, desc: e.descuentos, debe: e.se_le_debe, id: e.id };
+      });
+    }
+  }
+  renderDash();
+}
+
+async function loadAll() {
+  const [empRes, prestRes, semRes] = await Promise.all([
+    db.from('empleados_nomina').select('*').eq('activo', true).order('nombre'),
+    db.from('prestamos_nomina').select('*').order('fecha_registro', {ascending:false}),
+    db.from('semanas_nomina').select('*').order('desde', {ascending:false})
+  ]);
+  empleados = empRes.data || [];
+  prestamos = prestRes.data || [];
+  semanas = semRes.data || [];
+}
+
+function updatePeriod() {
+  $('period-txt').textContent = fmtD(currentLunes) + ' — ' + fmtD(currentSabado);
+  const today = new Date(); today.setHours(0,0,0,0);
+  const diff = Math.ceil((currentSabado - today) / 86400000);
+  $('period-dias').textContent = diff === 0 ? '(pago hoy)' : diff > 0 ? `(sábado en ${diff}d)` : '';
+}
+
+// =============================================
+// PRESTAMOS HELPERS
+// =============================================
+function getPrestDesc(empId) {
+  return prestamos
+    .filter(p => p.empleado_id === empId && p.saldo > 0 && new Date(p.inicia_cobro+'T00:00:00') <= currentSabado)
+    .reduce((s, p) => s + Math.min(p.cuota, p.saldo), 0);
+}
+
+function calcTotal(empId, en) {
+  const emp = empleados.find(e => e.id === empId); if (!emp) return 0;
+  const d = emp.salario / 6;
+  return emp.salario - (en.faltas||0)*d + (en.hext||0)*(d/8)*1.5 + (en.gas||0) + (en.debe||0) - (en.desc||0) - getPrestDesc(empId);
+}
+
+function getNom(empId) {
+  if (!nomina[empId]) nomina[empId] = { faltas:0, hext:0, gas:0, desc:0, debe:0 };
+  return nomina[empId];
+}
+
+// =============================================
+// TAB SWITCHING
+// =============================================
+function sw(t) {
+  document.querySelectorAll('.tab').forEach((el, i) => {
+    ['dashboard','nomina','historial','prestamos','empleados'].forEach((n,j) => el.classList.toggle('active', j===i && n===t));
+  });
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  $('t-' + t).classList.add('active');
+  ({dashboard:renderDash, nomina:renderNomina, historial:renderHistorial, prestamos:renderPrestamos, empleados:renderEmpleados}[t]||renderDash)();
+}
+
+// =============================================
+// DASHBOARD
+// =============================================
+function renderDash() {
+  updatePeriod();
+  const bT = empleados.reduce((s,e) => s+e.salario, 0);
+  const nT = empleados.reduce((s,e) => s+calcTotal(e.id, getNom(e.id)), 0);
+  const pA = prestamos.filter(p => p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado).length;
+  const pP = prestamos.filter(p => p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')>currentSabado).length;
+  $('dash-cards').innerHTML = `
+    <div class="mcard"><div class="lbl">Empleados</div><div class="val">${empleados.length}</div></div>
+    <div class="mcard"><div class="lbl">Nómina base/sem</div><div class="val" style="font-size:16px">${fmt(bT)}</div></div>
+    <div class="mcard"><div class="lbl">Total neto esta sem</div><div class="val" style="font-size:16px">${fmt(nT)}</div></div>
+    <div class="mcard"><div class="lbl">Préstamos cobrando</div><div class="val">${pA}${pP>0?`<span style="font-size:12px;color:var(--amber);margin-left:4px">+${pP} próx.</span>`:''}</div></div>
+    <div class="mcard"><div class="lbl">Semanas cerradas</div><div class="val">${semanas.filter(s=>s.cerrada).length}</div></div>`;
+  $('dash-nom-title').textContent = 'Nómina: ' + fmtD(currentLunes) + ' — ' + fmtD(currentSabado);
+  let tB=0,tD=0,tE=0,tP=0,tT=0;
+  $('dash-tbody').innerHTML = empleados.map(e => {
+    const en=getNom(e.id); const d=e.salario/6;
+    const ded=(en.faltas||0)*d, ext=(en.hext||0)*(d/8)*1.5, pD=getPrestDesc(e.id), tot=calcTotal(e.id,en);
+    tB+=e.salario; tD+=ded; tE+=ext; tP+=pD; tT+=tot;
+    return `<tr onclick="openNomModal(${e.id})" style="cursor:pointer">
+      <td style="font-weight:500">${e.nombre}</td>
+      <td><span class="badge ${obc(e.obra)}">${e.obra}</span></td>
+      <td class="num">${fmt(e.salario)}</td>
+      <td class="num">${ded>0?`<span style="color:var(--red)">-${fmt(ded)}</span>`:'—'}</td>
+      <td class="num">${ext>0?`<span style="color:var(--green)">+${fmt(ext)}</span>`:'—'}</td>
+      <td class="num">${pD>0?`<span class="prestamo-badge">-${fmt(pD)}</span>`:''}</td>
+      <td class="num" style="font-weight:500">${fmt(tot)}</td>
+    </tr>`;
+  }).join('');
+  $('dft-base').textContent=fmt(tB); $('dft-ded').textContent=tD>0?'-'+fmt(tD):'—';
+  $('dft-ext').textContent=tE>0?'+'+fmt(tE):'—'; $('dft-prest').textContent=tP>0?'-'+fmt(tP):'—';
+  $('dft-total').textContent=fmt(tT);
+}
+
+// =============================================
+// NÓMINA ACTUAL
+// =============================================
+function renderNomina() {
+  const f = $('nom-filtro-obra').value;
+  $('nom-panel-title').textContent = 'Nómina: ' + fmtD(currentLunes) + ' — ' + fmtD(currentSabado);
+  $('nom-tbody').innerHTML = empleados.filter(e => !f||e.obra===f).map(e => {
+    const en=getNom(e.id); const d=e.salario/6;
+    const pD=getPrestDesc(e.id), tot=calcTotal(e.id,en), hE=(en.hext||0)*(d/8)*1.5, dF=(en.faltas||0)*d;
+    return `<tr>
+      <td style="font-weight:500">${e.nombre}<br><span style="font-size:11px;color:var(--text2)">${e.puesto}</span></td>
+      <td><span class="badge ${obc(e.obra)}">${e.obra}</span></td>
+      <td class="num">${fmt(e.salario)}</td>
+      <td class="num">${en.faltas>0?`<span style="color:var(--red)">${en.faltas}d/-${fmt(dF)}</span>`:'<span style="color:var(--text2)">0</span>'}</td>
+      <td class="num">${en.hext>0?`<span style="color:var(--green)">${en.hext}h/+${fmt(hE)}</span>`:'<span style="color:var(--text2)">0</span>'}</td>
+      <td class="num">${en.gas>0?fmt(en.gas):'—'}</td>
+      <td class="num">${pD>0?`<span class="prestamo-badge">-${fmt(pD)}</span>`:'—'}</td>
+      <td class="num">${en.desc>0?`<span style="color:var(--red)">-${fmt(en.desc)}</span>`:'—'}</td>
+      <td class="num">${en.debe>0?`<span style="color:var(--green)">+${fmt(en.debe)}</span>`:'—'}</td>
+      <td class="num" style="font-weight:500">${fmt(tot)}</td>
+      <td><button class="btn btn-sm" onclick="openNomModal(${e.id})">Editar</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function openNomModal(empId) {
+  editNomEmpId = empId;
+  const emp = empleados.find(e => e.id===empId); const en = getNom(empId);
+  const ini = emp.nombre.split(' ').map(w=>w[0]).slice(0,2).join('');
+  $('nom-modal-title').textContent = 'Nómina — ' + emp.nombre;
+  $('nom-emp-hdr').innerHTML = `<div class="avatar">${ini}</div><div><div style="font-weight:500;font-size:13px">${emp.nombre}</div><div style="font-size:12px;color:var(--text2)">${emp.puesto} · <span class="badge ${obc(emp.obra)}" style="font-size:10px">${emp.obra}</span></div></div><div style="margin-left:auto;font-size:12px;color:var(--text2)">${fmtDS(currentLunes)} – ${fmtDS(currentSabado)}</div>`;
+  $('ne-faltas').value=en.faltas||0; $('ne-hext').value=en.hext||0; $('ne-gas').value=en.gas||0;
+  $('ne-desc').value=en.desc||0; $('ne-debe').value=en.debe||0; $('ne-prest').value=getPrestDesc(empId);
+  recalcNom(); $('overlay-nom').classList.add('open');
+}
+
+function recalcNom() {
+  if (!editNomEmpId) return;
+  const emp = empleados.find(e => e.id===editNomEmpId); if (!emp) return;
+  const d=emp.salario/6, f=+$('ne-faltas').value||0, h=+$('ne-hext').value||0;
+  const g=+$('ne-gas').value||0, desc=+$('ne-desc').value||0, db=+$('ne-debe').value||0;
+  const p=getPrestDesc(editNomEmpId); $('ne-prest').value=p;
+  const dF=f*d, iH=h*(d/8)*1.5, tot=emp.salario-dF+iH+g+db-desc-p;
+  $('nom-result').innerHTML = `
+    <div class="calc-row"><span>Salario semanal</span><span>${fmt(emp.salario)}</span></div>
+    ${dF>0?`<div class="calc-row"><span>Descuento ${f} falta(s)</span><span style="color:var(--red)">-${fmt(dF)}</span></div>`:''}
+    ${iH>0?`<div class="calc-row"><span>${h} h. extras (×1.5)</span><span style="color:var(--green)">+${fmt(iH)}</span></div>`:''}
+    ${g>0?`<div class="calc-row"><span>Gasolina</span><span style="color:var(--green)">+${fmt(g)}</span></div>`:''}
+    ${db>0?`<div class="calc-row"><span>Se le debe</span><span style="color:var(--green)">+${fmt(db)}</span></div>`:''}
+    ${desc>0?`<div class="calc-row"><span>Descuentos</span><span style="color:var(--red)">-${fmt(desc)}</span></div>`:''}
+    ${p>0?`<div class="calc-row"><span>Desc. préstamo (auto)</span><span style="color:var(--amber)">-${fmt(p)}</span></div>`:''}
+    <div class="calc-row"><span>Total a percibir</span><span style="font-size:15px">${fmt(Math.max(0,tot))}</span></div>`;
+}
+
+async function saveNomEntry() {
+  if (!editNomEmpId) return;
+  const semAbierta = semanas.find(s => !s.cerrada); if (!semAbierta) return;
+  const emp = empleados.find(e => e.id===editNomEmpId);
+  const en = getNom(editNomEmpId);
+  const d = emp.salario/6;
+  const newEn = { faltas:+$('ne-faltas').value||0, hext:+$('ne-hext').value||0, gas:+$('ne-gas').value||0, desc:+$('ne-desc').value||0, debe:+$('ne-debe').value||0 };
+  const pD = getPrestDesc(editNomEmpId);
+  const tot = calcTotal(editNomEmpId, newEn);
+  const row = { semana_id:semAbierta.id, empleado_id:editNomEmpId, salario_base:emp.salario, faltas:newEn.faltas, horas_extras:newEn.hext, gasolina:newEn.gas, descuentos:newEn.desc, se_le_debe:newEn.debe, prest_desc:pD, total:Math.max(0,tot) };
+  if (en.id) {
+    await db.from('entradas_nomina').update(row).eq('id', en.id);
+    newEn.id = en.id;
+  } else {
+    const { data } = await db.from('entradas_nomina').insert([row]).select().single();
+    if (data) newEn.id = data.id;
+  }
+  nomina[editNomEmpId] = newEn;
+  closeOv('overlay-nom'); renderNomina(); showToast('Guardado');
+}
+
+// =============================================
+// CERRAR SEMANA
+// =============================================
+function openCierre() {
+  const neto = empleados.reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))), 0);
+  const pDesc = empleados.reduce((s,e) => s+getPrestDesc(e.id), 0);
+  $('cierre-body').innerHTML = `
+    <div class="confirm-box">
+      <div class="row"><span>Período</span><strong>${fmtD(currentLunes)} — ${fmtD(currentSabado)}</strong></div>
+      <div class="row"><span>Empleados</span><strong>${empleados.length}</strong></div>
+      <div class="row"><span>Descuentos préstamos</span><strong style="color:var(--amber)">-${fmt(pDesc)}</strong></div>
+      <div class="row" style="border-top:0.5px solid var(--border);margin-top:6px;padding-top:6px"><span>Total a pagar</span><strong style="font-size:15px">${fmt(neto)}</strong></div>
+    </div>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:12px">Al confirmar se guardará esta nómina en el historial, se aplicarán los descuentos de préstamos y la semana avanzará.</p>`;
+  $('cierre-btns').innerHTML = `<button class="btn" onclick="closeOv('overlay-cierre')">Cancelar</button><button class="btn btn-primary" onclick="confirmarCierre()">Confirmar y cerrar semana</button>`;
+  $('overlay-cierre').classList.add('open');
+}
+
+async function confirmarCierre() {
+  const semAbierta = semanas.find(s => !s.cerrada); if (!semAbierta) return;
+  const totalPagado = empleados.reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))), 0);
+  const totalPrest = empleados.reduce((s,e) => s+getPrestDesc(e.id), 0);
+  // Asegurar entradas para todos los empleados
+  for (const emp of empleados) {
+    const en = getNom(emp.id);
+    if (!en.id) {
+      const pD = getPrestDesc(emp.id);
+      const tot = Math.max(0, calcTotal(emp.id, en));
+      const row = { semana_id:semAbierta.id, empleado_id:emp.id, salario_base:emp.salario, faltas:0, horas_extras:0, gasolina:0, descuentos:0, se_le_debe:0, prest_desc:pD, total:tot };
+      await db.from('entradas_nomina').insert([row]);
+    }
+  }
+  // Cerrar semana
+  await db.from('semanas_nomina').update({ cerrada:true, total_pagado:totalPagado, total_prest_desc:totalPrest, cerrada_en:new Date().toISOString() }).eq('id', semAbierta.id);
+  // Aplicar descuentos de préstamos
+  for (const p of prestamos) {
+    if (p.saldo > 0 && new Date(p.inicia_cobro+'T00:00:00') <= currentSabado) {
+      const pago = Math.min(p.cuota, p.saldo);
+      const nuevoSaldo = Math.max(0, p.saldo - pago);
+      const nuevoPagado = (p.pagado||0) + pago;
+      const nuevasLetras = p.cuota > 0 ? Math.ceil(nuevoSaldo / p.cuota) : 0;
+      await db.from('prestamos_nomina').update({ saldo:nuevoSaldo, pagado:nuevoPagado, letras_restantes:nuevasLetras }).eq('id', p.id);
+    }
+  }
+  // Crear nueva semana
+  const nuevoLunes = new Date(currentLunes); nuevoLunes.setDate(nuevoLunes.getDate()+7);
+  const nuevoSabado = getSabado(nuevoLunes);
+  const { data:nuevaSem } = await db.from('semanas_nomina').insert([{ desde:toISO(nuevoLunes), hasta:toISO(nuevoSabado), cerrada:false }]).select().single();
+  nomina = {};
+  currentLunes = nuevoLunes; currentSabado = nuevoSabado;
+  await loadAll();
+  if (nuevaSem) semanas.unshift(nuevaSem);
+  closeOv('overlay-cierre'); updatePeriod(); renderDash();
+  showToast('Semana cerrada y guardada');
+}
+
+// =============================================
+// HISTORIAL
+// =============================================
+async function renderHistorial() {
+  const cerradas = semanas.filter(s => s.cerrada);
+  const tot = cerradas.reduce((s,h) => s+(h.total_pagado||0), 0);
+  $('hist-cards').innerHTML = `
+    <div class="mcard"><div class="lbl">Semanas cerradas</div><div class="val">${cerradas.length}</div></div>
+    <div class="mcard"><div class="lbl">Total histórico</div><div class="val" style="font-size:15px">${fmt(tot)}</div></div>
+    <div class="mcard"><div class="lbl">Promedio/semana</div><div class="val" style="font-size:15px">${cerradas.length?fmt(tot/cerradas.length):'—'}</div></div>`;
+  $('hist-tbody').innerHTML = cerradas.length ? cerradas.map((h,i) => `<tr style="cursor:pointer" onclick="openDetail(${h.id})">
+    <td style="font-weight:500">Semana #${cerradas.length-i}</td>
+    <td>${fmtD(fromISO(h.desde))}</td><td>${fmtD(fromISO(h.hasta))}</td>
+    <td class="num">${empleados.length}</td>
+    <td class="num" style="font-weight:500">${fmt(h.total_pagado)}</td>
+    <td class="num">${h.total_prest_desc>0?`<span class="prestamo-badge">-${fmt(h.total_prest_desc)}</span>`:'—'}</td>
+    <td><span class="badge b-cerrada">Cerrada</span></td>
+    <td><button class="btn btn-sm" onclick="openDetail(${h.id});event.stopPropagation()">Ver</button></td>
+  </tr>`).join('') : `<tr><td colspan="8" class="empty">Aún no hay semanas cerradas</td></tr>`;
+}
+
+async function openDetail(semanaId) {
+  const sem = semanas.find(s => s.id===semanaId); if (!sem) return;
+  const { data: entradas } = await db.from('entradas_nomina').select('*').eq('semana_id', semanaId);
+  $('det-title').textContent = 'Nómina: ' + fmtD(fromISO(sem.desde)) + ' — ' + fmtD(fromISO(sem.hasta));
+  $('det-subtitle').textContent = (entradas?.length||0)+' empleados · '+fmt(sem.total_pagado);
+  $('det-tbody').innerHTML = (entradas||[]).map(e => {
+    const emp = empleados.find(x => x.id===e.empleado_id)||{nombre:'?',puesto:'',obra:''};
+    const dF = e.faltas*(e.salario_base/6), hE = e.horas_extras*(e.salario_base/6/8)*1.5;
+    return `<tr><td style="font-weight:500">${emp.nombre}</td><td style="font-size:12px;color:var(--text2)">${emp.puesto}</td><td><span class="badge ${obc(emp.obra)}">${emp.obra}</span></td><td class="num">${fmt(e.salario_base)}</td><td class="num">${e.faltas>0?`<span style="color:var(--red)">-${fmt(dF)}</span>`:'—'}</td><td class="num">${e.horas_extras>0?`<span style="color:var(--green)">+${fmt(hE)}</span>`:'—'}</td><td class="num">${e.gasolina>0?fmt(e.gasolina):'—'}</td><td class="num">${e.prest_desc>0?`<span class="prestamo-badge">-${fmt(e.prest_desc)}</span>`:'—'}</td><td class="num">${e.descuentos>0?`<span style="color:var(--red)">-${fmt(e.descuentos)}</span>`:'—'}</td><td class="num">${e.se_le_debe>0?`<span style="color:var(--green)">+${fmt(e.se_le_debe)}</span>`:'—'}</td><td class="num" style="font-weight:500">${fmt(e.total)}</td></tr>`;
+  }).join('');
+  $('det-ft-base').textContent = fmt((entradas||[]).reduce((s,e)=>s+e.salario_base,0));
+  $('det-ft-total').textContent = fmt(sem.total_pagado);
+  $('overlay-detail').classList.add('open');
+}
+
+// =============================================
+// PRÉSTAMOS
+// =============================================
+function renderPrestamos() {
+  const act = prestamos.filter(p => p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado);
+  const pend = prestamos.filter(p => p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')>currentSabado);
+  const liq = prestamos.filter(p => p.saldo<=0);
+  $('prest-cards').innerHTML = `
+    <div class="mcard"><div class="lbl">Cobrando ahora</div><div class="val">${act.length}</div><div class="sub">${fmt(act.reduce((s,p)=>s+p.saldo,0))} pendiente</div></div>
+    <div class="mcard"><div class="lbl">Próximos</div><div class="val">${pend.length}</div><div class="sub">${fmt(pend.reduce((s,p)=>s+p.saldo,0))} pendiente</div></div>
+    <div class="mcard"><div class="lbl">Liquidados</div><div class="val">${liq.length}</div></div>
+    <div class="mcard"><div class="lbl">Total recuperado</div><div class="val" style="font-size:16px">${fmt(prestamos.reduce((s,p)=>s+(p.pagado||0),0))}</div></div>`;
+  const f = $('prest-filtro').value;
+  const lista = prestamos.filter(p => {
+    if (f==='activo') return p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado;
+    if (f==='pendiente') return p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')>currentSabado;
+    if (f==='pagado') return p.saldo<=0;
+    return true;
+  });
+  $('prest-tbody').innerHTML = lista.length ? lista.map(p => {
+    const emp = empleados.find(e => e.id===p.empleado_id);
+    const pct = Math.round((p.pagado||0)/p.monto*100);
+    const esAct = p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado;
+    const esPend = p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')>currentSabado;
+    return `<tr>
+      <td style="font-weight:500">${emp?emp.nombre:'?'}</td>
+      <td>${emp?`<span class="badge ${obc(emp.obra)}">${emp.obra}</span>`:''}</td>
+      <td class="num">${fmt(p.monto)}</td>
+      <td class="num">${fmt(p.cuota)}/sem</td>
+      <td style="font-size:12px">${fmtDS(fromISO(p.inicia_cobro))}${esAct?`<br><span style="color:var(--green);font-size:11px">cobrando</span>`:esPend?`<br><span style="color:var(--blue);font-size:11px">pendiente</span>`:''}</td>
+      <td class="num" style="color:var(--green)">${fmt(p.pagado||0)}</td>
+      <td class="num" style="font-weight:500;color:${p.saldo>0?'var(--red)':'var(--text2)'}">${fmt(p.saldo)}</td>
+      <td class="num">${p.saldo>0?`<strong>${p.letras_restantes}</strong> sem.`:'—'}</td>
+      <td style="min-width:80px"><div class="prog-bar-bg"><div class="prog-bar" style="width:${pct}%;${pct>=100?'background:var(--gray-text)':esPend?'background:var(--blue)':''}"></div></div><div style="font-size:10px;color:var(--text2);margin-top:2px">${pct}%</div></td>
+      <td><span class="badge ${esAct?'b-activo':esPend?'b-pendiente':'b-pagado'}">${esAct?'Cobrando':esPend?'Pendiente':'Liquidado'}</span></td>
+      <td><div style="display:flex;gap:4px">
+        ${p.saldo>0?`<button class="btn btn-sm" onclick="abonoManual(${p.id})">Abono</button>`:''}
+        <button class="btn btn-delete" onclick="openEliminarPrestamo(${p.id})">Eliminar</button>
+      </div></td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="11" class="empty">No hay préstamos</td></tr>`;
+}
+
+function selectInicio(val) {
+  inicioSel = val;
+  document.querySelectorAll('.inicio-opt').forEach(el => el.classList.toggle('selected', el.dataset.val===val));
+  $('fecha-custom-wrap').style.display = val==='otra' ? 'block' : 'none';
+  calcPrestPrev();
+}
+
+function getInicioDate() {
+  if (inicioSel==='esta') return new Date(currentSabado);
+  if (inicioSel==='siguiente') { const s=new Date(currentSabado); s.setDate(s.getDate()+7); return s; }
+  const v = $('pf-fecha-custom').value; return v ? fromISO(v) : null;
+}
+
+function openPrestModal() {
+  $('pf-emp').innerHTML = empleados.map(e => `<option value="${e.id}">${e.nombre} (${e.obra})</option>`).join('');
+  $('pf-monto').value=''; $('pf-cuota').value=''; $('pf-nota').value='';
+  selectInicio('esta');
+  const sigSab = new Date(currentSabado); sigSab.setDate(sigSab.getDate()+7);
+  $('lbl-esta').textContent=fmtDS(currentSabado); $('lbl-sig').textContent=fmtDS(sigSab);
+  $('pf-fecha-custom').value=toISO(sigSab);
+  $('prest-preview').innerHTML='<div style="color:var(--text2);font-size:12px">Completa los campos para ver el resumen</div>';
+  $('overlay-prest').classList.add('open');
+}
+
+function calcPrestPrev() {
+  const m=+$('pf-monto').value||0, c=+$('pf-cuota').value||0, inicio=getInicioDate();
+  if (m>0 && c>0 && inicio) {
+    const letras=Math.ceil(m/c); const fin=new Date(inicio); fin.setDate(fin.getDate()+(letras-1)*7);
+    const esSemAct = inicio<=currentSabado;
+    $('prest-preview').innerHTML=`
+      <div class="preview-row"><span>Primer descuento</span><span style="font-weight:500;color:${esSemAct?'var(--green)':'var(--blue)'}">${fmtD(inicio)} ${esSemAct?'(esta semana)':'(próxima nómina)'}</span></div>
+      <div class="preview-row"><span>Descuento semanal</span><span>${fmt(c)}/semana</span></div>
+      <div class="preview-row"><span>Número de semanas</span><span style="font-weight:500">${letras} semanas</span></div>
+      <div class="preview-row"><span>Último descuento aprox.</span><span>${fmtD(fin)}</span></div>
+      <div class="preview-row" style="border-top:0.5px solid var(--border);margin-top:4px;padding-top:6px"><span>Total a recuperar</span><span style="font-weight:500">${fmt(m)}</span></div>`;
+  } else {
+    $('prest-preview').innerHTML='<div style="color:var(--text2);font-size:12px">Completa los campos para ver el resumen</div>';
+  }
+}
+
+async function savePrestamo() {
+  const empId=+$('pf-emp').value, monto=+$('pf-monto').value||0, cuota=+$('pf-cuota').value||0, inicio=getInicioDate();
+  if (!empId||!monto||!cuota||!inicio) { alert('Completa todos los campos.'); return; }
+  const letras = Math.ceil(monto/cuota);
+  const { data } = await db.from('prestamos_nomina').insert([{ empleado_id:empId, monto, cuota, saldo:monto, pagado:0, letras_restantes:letras, inicia_cobro:toISO(inicio), nota:$('pf-nota').value }]).select().single();
+  if (data) prestamos.unshift(data);
+  closeOv('overlay-prest'); renderPrestamos(); showToast('Préstamo registrado');
+}
+
+function openEliminarPrestamo(prestId) {
+  const p = prestamos.find(x => x.id===prestId); if (!p) return;
+  const emp = empleados.find(e => e.id===p.empleado_id);
+  prestToDelete = prestId;
+  const esAct = p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado;
+  const esPend = p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')>currentSabado;
+  $('delete-prest-info').innerHTML=`
+    <div class="name">${emp?emp.nombre:'?'}</div>
+    <div class="line">Monto original: ${fmt(p.monto)}</div>
+    <div class="line">Descuento semanal: ${fmt(p.cuota)}/semana</div>
+    <div class="line">Ya pagado: ${fmt(p.pagado||0)}</div>
+    <div class="line">Saldo pendiente: ${fmt(p.saldo)}</div>
+    <div class="line">Inicia cobro: ${fmtD(fromISO(p.inicia_cobro))}</div>
+    ${p.nota?`<div class="line">Nota: ${p.nota}</div>`:''}
+    <div class="line" style="margin-top:6px;font-weight:500">Estado: ${p.saldo<=0?'Liquidado':esAct?'Activo — cobrando':esPend?'Pendiente — aún no inicia':''}</div>`;
+  $('overlay-delete-prest').classList.add('open');
+}
+
+async function confirmarEliminarPrestamo() {
+  if (prestToDelete===null) return;
+  await db.from('prestamos_nomina').delete().eq('id', prestToDelete);
+  prestamos = prestamos.filter(p => p.id!==prestToDelete);
+  prestToDelete = null;
+  closeOv('overlay-delete-prest'); renderPrestamos(); showToast('Préstamo eliminado');
+}
+
+async function abonoManual(prestId) {
+  const p = prestamos.find(x => x.id===prestId); if (!p) return;
+  const m = parseFloat(prompt('Abono manual (saldo: '+fmt(p.saldo)+')'));
+  if (!m||isNaN(m)) return;
+  const nuevoSaldo = Math.max(0, p.saldo-m);
+  const nuevoPagado = (p.pagado||0)+Math.min(m,p.saldo);
+  const nuevasLetras = p.cuota>0 ? Math.ceil(nuevoSaldo/p.cuota) : 0;
+  await db.from('prestamos_nomina').update({ saldo:nuevoSaldo, pagado:nuevoPagado, letras_restantes:nuevasLetras }).eq('id', p.id);
+  p.saldo=nuevoSaldo; p.pagado=nuevoPagado; p.letras_restantes=nuevasLetras;
+  renderPrestamos(); showToast('Abono registrado');
+}
+
+// =============================================
+// EMPLEADOS
+// =============================================
+function renderEmpleados() {
+  const q=($('emp-search').value||'').toLowerCase(), obra=$('emp-obra-f').value;
+  $('emp-tbody').innerHTML = empleados.filter(e=>(!q||e.nombre.toLowerCase().includes(q))&&(!obra||e.obra===obra)).map(e => {
+    const pA = prestamos.find(p => p.empleado_id===e.id && p.saldo>0);
+    return `<tr>
+      <td style="color:var(--text2)">${e.id}</td>
+      <td style="font-weight:500">${e.nombre}</td>
+      <td style="color:var(--text2)">${e.puesto}</td>
+      <td><span class="badge ${obc(e.obra)}">${e.obra}</span></td>
+      <td class="num">${fmt(e.salario)}</td>
+      <td class="num" style="color:var(--text2)">${fmt(e.salario/6)}</td>
+      <td>${pA?`<span class="${new Date(pA.inicia_cobro+'T00:00:00')<=currentSabado?'prestamo-badge':'pending-badge'}">-${fmt(pA.cuota)}/sem · ${new Date(pA.inicia_cobro+'T00:00:00')<=currentSabado?'cobrando':'inicia '+fmtDS(fromISO(pA.inicia_cobro))}</span>`:'<span style="font-size:12px;color:var(--text2)">sin préstamo</span>'}</td>
+      <td><button class="btn btn-sm" onclick="editEmp(${e.id})">Editar</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function openEmpModal() {
+  editEmpId=null; $('emp-modal-title').textContent='Nuevo empleado';
+  ['ef-nombre','ef-puesto','ef-salario','ef-diario'].forEach(id=>$(id).value='');
+  $('overlay-emp').classList.add('open');
+}
+
+function editEmp(id) {
+  editEmpId=id; const e=empleados.find(x=>x.id===id); if(!e) return;
+  $('emp-modal-title').textContent='Editar empleado';
+  $('ef-nombre').value=e.nombre; $('ef-puesto').value=e.puesto; $('ef-obra').value=e.obra;
+  $('ef-salario').value=e.salario; $('ef-diario').value=Math.round(e.salario/6);
+  $('overlay-emp').classList.add('open');
+}
+
+async function saveEmp() {
+  const nombre=$('ef-nombre').value.trim().toUpperCase(), puesto=$('ef-puesto').value.trim();
+  const obra=$('ef-obra').value, salario=+$('ef-salario').value||0;
+  if (!nombre||!salario) return;
+  if (editEmpId) {
+    await db.from('empleados_nomina').update({nombre,puesto,obra,salario}).eq('id',editEmpId);
+    const idx=empleados.findIndex(e=>e.id===editEmpId);
+    if (idx>=0) empleados[idx]={...empleados[idx],nombre,puesto,obra,salario};
+  } else {
+    const { data } = await db.from('empleados_nomina').insert([{nombre,puesto,obra,salario}]).select().single();
+    if (data) empleados.push(data);
+  }
+  closeOv('overlay-emp'); renderEmpleados(); showToast('Empleado guardado');
+}
+
+function closeOv(id) { $(id).classList.remove('open'); }
+
+// =============================================
+// ARRANQUE
+// =============================================
+if (sessionStorage.getItem('nominas_auth')==='1') {
+  document.getElementById('login-wrap').style.display='none';
+  document.getElementById('app-wrap').style.display='flex';
+  initApp();
+}
+</script>
+</body>
+</html>
