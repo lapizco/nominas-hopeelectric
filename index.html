@@ -260,7 +260,7 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
         </div>
         <div style="overflow-x:auto">
         <table>
-          <thead><tr><th>#</th><th>Nombre</th><th>Puesto</th><th>Obra</th><th class="num">Salario/sem</th><th class="num">Diario</th><th>Préstamo activo</th><th></th></tr></thead>
+          <thead><tr><th>#</th><th>Nombre</th><th>Puesto</th><th>Obra</th><th class="num">Salario/sem</th><th class="num">Diario</th><th class="num">Gasolina/sem</th><th>Préstamo activo</th><th></th></tr></thead>
           <tbody id="emp-tbody"></tbody>
         </table>
         </div>
@@ -280,7 +280,6 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
   <div class="nom-fields">
     <div class="nf"><label>Faltas (días)</label><input type="number" id="ne-faltas" min="0" max="6" value="0" oninput="recalcNom()"></div>
     <div class="nf"><label>Horas extras</label><input type="number" id="ne-hext" min="0" value="0" oninput="recalcNom()"></div>
-    <div class="nf"><label>Gasolina</label><input type="number" id="ne-gas" min="0" value="0" oninput="recalcNom()"></div>
     <div class="nf"><label>Descuentos</label><input type="number" id="ne-desc" min="0" value="0" oninput="recalcNom()"></div>
     <div class="nf"><label>Se le debe</label><input type="number" id="ne-debe" min="0" value="0" oninput="recalcNom()"></div>
     <div class="nf"><label>Desc. préstamo (auto)</label><input type="number" id="ne-prest" min="0" value="0" readonly style="opacity:.55"></div>
@@ -339,6 +338,8 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
     <div><label>Obra</label><select id="ef-obra"><option>OMANA</option><option>SANTA</option><option>CASA</option><option>OTRO</option></select></div>
     <div><label>Salario semanal ($)</label><input type="number" id="ef-salario" oninput="document.getElementById('ef-diario').value=Math.round((+this.value||0)/6)"></div>
     <div><label>Diario (auto)</label><input type="number" id="ef-diario" readonly style="opacity:.55"></div>
+    <div><label>Gasolina / transporte semanal ($)</label><input type="number" id="ef-gasolina" placeholder="0" min="0" value="0"></div>
+    <div style="display:flex;align-items:flex-end"><span style="font-size:11px;color:var(--text2)">Proporcional si hay faltas. 0 si no aplica.</span></div>
   </div>
   <div class="btn-row"><button class="btn" onclick="closeOv('overlay-emp')">Cancelar</button><button class="btn btn-primary" onclick="saveEmp()">Guardar</button></div>
 </div>
@@ -455,7 +456,7 @@ async function initApp() {
     const { data } = await db.from('entradas_nomina').select('*').eq('semana_id', semAbierta.id);
     if (data) {
       data.forEach(e => {
-        nomina[e.empleado_id] = { faltas: e.faltas, hext: e.horas_extras, gas: e.gasolina, desc: e.descuentos, debe: e.se_le_debe, id: e.id };
+        nomina[e.empleado_id] = { faltas: e.faltas, hext: e.horas_extras, desc: e.descuentos, debe: e.se_le_debe, id: e.id };
       });
     }
   }
@@ -492,11 +493,13 @@ function getPrestDesc(empId) {
 function calcTotal(empId, en) {
   const emp = empleados.find(e => e.id === empId); if (!emp) return 0;
   const d = emp.salario / 6;
-  return emp.salario - (en.faltas||0)*d + (en.hext||0)*(d/8)*1.5 + (en.gas||0) + (en.debe||0) - (en.desc||0) - getPrestDesc(empId);
+  const diasTrab = 6 - (en.faltas||0);
+  const gasNeto = (emp.gasolina||0) * diasTrab / 6;
+  return emp.salario - (en.faltas||0)*d + (en.hext||0)*(d/8)*1.5 + gasNeto + (en.debe||0) - (en.desc||0) - getPrestDesc(empId);
 }
 
 function getNom(empId) {
-  if (!nomina[empId]) nomina[empId] = { faltas:0, hext:0, gas:0, desc:0, debe:0 };
+  if (!nomina[empId]) nomina[empId] = { faltas:0, hext:0, desc:0, debe:0 };
   return nomina[empId];
 }
 
@@ -574,6 +577,8 @@ function renderNomina() {
   let prevObra = null;
   $('nom-tbody').innerHTML = lista.map(e => {
     const en=getNom(e.id); const d=e.salario/6;
+    const diasTrab=6-(en.faltas||0);
+    const gasN=(e.gasolina||0)*diasTrab/6;
     const pD=getPrestDesc(e.id), tot=calcTotal(e.id,en), hE=(en.hext||0)*(d/8)*1.5, dF=(en.faltas||0)*d;
     let separador = '';
     if (orden === 'obra' && e.obra !== prevObra) {
@@ -586,7 +591,7 @@ function renderNomina() {
       <td class="num">${fmt(e.salario)}</td>
       <td class="num">${en.faltas>0?`<span style="color:var(--red)">${en.faltas}d/-${fmt(dF)}</span>`:'<span style="color:var(--text2)">0</span>'}</td>
       <td class="num">${en.hext>0?`<span style="color:var(--green)">${en.hext}h/+${fmt(hE)}</span>`:'<span style="color:var(--text2)">0</span>'}</td>
-      <td class="num">${en.gas>0?fmt(en.gas):'—'}</td>
+      <td class="num">${e.gasolina>0?`<span style="color:var(--green)">${fmt(gasN)}${en.faltas>0?' ('+diasTrab+'/6d)':''}</span>`:'—'}</td>
       <td class="num">${pD>0?`<span class="prestamo-badge">-${fmt(pD)}</span>`:'—'}</td>
       <td class="num">${en.desc>0?`<span style="color:var(--red)">-${fmt(en.desc)}</span>`:'—'}</td>
       <td class="num">${en.debe>0?`<span style="color:var(--green)">+${fmt(en.debe)}</span>`:'—'}</td>
@@ -655,7 +660,7 @@ function openNomModal(empId) {
   const ini = emp.nombre.split(' ').map(w=>w[0]).slice(0,2).join('');
   $('nom-modal-title').textContent = 'Nómina — ' + emp.nombre;
   $('nom-emp-hdr').innerHTML = `<div class="avatar">${ini}</div><div><div style="font-weight:500;font-size:13px">${emp.nombre}</div><div style="font-size:12px;color:var(--text2)">${emp.puesto} · <span class="badge ${obc(emp.obra)}" style="font-size:10px">${emp.obra}</span></div></div><div style="margin-left:auto;font-size:12px;color:var(--text2)">${fmtDS(currentLunes)} – ${fmtDS(currentSabado)}</div>`;
-  $('ne-faltas').value=en.faltas||0; $('ne-hext').value=en.hext||0; $('ne-gas').value=en.gas||0;
+  $('ne-faltas').value=en.faltas||0; $('ne-hext').value=en.hext||0; 
   $('ne-desc').value=en.desc||0; $('ne-debe').value=en.debe||0; $('ne-prest').value=getPrestDesc(empId);
   recalcNom(); $('overlay-nom').classList.add('open');
 }
@@ -664,14 +669,16 @@ function recalcNom() {
   if (!editNomEmpId) return;
   const emp = empleados.find(e => e.id===editNomEmpId); if (!emp) return;
   const d=emp.salario/6, f=+$('ne-faltas').value||0, h=+$('ne-hext').value||0;
-  const g=+$('ne-gas').value||0, desc=+$('ne-desc').value||0, db=+$('ne-debe').value||0;
+  const desc=+$('ne-desc').value||0, db=+$('ne-debe').value||0;
+  const diasTrab=6-f;
+  const gasNeto=(emp.gasolina||0)*diasTrab/6;
   const p=getPrestDesc(editNomEmpId); $('ne-prest').value=p;
-  const dF=f*d, iH=h*(d/8)*1.5, tot=emp.salario-dF+iH+g+db-desc-p;
+  const dF=f*d, iH=h*(d/8)*1.5, tot=emp.salario-dF+iH+gasNeto+db-desc-p;
   $('nom-result').innerHTML = `
     <div class="calc-row"><span>Salario semanal</span><span>${fmt(emp.salario)}</span></div>
     ${dF>0?`<div class="calc-row"><span>Descuento ${f} falta(s)</span><span style="color:var(--red)">-${fmt(dF)}</span></div>`:''}
     ${iH>0?`<div class="calc-row"><span>${h} h. extras (×1.5)</span><span style="color:var(--green)">+${fmt(iH)}</span></div>`:''}
-    ${g>0?`<div class="calc-row"><span>Gasolina</span><span style="color:var(--green)">+${fmt(g)}</span></div>`:''}
+    ${emp.gasolina>0?`<div class="calc-row"><span>Gasolina (${diasTrab}/6 días)</span><span style="color:var(--green)">+${fmt(gasNeto)}</span></div>`:''}
     ${db>0?`<div class="calc-row"><span>Se le debe</span><span style="color:var(--green)">+${fmt(db)}</span></div>`:''}
     ${desc>0?`<div class="calc-row"><span>Descuentos</span><span style="color:var(--red)">-${fmt(desc)}</span></div>`:''}
     ${p>0?`<div class="calc-row"><span>Desc. préstamo (auto)</span><span style="color:var(--amber)">-${fmt(p)}</span></div>`:''}
@@ -684,10 +691,12 @@ async function saveNomEntry() {
   const emp = empleados.find(e => e.id===editNomEmpId);
   const en = getNom(editNomEmpId);
   const d = emp.salario/6;
-  const newEn = { faltas:+$('ne-faltas').value||0, hext:+$('ne-hext').value||0, gas:+$('ne-gas').value||0, desc:+$('ne-desc').value||0, debe:+$('ne-debe').value||0 };
+  const newEn = { faltas:+$('ne-faltas').value||0, hext:+$('ne-hext').value||0, desc:+$('ne-desc').value||0, debe:+$('ne-debe').value||0 };
+  const diasTrab = 6 - newEn.faltas;
+  const gasNeto = (emp.gasolina||0) * diasTrab / 6;
   const pD = getPrestDesc(editNomEmpId);
   const tot = calcTotal(editNomEmpId, newEn);
-  const row = { semana_id:semAbierta.id, empleado_id:editNomEmpId, salario_base:emp.salario, faltas:newEn.faltas, horas_extras:newEn.hext, gasolina:newEn.gas, descuentos:newEn.desc, se_le_debe:newEn.debe, prest_desc:pD, total:Math.max(0,tot) };
+  const row = { semana_id:semAbierta.id, empleado_id:editNomEmpId, salario_base:emp.salario, faltas:newEn.faltas, horas_extras:newEn.hext, gasolina:gasNeto, descuentos:newEn.desc, se_le_debe:newEn.debe, prest_desc:pD, total:Math.max(0,tot) };
   if (en.id) {
     await db.from('entradas_nomina').update(row).eq('id', en.id);
     newEn.id = en.id;
@@ -727,7 +736,8 @@ async function confirmarCierre() {
     if (!en.id) {
       const pD = getPrestDesc(emp.id);
       const tot = Math.max(0, calcTotal(emp.id, en));
-      const row = { semana_id:semAbierta.id, empleado_id:emp.id, salario_base:emp.salario, faltas:0, horas_extras:0, gasolina:0, descuentos:0, se_le_debe:0, prest_desc:pD, total:tot };
+      const gasNeto = emp.gasolina||0;
+      const row = { semana_id:semAbierta.id, empleado_id:emp.id, salario_base:emp.salario, faltas:0, horas_extras:0, gasolina:gasNeto, descuentos:0, se_le_debe:0, prest_desc:pD, total:tot };
       await db.from('entradas_nomina').insert([row]);
     }
   }
@@ -935,6 +945,7 @@ function renderEmpleados() {
       <td><span class="badge ${obc(e.obra)}">${e.obra}</span></td>
       <td class="num">${fmt(e.salario)}</td>
       <td class="num" style="color:var(--text2)">${fmt(e.salario/6)}</td>
+      <td class="num" style="color:var(--green)">${e.gasolina>0?fmt(e.gasolina):'—'}</td>
       <td>${pA?`<span class="${new Date(pA.inicia_cobro+'T00:00:00')<=currentSabado?'prestamo-badge':'pending-badge'}">-${fmt(pA.cuota)}/sem · ${new Date(pA.inicia_cobro+'T00:00:00')<=currentSabado?'cobrando':'inicia '+fmtDS(fromISO(pA.inicia_cobro))}</span>`:'<span style="font-size:12px;color:var(--text2)">sin préstamo</span>'}</td>
       <td><button class="btn btn-sm" onclick="editEmp(${e.id})">Editar</button></td>
     </tr>`;
@@ -943,7 +954,8 @@ function renderEmpleados() {
 
 function openEmpModal() {
   editEmpId=null; $('emp-modal-title').textContent='Nuevo empleado';
-  ['ef-nombre','ef-puesto','ef-salario','ef-diario'].forEach(id=>$(id).value='');
+  ['ef-nombre','ef-puesto','ef-salario','ef-diario','ef-gasolina'].forEach(id=>$(id).value='');
+  $('ef-gasolina').value=0;
   $('overlay-emp').classList.add('open');
 }
 
@@ -952,19 +964,20 @@ function editEmp(id) {
   $('emp-modal-title').textContent='Editar empleado';
   $('ef-nombre').value=e.nombre; $('ef-puesto').value=e.puesto; $('ef-obra').value=e.obra;
   $('ef-salario').value=e.salario; $('ef-diario').value=Math.round(e.salario/6);
+  $('ef-gasolina').value=e.gasolina||0;
   $('overlay-emp').classList.add('open');
 }
 
 async function saveEmp() {
   const nombre=$('ef-nombre').value.trim().toUpperCase(), puesto=$('ef-puesto').value.trim();
-  const obra=$('ef-obra').value, salario=+$('ef-salario').value||0;
+  const obra=$('ef-obra').value, salario=+$('ef-salario').value||0, gasolina=+$('ef-gasolina').value||0;
   if (!nombre||!salario) return;
   if (editEmpId) {
-    await db.from('empleados_nomina').update({nombre,puesto,obra,salario}).eq('id',editEmpId);
+    await db.from('empleados_nomina').update({nombre,puesto,obra,salario,gasolina}).eq('id',editEmpId);
     const idx=empleados.findIndex(e=>e.id===editEmpId);
-    if (idx>=0) empleados[idx]={...empleados[idx],nombre,puesto,obra,salario};
+    if (idx>=0) empleados[idx]={...empleados[idx],nombre,puesto,obra,salario,gasolina};
   } else {
-    const { data } = await db.from('empleados_nomina').insert([{nombre,puesto,obra,salario}]).select().single();
+    const { data } = await db.from('empleados_nomina').insert([{nombre,puesto,obra,salario,gasolina}]).select().single();
     if (data) empleados.push(data);
   }
   closeOv('overlay-emp'); renderEmpleados(); showToast('Empleado guardado');
