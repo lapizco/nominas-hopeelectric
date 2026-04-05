@@ -195,6 +195,7 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
     <!-- NÓMINA ACTUAL -->
     <div id="t-nomina" class="tab-content">
       <div class="panel">
+        <div id="nom-banner"></div>
         <div class="phead"><h2 id="nom-panel-title">Nómina en curso</h2>
           <div class="phead-r">
             <select id="nom-filtro-obra" onchange="renderNomina()"><option value="">Todas las obras</option><option>OMANA</option><option>SANTA</option><option>CASA</option></select>
@@ -529,6 +530,8 @@ async function initApp() {
         nomina[e.empleado_id] = { faltas: e.faltas, hext: e.horas_extras, tarifa: e.tarifa_hext||1.5, desc: e.descuentos, debe: e.se_le_debe, nota: e.nota||'', id: e.id };
       });
     }
+    // Pre-cargar asistencias de encargados (solo donde no hay entrada manual)
+    await cargarAsistenciasEncargado(semAbierta.id);
   }
   renderDash();
 }
@@ -542,6 +545,60 @@ async function loadAll() {
   empleados = empRes.data || [];
   prestamos = prestRes.data || [];
   semanas = semRes.data || [];
+}
+
+async function cargarAsistenciasEncargado(semanaId) {
+  const { data } = await db.from('asistencia_semanal').select('*').eq('semana_id', semanaId).eq('enviada', true);
+  if (!data || !data.length) return;
+
+  const DIAS = ['lunes','martes','miercoles','jueves','viernes','sabado'];
+
+  data.forEach(row => {
+    const emp = empleados.find(e => e.id === row.empleado_id);
+    if (!emp) return;
+    // Solo cargar si no fue editado manualmente ya
+    const enExistente = nomina[row.empleado_id];
+    if (enExistente && enExistente.id) return; // ya fue editado manualmente
+
+    // Calcular faltas y descuento retardo
+    let faltas = 0;
+    let descRetardo = 0;
+    const salDiario = emp.salario / 6;
+    const salHora = salDiario / 8;
+
+    DIAS.forEach(dia => {
+      const estado = row[dia] || 'ok';
+      if (estado === 'falta') faltas++;
+      if (estado === 'retardo') {
+        const hora = row[dia + '_hora'];
+        if (hora) {
+          const [h, m] = hora.split(':').map(Number);
+          const totalMin = h * 60 + m;
+          const entrada = 7 * 60;
+          const tolerancia = 7 * 60 + 10;
+          if (totalMin > tolerancia) {
+            const minRetraso = totalMin - entrada;
+            if (minRetraso >= 45) {
+              descRetardo += salHora;
+            } else {
+              descRetardo += salHora * (minRetraso / 60);
+            }
+          }
+        }
+      }
+    });
+
+    // Pre-cargar en nómina (sin id para que sea editable)
+    nomina[row.empleado_id] = {
+      faltas,
+      hext: 0,
+      tarifa: 1.5,
+      desc: Math.round(descRetardo),
+      debe: 0,
+      nota: faltas > 0 ? `${faltas} falta(s) según encargado` : (descRetardo > 0 ? 'Retardo(s) según encargado' : ''),
+      desdеEncargado: true
+    };
+  });
 }
 
 function updatePeriod() {
@@ -642,6 +699,15 @@ function renderNomina() {
   const orden = $('nom-orden').value;
   $('nom-panel-title').textContent = 'Nómina: ' + fmtD(currentLunes) + ' — ' + fmtD(currentSabado);
 
+  // Banner si hay datos precargados de encargado
+  const conDatosEncargado = empleados.filter(e => nomina[e.id]?.desdеEncargado).length;
+  const bannerEl = document.getElementById('nom-banner');
+  if (bannerEl) {
+    bannerEl.innerHTML = conDatosEncargado > 0
+      ? `<div style="background:#e1f5ee;border:0.5px solid #9FE1CB;border-radius:var(--radius);padding:9px 14px;margin-bottom:12px;font-size:12px;color:#0f6e56"><strong>${conDatosEncargado} trabajador(es)</strong> con asistencia precargada por el encargado. Revisa y edita antes de cerrar.</div>`
+      : '';
+  }
+
   let lista = empleados.filter(e => !f || e.obra === f);
 
   // Ordenar
@@ -668,7 +734,7 @@ function renderNomina() {
       separador = `<tr><td colspan="11" style="padding:6px 11px 4px;font-size:11px;font-weight:500;color:var(--text2);background:var(--bg3);border-bottom:0.5px solid var(--border);letter-spacing:.5px">${e.obra}</td></tr>`;
     }
     return separador + `<tr>
-      <td style="font-weight:500">${e.nombre}<br><span style="font-size:11px;color:var(--text2)">${e.puesto}</span>${getNom(e.id).nota?`<br><span style="font-size:11px;color:var(--blue);font-style:italic">${getNom(e.id).nota}</span>`:''}</td>
+      <td style="font-weight:500">${e.nombre}<br><span style="font-size:11px;color:var(--text2)">${e.puesto}</span>${getNom(e.id).nota?`<br><span style="font-size:11px;color:var(--blue);font-style:italic">${getNom(e.id).nota}</span>`:''} ${getNom(e.id).desdеEncargado?'<span style="font-size:10px;background:#e1f5ee;color:#0f6e56;padding:1px 5px;border-radius:4px;margin-left:2px">encargado</span>':''}</td>
       <td><span class="badge ${obc(e.obra)}">${e.obra}</span></td>
       <td class="num">${fmt(e.salario)}</td>
       <td class="num">${en.faltas>0?`<span style="color:var(--red)">${en.faltas}d/-${fmt(dF)}</span>`:'<span style="color:var(--text2)">0</span>'}</td>
