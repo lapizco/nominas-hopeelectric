@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nóminas — Hope Electric</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -140,6 +141,60 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
 @keyframes spin{to{transform:rotate(360deg)}}
 .toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:#fff;padding:10px 16px;border-radius:var(--radius);font-size:13px;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none}
 .toast.show{opacity:1}
+
+/* ── RESPONSIVE MÓVIL ─────────────────────────────── */
+@media(max-width:768px){
+  .content{padding:10px 12px}
+  .topbar{padding:8px 12px}
+  .topbar h1{font-size:13px}
+  .period-pill{display:none}
+  .topbar-left{gap:6px}
+  #user-email{display:none}
+  .tabs{padding:0 8px}
+  .tab{padding:8px 10px;font-size:12px}
+  .cards-row{grid-template-columns:repeat(2,1fr);gap:8px}
+  .mcard .val{font-size:16px}
+  .phead{padding:8px 12px;gap:6px}
+  .phead h2{font-size:12px}
+  .phead-r{gap:6px}
+  .phead-r select{font-size:11px;padding:4px 6px}
+  .btn{padding:5px 10px;font-size:11px}
+  .btn-sm{padding:3px 7px;font-size:10px}
+  /* Tablas — scroll horizontal con indicador visual */
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:0 0 var(--radius-lg) var(--radius-lg)}
+  .table-wrap::after{content:'← desliza →';display:block;text-align:center;font-size:10px;color:var(--text3);padding:4px;background:var(--bg3)}
+  table{font-size:11px;min-width:500px}
+  thead th{padding:5px 7px;font-size:10px}
+  td{padding:5px 7px}
+  /* Modales — pantalla completa en móvil */
+  .overlay{padding:0;align-items:flex-end}
+  .modal{width:100%;max-width:100%;border-radius:var(--radius-lg) var(--radius-lg) 0 0;padding:16px;max-height:90vh;overflow-y:auto;margin:0}
+  .modal.modal-wide{width:100%;max-width:100%}
+  .fg{grid-template-columns:1fr}
+  .fg .full{grid-column:1}
+  .nom-fields{grid-template-columns:1fr 1fr;padding:10px 12px}
+  .btn-row{flex-wrap:wrap}
+  .btn-row .btn{flex:1;justify-content:center}
+  /* Dashboard — tabla principal simplificada */
+  #dash-tbody tr td:nth-child(3),
+  #dash-tbody tr td:nth-child(4),
+  #dash-tbody tr td:nth-child(5){display:none}
+  #dash-tbody thead th:nth-child(3),
+  #dash-tbody thead th:nth-child(4),
+  #dash-tbody thead th:nth-child(5){display:none}
+  /* Resúmenes por obra — stack vertical */
+  .resumen-grid{grid-template-columns:1fr 1fr!important}
+  /* Period pill en topbar — compacto */
+  .period-mob{display:block;font-size:10px;color:var(--text2);padding:2px 0}
+  /* Ocultar columnas secundarias en tabla nómina */
+  .hide-mob{display:none!important}
+}
+@media(max-width:480px){
+  .cards-row{grid-template-columns:1fr 1fr}
+  .tabs{padding:0 4px}
+  .tab{padding:7px 8px;font-size:11px}
+  .topbar h1{font-size:12px}
+}
 </style>
 </head>
 <body>
@@ -162,7 +217,7 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
 <div class="app" id="app-wrap">
   <div class="topbar">
     <div class="topbar-left">
-      <h1>Hope Electric — Nóminas</h1>
+      <div><h1>Hope Electric — Nóminas</h1><div class="period-mob" id="period-mob-txt"></div></div>
       <div class="period-pill"><span>Semana:</span><strong id="period-txt">—</strong><span id="period-dias"></span></div>
     </div>
     <div style="display:flex;align-items:center;gap:10px"><span id="user-email" style="font-size:11px;color:var(--text2)"></span><button class="logout-btn" onclick="doLogout()">Cerrar sesión</button></div>
@@ -174,6 +229,7 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
     <div class="tab" onclick="sw('prestamos')">Préstamos</div>
     <div class="tab" onclick="sw('empleados')">Empleados</div>
     <div class="tab" onclick="sw('anual')">Resumen anual</div>
+    <div class="tab" onclick="sw('config')">Configuración</div>
   </div>
 
   <div class="content">
@@ -182,7 +238,7 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
       <div class="cards-row" id="dash-cards"></div>
       <div class="panel">
         <div class="phead"><h2 id="dash-nom-title">Nómina en curso</h2><button class="btn btn-primary" onclick="openCierre()">Cerrar semana y pagar</button></div>
-        <div style="overflow-x:auto">
+        <div class="table-wrap">
         <table>
           <thead><tr><th>Empleado</th><th>Obra</th><th class="num">Base</th><th class="num">Deducc.</th><th class="num">Extras</th><th class="num">Préstamo</th><th class="num">Total</th></tr></thead>
           <tbody id="dash-tbody"></tbody>
@@ -208,9 +264,9 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
             <button class="btn btn-primary" onclick="openCierre()">Cerrar semana y pagar</button>
           </div>
         </div>
-        <div style="overflow-x:auto">
+        <div class="table-wrap">
         <table>
-          <thead><tr><th>Empleado</th><th>Obra</th><th class="num">Base</th><th>Faltas</th><th>H. extras</th><th class="num">Gasolina</th><th class="num">Préstamo</th><th class="num">Desc.</th><th class="num">Se debe</th><th class="num">Total</th><th></th></tr></thead>
+          <thead><tr><th>Empleado</th><th class="hide-mob">Obra</th><th class="num hide-mob">Base</th><th>Faltas</th><th class="hide-mob">H. extras</th><th class="num hide-mob">Gasolina</th><th class="num hide-mob">Préstamo</th><th class="num hide-mob">Desc.</th><th class="num hide-mob">Se debe</th><th class="num">Total</th><th></th></tr></thead>
           <tbody id="nom-tbody"></tbody>
         </table>
         </div>
@@ -223,7 +279,7 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
       <div class="cards-row" id="hist-cards"></div>
       <div class="panel">
         <div class="phead"><h2>Nóminas cerradas</h2></div>
-        <div style="overflow-x:auto">
+        <div class="table-wrap">
         <table>
           <thead><tr><th>Período</th><th>Del</th><th>Al (sábado)</th><th class="num">Empleados</th><th class="num">Total pagado</th><th class="num">Desc. préstamos</th><th>Estado</th><th></th></tr></thead>
           <tbody id="hist-tbody"></tbody>
@@ -242,7 +298,7 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
             <button class="btn btn-primary" onclick="openPrestModal()">+ Nuevo préstamo</button>
           </div>
         </div>
-        <div style="overflow-x:auto">
+        <div class="table-wrap">
         <table>
           <thead><tr><th>Empleado</th><th>Obra</th><th class="num">Préstamo</th><th class="num">Desc./sem</th><th>Inicia cobro</th><th class="num">Pagado</th><th class="num">Saldo</th><th>Letras rest.</th><th>Progreso</th><th>Estado</th><th></th></tr></thead>
           <tbody id="prest-tbody"></tbody>
@@ -262,7 +318,7 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
             <button class="btn btn-primary" onclick="openEmpModal()">+ Nuevo empleado</button>
           </div>
         </div>
-        <div style="overflow-x:auto">
+        <div class="table-wrap">
         <table>
           <thead><tr><th>#</th><th>Nombre</th><th>Puesto</th><th>Obra</th><th class="num">Salario/sem</th><th class="num">Diario</th><th class="num">Gasolina/sem</th><th>Préstamo activo</th><th>Estado</th><th></th></tr></thead>
           <tbody id="emp-tbody"></tbody>
@@ -282,7 +338,7 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
             <button class="btn" style="color:var(--green);border-color:var(--border)" onclick="exportExcelAnual()">Descargar Excel anual</button>
           </div>
         </div>
-        <div style="overflow-x:auto">
+        <div class="table-wrap">
         <table>
           <thead><tr><th>Mes</th><th class="num">Semanas</th><th class="num">Total pagado</th><th class="num">Desc. préstamos</th><th class="num">Promedio/semana</th></tr></thead>
           <tbody id="anual-tbody"></tbody>
@@ -290,11 +346,20 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
         </table>
         </div>
       </div>
+
+      <!-- GRÁFICA COMPARATIVA -->
+      <div class="panel" style="margin-bottom:14px">
+        <div class="phead"><h2>Gráfica de pagos por semana</h2></div>
+        <div style="padding:16px;overflow-x:auto">
+          <canvas id="grafica-nomina" style="max-height:280px"></canvas>
+        </div>
+      </div>
+
       <div class="panel">
         <div class="phead"><h2>Reporte de préstamos</h2>
           <button class="btn" style="color:var(--green);border-color:var(--border)" onclick="exportExcelPrestamos()">Descargar Excel préstamos</button>
         </div>
-        <div style="overflow-x:auto">
+        <div class="table-wrap">
         <table>
           <thead><tr><th>Empleado</th><th>Obra</th><th class="num">Préstamo</th><th class="num">Desc./sem</th><th>Inició</th><th class="num">Pagado</th><th class="num">Saldo</th><th>Letras rest.</th><th>Progreso</th><th>Estado</th></tr></thead>
           <tbody id="anual-prest-tbody"></tbody>
@@ -305,6 +370,22 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
 
   </div>
 </div>
+
+    <!-- CONFIGURACIÓN -->
+    <div id="t-config" class="tab-content">
+      <div class="panel">
+        <div class="phead">
+          <h2>Encargados de obra</h2>
+          <button class="btn btn-primary" onclick="openEncModal()">+ Nuevo encargado</button>
+        </div>
+        <div class="table-wrap">
+        <table>
+          <thead><tr><th>Nombre</th><th>Correo</th><th>Obra</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="enc-tbody"></tbody>
+        </table>
+        </div>
+      </div>
+    </div>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
@@ -400,7 +481,7 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
     <div><div style="font-size:14px;font-weight:500" id="det-title"></div><div style="font-size:12px;color:var(--text2)" id="det-subtitle"></div></div>
     <div style="display:flex;gap:8px"><button class="btn" style="color:var(--blue);border-color:var(--border)" onclick="abrirEdicionNomina()">Editar</button><button class="btn" style="color:var(--green);border-color:var(--border)" onclick="exportExcelActual()">Excel</button><button class="btn" style="color:var(--text2);border-color:var(--border)" onclick="imprimirNomina()">Imprimir / PDF</button><button class="btn" onclick="closeOv('overlay-detail')">Cerrar</button></div>
   </div>
-  <div style="overflow-x:auto">
+  <div class="table-wrap">
     <table>
       <thead><tr><th>Empleado</th><th>Puesto</th><th>Obra</th><th class="num">Base</th><th class="num">Faltas</th><th class="num">H.ext</th><th class="num">Gas.</th><th class="num">Préstamo</th><th class="num">Desc.</th><th class="num">Se debe</th><th class="num">Total</th></tr></thead>
       <tbody id="det-tbody"></tbody>
@@ -420,12 +501,28 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
       <button class="btn" onclick="closeOv('overlay-edit-hist')">Cancelar</button>
     </div>
   </div>
-  <div style="overflow-x:auto">
+  <div class="table-wrap">
     <table>
       <thead><tr><th>Empleado</th><th>Obra</th><th class="num">Base</th><th class="num">Desc. faltas</th><th class="num">H. extras</th><th class="num">Gasolina</th><th class="num">Préstamo</th><th class="num">Descuentos</th><th class="num">Se le debe</th><th class="num">Total</th></tr></thead>
       <tbody id="edit-hist-tbody"></tbody>
     </table>
   </div>
+</div>
+</div>
+
+<!-- MODAL: ENCARGADO -->
+<div class="overlay" id="overlay-enc">
+<div class="modal">
+  <h3 id="enc-modal-title">Nuevo encargado</h3>
+  <div class="fg">
+    <div class="full"><label>Nombre completo</label><input type="text" id="enc-nombre" style="width:100%;text-transform:uppercase" placeholder="NOMBRE ENCARGADO"></div>
+    <div class="full"><label>Correo electrónico</label><input type="email" id="enc-email" style="width:100%" placeholder="correo@hopeelectric.com.mx"></div>
+    <div><label>Obra</label><select id="enc-obra"><option>OMANA</option><option>SANTA</option><option>CASA</option><option>OTRO</option></select></div>
+  </div>
+  <div style="background:var(--amber-bg);border-radius:var(--radius);padding:10px;margin-bottom:12px;font-size:12px;color:var(--amber)">
+    Recuerda crear el usuario primero en <strong>Supabase → Authentication → Users</strong> con este mismo correo antes de guardar.
+  </div>
+  <div class="btn-row"><button class="btn" onclick="closeOv('overlay-enc')">Cancelar</button><button class="btn btn-primary" onclick="guardarEncargado()">Guardar encargado</button></div>
 </div>
 </div>
 
@@ -493,7 +590,7 @@ function showToast(msg, dur=2500) {
 // =============================================
 // STATE
 // =============================================
-let empleados = [], prestamos = [], semanas = [], entradas = [];
+let empleados = [], prestamos = [], semanas = [], entradas = [], encargados = [];
 let currentLunes, currentSabado;
 let nomina = {}; // {empId: {faltas,hext,gas,desc,debe}}
 let editEmpId = null, editNomEmpId = null, inicioSel = 'esta', prestToDelete = null;
@@ -545,6 +642,8 @@ async function loadAll() {
   empleados = empRes.data || [];
   prestamos = prestRes.data || [];
   semanas = semRes.data || [];
+  const encRes = await db.from('encargados_obra').select('*').order('nombre');
+  encargados = encRes.data || [];
 }
 
 async function cargarAsistenciasEncargado(semanaId) {
@@ -602,7 +701,9 @@ async function cargarAsistenciasEncargado(semanaId) {
 }
 
 function updatePeriod() {
-  $('period-txt').textContent = fmtD(currentLunes) + ' — ' + fmtD(currentSabado);
+  const txt = fmtD(currentLunes) + ' — ' + fmtD(currentSabado);
+  $('period-txt').textContent = txt;
+  if ($('period-mob-txt')) $('period-mob-txt').textContent = txt;
   const today = new Date(); today.setHours(0,0,0,0);
   const diff = Math.ceil((currentSabado - today) / 86400000);
   $('period-dias').textContent = diff === 0 ? '(pago hoy)' : diff > 0 ? `(sábado en ${diff}d)` : '';
@@ -636,17 +737,17 @@ function getNom(empId) {
 // =============================================
 function sw(t) {
   document.querySelectorAll('.tab').forEach((el, i) => {
-    ['dashboard','nomina','historial','prestamos','empleados','anual'].forEach((n,j) => el.classList.toggle('active', j===i && n===t));
+    ['dashboard','nomina','historial','prestamos','empleados','anual','config'].forEach((n,j) => el.classList.toggle('active', j===i && n===t));
   });
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
   $('t-' + t).classList.add('active');
-  ({dashboard:renderDash, nomina:renderNomina, historial:renderHistorial, prestamos:renderPrestamos, empleados:renderEmpleados, anual:renderAnual}[t]||renderDash)();
+  ({dashboard:renderDash, nomina:renderNomina, historial:renderHistorial, prestamos:renderPrestamos, empleados:renderEmpleados, anual:renderAnual, config:renderConfig}[t]||renderDash)();
 }
 
 // =============================================
 // DASHBOARD
 // =============================================
-function renderDash() {
+async function renderDash() {
   updatePeriod();
   const empActivos = empleados.filter(e=>e.activo);
   const bT = empActivos.reduce((s,e) => s+e.salario, 0);
@@ -662,12 +763,30 @@ function renderDash() {
 
   // Alertas préstamos próximos a liquidar (1-2 semanas)
   const proxLiquidar = prestamos.filter(p => p.saldo>0 && p.letras_restantes>0 && p.letras_restantes<=2);
+
+  // Alertas de asistencia — analizar últimas 4 semanas
+  const alertasAsistencia = await generarAlertasAsistencia();
+
+  let alertasHtml = '';
+
   if (proxLiquidar.length) {
-    const alertHtml = proxLiquidar.map(p=>{
+    const items = proxLiquidar.map(p=>{
       const emp=empleados.find(e=>e.id===p.empleado_id);
-      return `<span style="font-weight:500">${emp?emp.nombre:'?'}</span> — le quedan <strong>${p.letras_restantes} semana(s)</strong>, saldo ${fmt(p.saldo)}`;
-    }).join('<br>');
-    $('dash-cards').insertAdjacentHTML('afterend', `<div style="background:#faeeda;border:0.5px solid #EF9F27;border-radius:var(--radius);padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--amber)"><strong>Préstamos próximos a liquidarse:</strong><br>${alertHtml}</div>`);
+      return `<div style="padding:3px 0">&#9888; <span style="font-weight:500">${emp?emp.nombre:'?'}</span> — préstamo a <strong>${p.letras_restantes} semana(s)</strong> de liquidarse, saldo ${fmt(p.saldo)}</div>`;
+    }).join('');
+    alertasHtml += `<div style="background:var(--amber-bg);border:0.5px solid #EF9F27;border-radius:var(--radius);padding:10px 14px;margin-bottom:10px;font-size:12px;color:var(--amber)"><strong>Préstamos próximos a liquidarse</strong>${items}</div>`;
+  }
+
+  if (alertasAsistencia.length) {
+    const items = alertasAsistencia.map(a => `<div style="padding:3px 0">&#9888; ${a}</div>`).join('');
+    alertasHtml += `<div style="background:var(--red-bg);border:0.5px solid #F09595;border-radius:var(--radius);padding:10px 14px;margin-bottom:10px;font-size:12px;color:var(--red)"><strong>Alertas de asistencia</strong>${items}</div>`;
+  }
+
+  if (alertasHtml) {
+    $('dash-cards').insertAdjacentHTML('afterend', `<div id="dash-alertas">${alertasHtml}</div>`);
+  } else {
+    const existing = $('dash-alertas');
+    if (existing) existing.remove();
   }
   $('dash-nom-title').textContent = 'Nómina: ' + fmtD(currentLunes) + ' — ' + fmtD(currentSabado);
   let tB=0,tD=0,tE=0,tP=0,tT=0;
@@ -1315,6 +1434,75 @@ async function saveEmp() {
 }
 
 // =============================================
+// ALERTAS DE ASISTENCIA
+// =============================================
+async function generarAlertasAsistencia() {
+  const alertas = [];
+  // Cargar últimas 4 semanas cerradas
+  const ultimas4 = semanas.filter(s => s.cerrada).slice(0, 4);
+  if (!ultimas4.length) return alertas;
+
+  const semIds = ultimas4.map(s => s.id);
+  const { data: entradas } = await db.from('entradas_nomina')
+    .select('*').in('semana_id', semIds);
+  if (!entradas || !entradas.length) return alertas;
+
+  const { data: asistRows } = await db.from('asistencia_semanal')
+    .select('*').in('semana_id', semIds);
+
+  empleados.filter(e => e.activo).forEach(emp => {
+    const entradasEmp = entradas.filter(e => e.empleado_id === emp.id);
+    const asisEmp = (asistRows||[]).filter(a => a.empleado_id === emp.id);
+
+    // ── Alerta 1: más de 3 faltas en el mes (4 semanas) ──────────────────────
+    const totalFaltasMes = entradasEmp.reduce((s,e) => s+(e.faltas||0), 0);
+    if (totalFaltasMes > 3) {
+      alertas.push(`<strong>${emp.nombre}</strong> — ${totalFaltasMes} faltas en las últimas 4 semanas`);
+    }
+
+    // ── Alerta 2: 2 retardos consecutivos ────────────────────────────────────
+    const DIAS = ['lunes','martes','miercoles','jueves','viernes','sabado'];
+    // Construir lista cronológica de días con retardo
+    const retardosCronologicos = [];
+    ultimas4.slice().reverse().forEach(sem => {
+      const asis = asisEmp.find(a => a.semana_id === sem.id);
+      if (!asis) return;
+      DIAS.forEach(dia => {
+        retardosCronologicos.push(asis[dia] === 'retardo');
+      });
+    });
+    // Detectar 2+ retardos consecutivos
+    let consecutivos = 0, maxConsecutivos = 0;
+    retardosCronologicos.forEach(esRetardo => {
+      consecutivos = esRetardo ? consecutivos + 1 : 0;
+      maxConsecutivos = Math.max(maxConsecutivos, consecutivos);
+    });
+    if (maxConsecutivos >= 2) {
+      alertas.push(`<strong>${emp.nombre}</strong> — ${maxConsecutivos} retardos consecutivos`);
+    }
+
+    // ── Alerta 3: faltó en la misma semana que tuvo retardo ──────────────────
+    entradasEmp.forEach(entrada => {
+      if ((entrada.faltas||0) > 0 && (entrada.descuentos||0) > 0) {
+        const sem = ultimas4.find(s => s.id === entrada.semana_id);
+        if (sem) alertas.push(`<strong>${emp.nombre}</strong> — tuvo faltas Y retardos en semana del ${fmtD(fromISO(sem.desde))}`);
+      }
+    });
+
+    // ── Alerta 4: faltó 2+ días en una misma semana ──────────────────────────
+    entradasEmp.forEach(entrada => {
+      if ((entrada.faltas||0) >= 2) {
+        const sem = ultimas4.find(s => s.id === entrada.semana_id);
+        if (sem) alertas.push(`<strong>${emp.nombre}</strong> — ${entrada.faltas} faltas en semana del ${fmtD(fromISO(sem.desde))}`);
+      }
+    });
+  });
+
+  // Eliminar duplicados
+  return [...new Set(alertas)];
+}
+
+// =============================================
 // RESUMEN ANUAL
 // =============================================
 const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
@@ -1359,6 +1547,9 @@ function renderAnual() {
   $('anual-ft-total').textContent = fmt(tTotal);
   $('anual-ft-prest').textContent = tPrest>0?'-'+fmt(tPrest):'—';
 
+  // Gráfica por semana
+  renderGrafica(semsYear);
+
   // Tabla de préstamos
   $('anual-prest-tbody').innerHTML = prestamos.length ? prestamos.map(p => {
     const emp = empleados.find(e=>e.id===p.empleado_id);
@@ -1378,6 +1569,67 @@ function renderAnual() {
       <td><span class="badge ${esAct?'b-activo':esPend?'b-pendiente':'b-pagado'}">${esAct?'Cobrando':esPend?'Pendiente':'Liquidado'}</span></td>
     </tr>`;
   }).join('') : `<tr><td colspan="10" class="empty">No hay préstamos</td></tr>`;
+}
+
+let graficaInstance = null;
+function renderGrafica(semsYear) {
+  const canvas = $('grafica-nomina');
+  if (!canvas) return;
+  if (graficaInstance) { graficaInstance.destroy(); graficaInstance = null; }
+
+  // Ordenar por fecha
+  const sems = [...semsYear].sort((a,b) => a.desde.localeCompare(b.desde));
+  const labels = sems.map(s => {
+    const d = fromISO(s.desde);
+    return d ? d.toLocaleDateString('es-MX',{day:'numeric',month:'short'}) : s.desde;
+  });
+  const pagos = sems.map(s => Math.round(s.total_pagado||0));
+  const prests = sems.map(s => Math.round(s.total_prest_desc||0));
+
+  graficaInstance = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Total pagado',
+          data: pagos,
+          backgroundColor: '#1D9E75',
+          borderRadius: 4,
+          borderSkipped: false,
+        },
+        {
+          label: 'Desc. préstamos',
+          data: prests,
+          backgroundColor: '#EF9F27',
+          borderRadius: 4,
+          borderSkipped: false,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 11 } } },
+        tooltip: {
+          callbacks: {
+            label: ctx => ' $' + ctx.parsed.y.toLocaleString('es-MX')
+          }
+        }
+      },
+      scales: {
+        y: {
+          ticks: {
+            callback: v => '$' + (v/1000).toFixed(0) + 'k',
+            font: { size: 10 }
+          },
+          grid: { color: 'rgba(0,0,0,0.05)' }
+        },
+        x: { ticks: { font: { size: 10 } }, grid: { display: false } }
+      }
+    }
+  });
 }
 
 function exportExcelAnual() {
@@ -1423,6 +1675,106 @@ function exportExcelPrestamos() {
 }
 
 function closeOv(id) { $(id).classList.remove('open'); }
+
+// =============================================
+// CONFIGURACIÓN — ENCARGADOS
+// =============================================
+let editEncId = null;
+
+function renderConfig() {
+  $('enc-tbody').innerHTML = encargados.length ? encargados.map(e => `<tr>
+    <td style="font-weight:500">${e.nombre}</td>
+    <td style="color:var(--text2)">${e.email}</td>
+    <td><span class="badge ${e.obra==='OMANA'?'b-omana':e.obra==='SANTA'?'b-santa':e.obra==='CASA'?'b-casa':'b-otro'}">${e.obra}</span></td>
+    <td><span class="badge ${e.activo?'b-activo':'b-pagado'}">${e.activo?'Activo':'Inactivo'}</span></td>
+    <td><div style="display:flex;gap:4px">
+      <button class="btn btn-sm" onclick="toggleEncargado(${e.id},${e.activo})">${e.activo?'Desactivar':'Activar'}</button>
+    </div></td>
+  </tr>`).join('') : `<tr><td colspan="5" class="empty">No hay encargados registrados</td></tr>`;
+}
+
+function openEncModal() {
+  $('enc-modal-title').textContent = 'Nuevo encargado';
+  ['enc-nombre','enc-email'].forEach(id=>$(id).value='');
+  $('overlay-enc').classList.add('open');
+}
+
+async function guardarEncargado() {
+  const nombre = $('enc-nombre').value.trim().toUpperCase();
+  const email  = $('enc-email').value.trim().toLowerCase();
+  const obra   = $('enc-obra').value;
+  if (!nombre || !email) { alert('Nombre y correo son obligatorios.'); return; }
+  const { data } = await db.from('encargados_obra').insert([{nombre, email, obra}]).select().single();
+  if (data) { encargados.push(data); closeOv('overlay-enc'); renderConfig(); showToast('Encargado registrado'); }
+}
+
+async function toggleEncargado(id, activo) {
+  await db.from('encargados_obra').update({ activo: !activo }).eq('id', id);
+  const enc = encargados.find(e => e.id===id);
+  if (enc) enc.activo = !activo;
+  renderConfig(); showToast(activo ? 'Encargado desactivado' : 'Encargado activado');
+}
+
+// =============================================
+// EXPORTAR HISTORIAL COMPLETO DE EMPLEADO
+// =============================================
+async function exportarHistorialEmpleado(empId) {
+  const emp = empleados.find(e => e.id===empId); if (!emp) return;
+  showToast('Generando reporte...');
+
+  const { data: entradasEmp } = await db.from('entradas_nomina')
+    .select('*, semanas_nomina(desde, hasta)')
+    .eq('empleado_id', empId)
+    .order('created_at', {ascending: false});
+
+  const { data: prestamosEmp } = await db.from('prestamos_nomina')
+    .select('*').eq('empleado_id', empId);
+
+  const wb = XLSX.utils.book_new();
+
+  // Hoja 1 — Historial de pagos
+  const rowsPagos = [
+    [`HISTORIAL DE PAGOS — ${emp.nombre}`,'','','','','','','','',''],
+    [`Puesto: ${emp.puesto} | Obra: ${emp.obra} | Salario: ${fmt(emp.salario)}/sem`,'','','','','','','','',''],
+    [],
+    ['Semana (del)','Semana (al)','Salario base','Faltas','Desc. faltas','H. extras','Gasolina','Desc. préstamo','Descuentos','Total cobrado']
+  ];
+
+  let totalAcum = 0;
+  (entradasEmp||[]).forEach(e => {
+    const d = e.salario_base/6;
+    const dF = (e.faltas||0)*d;
+    const hE = (e.horas_extras||0)*(d/8)*1.5;
+    const desde = e.semanas_nomina?.desde || '';
+    const hasta = e.semanas_nomina?.hasta || '';
+    rowsPagos.push([desde, hasta, e.salario_base, e.faltas||0, dF>0?-dF:0, hE>0?hE:0, e.gasolina||0, e.prest_desc>0?-e.prest_desc:0, e.descuentos>0?-e.descuentos:0, e.total]);
+    totalAcum += e.total||0;
+  });
+  rowsPagos.push([]); rowsPagos.push(['TOTAL ACUMULADO','','','','','','','','',totalAcum]);
+
+  const wsPagos = XLSX.utils.aoa_to_sheet(rowsPagos);
+  wsPagos['!cols'] = [{wch:12},{wch:12},{wch:13},{wch:7},{wch:12},{wch:10},{wch:10},{wch:14},{wch:11},{wch:14}];
+  XLSX.utils.book_append_sheet(wb, wsPagos, 'Historial pagos');
+
+  // Hoja 2 — Préstamos
+  if (prestamosEmp && prestamosEmp.length) {
+    const rowsPrest = [
+      [`PRÉSTAMOS — ${emp.nombre}`,'','','','','',''],
+      [],
+      ['Monto','Desc./sem','Inicia cobro','Pagado','Saldo','Letras rest.','Estado']
+    ];
+    prestamosEmp.forEach(p => {
+      const esAct = p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado;
+      rowsPrest.push([p.monto, p.cuota, p.inicia_cobro, p.pagado||0, p.saldo, p.letras_restantes||0, p.saldo<=0?'Liquidado':esAct?'Cobrando':'Pendiente']);
+    });
+    const wsPrest = XLSX.utils.aoa_to_sheet(rowsPrest);
+    wsPrest['!cols'] = [{wch:12},{wch:10},{wch:13},{wch:12},{wch:12},{wch:13},{wch:12}];
+    XLSX.utils.book_append_sheet(wb, wsPrest, 'Préstamos');
+  }
+
+  XLSX.writeFile(wb, `Historial_${emp.nombre.replace(/ /g,'_')}.xlsx`);
+  showToast(`Historial de ${emp.nombre} descargado`);
+}
 
 function imprimirNomina() {
   if (!detalleSemanaActual) return;
@@ -1498,3 +1850,4 @@ async function toggleBajaEmp(id) {
 </script>
 </body>
 </html>
+
