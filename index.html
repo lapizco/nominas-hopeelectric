@@ -196,6 +196,12 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
         <div class="phead"><h2 id="nom-panel-title">Nómina en curso</h2>
           <div class="phead-r">
             <select id="nom-filtro-obra" onchange="renderNomina()"><option value="">Todas las obras</option><option>OMANA</option><option>SANTA</option><option>CASA</option></select>
+            <select id="nom-orden" onchange="renderNomina()">
+              <option value="obra">Ordenar por obra</option>
+              <option value="alfa">Ordenar A-Z</option>
+              <option value="total-desc">Mayor total primero</option>
+              <option value="total-asc">Menor total primero</option>
+            </select>
             <button class="btn btn-primary" onclick="openCierre()">Cerrar semana y pagar</button>
           </div>
         </div>
@@ -206,6 +212,7 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
         </table>
         </div>
       </div>
+      <div id="nom-resumenes"></div>
     </div>
 
     <!-- HISTORIAL -->
@@ -542,15 +549,38 @@ function renderDash() {
 }
 
 // =============================================
+// =============================================
 // NÓMINA ACTUAL
 // =============================================
 function renderNomina() {
   const f = $('nom-filtro-obra').value;
+  const orden = $('nom-orden').value;
   $('nom-panel-title').textContent = 'Nómina: ' + fmtD(currentLunes) + ' — ' + fmtD(currentSabado);
-  $('nom-tbody').innerHTML = empleados.filter(e => !f||e.obra===f).map(e => {
+
+  let lista = empleados.filter(e => !f || e.obra === f);
+
+  // Ordenar
+  if (orden === 'alfa') {
+    lista = [...lista].sort((a,b) => a.nombre.localeCompare(b.nombre));
+  } else if (orden === 'obra') {
+    lista = [...lista].sort((a,b) => a.obra.localeCompare(b.obra) || a.nombre.localeCompare(b.nombre));
+  } else if (orden === 'total-desc') {
+    lista = [...lista].sort((a,b) => calcTotal(b.id,getNom(b.id)) - calcTotal(a.id,getNom(a.id)));
+  } else if (orden === 'total-asc') {
+    lista = [...lista].sort((a,b) => calcTotal(a.id,getNom(a.id)) - calcTotal(b.id,getNom(b.id)));
+  }
+
+  // Si ordena por obra, insertar separadores de grupo
+  let prevObra = null;
+  $('nom-tbody').innerHTML = lista.map(e => {
     const en=getNom(e.id); const d=e.salario/6;
     const pD=getPrestDesc(e.id), tot=calcTotal(e.id,en), hE=(en.hext||0)*(d/8)*1.5, dF=(en.faltas||0)*d;
-    return `<tr>
+    let separador = '';
+    if (orden === 'obra' && e.obra !== prevObra) {
+      prevObra = e.obra;
+      separador = `<tr><td colspan="11" style="padding:6px 11px 4px;font-size:11px;font-weight:500;color:var(--text2);background:var(--bg3);border-bottom:0.5px solid var(--border);letter-spacing:.5px">${e.obra}</td></tr>`;
+    }
+    return separador + `<tr>
       <td style="font-weight:500">${e.nombre}<br><span style="font-size:11px;color:var(--text2)">${e.puesto}</span></td>
       <td><span class="badge ${obc(e.obra)}">${e.obra}</span></td>
       <td class="num">${fmt(e.salario)}</td>
@@ -564,6 +594,59 @@ function renderNomina() {
       <td><button class="btn btn-sm" onclick="openNomModal(${e.id})">Editar</button></td>
     </tr>`;
   }).join('');
+
+  // Resúmenes por obra
+  const obras = [...new Set(empleados.map(e => e.obra))].sort();
+  const resumenObras = obras.map(obra => {
+    const empsObra = empleados.filter(e => e.obra === obra);
+    const totalBase = empsObra.reduce((s,e) => s+e.salario, 0);
+    const totalGas = empsObra.reduce((s,e) => s+(getNom(e.id).gas||0), 0);
+    const totalPrest = empsObra.reduce((s,e) => s+getPrestDesc(e.id), 0);
+    const totalNeto = empsObra.reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))), 0);
+    const totalDesc = empsObra.reduce((s,e) => s+(getNom(e.id).desc||0), 0);
+    const totalFaltas = empsObra.reduce((s,e) => { const d=e.salario/6; return s+(getNom(e.id).faltas||0)*d; }, 0);
+    return `
+      <div class="panel" style="margin-bottom:10px">
+        <div class="phead" style="padding:8px 16px">
+          <h2 style="font-size:13px"><span class="badge ${obc(obra)}" style="margin-right:8px">${obra}</span>${empsObra.length} empleados</h2>
+          <span style="font-size:12px;font-weight:500">Total neto: ${fmt(totalNeto)}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:0;border-top:0.5px solid var(--border)">
+          <div style="padding:10px 14px;border-right:0.5px solid var(--border)">
+            <div style="font-size:11px;color:var(--text2);margin-bottom:2px">Base semanal</div>
+            <div style="font-size:15px;font-weight:500">${fmt(totalBase)}</div>
+          </div>
+          <div style="padding:10px 14px;border-right:0.5px solid var(--border)">
+            <div style="font-size:11px;color:var(--text2);margin-bottom:2px">Gasolina / transporte</div>
+            <div style="font-size:15px;font-weight:500;color:var(--green)">${totalGas>0?fmt(totalGas):'—'}</div>
+          </div>
+          <div style="padding:10px 14px;border-right:0.5px solid var(--border)">
+            <div style="font-size:11px;color:var(--text2);margin-bottom:2px">Desc. préstamos</div>
+            <div style="font-size:15px;font-weight:500;color:var(--amber)">${totalPrest>0?'-'+fmt(totalPrest):'—'}</div>
+          </div>
+          <div style="padding:10px 14px;border-right:0.5px solid var(--border)">
+            <div style="font-size:11px;color:var(--text2);margin-bottom:2px">Desc. faltas</div>
+            <div style="font-size:15px;font-weight:500;color:var(--red)">${totalFaltas>0?'-'+fmt(totalFaltas):'—'}</div>
+          </div>
+          <div style="padding:10px 14px">
+            <div style="font-size:11px;color:var(--text2);margin-bottom:2px">Otros descuentos</div>
+            <div style="font-size:15px;font-weight:500;color:var(--red)">${totalDesc>0?'-'+fmt(totalDesc):'—'}</div>
+          </div>
+        </div>
+      </div>`;
+  });
+
+  // Resumen global
+  const totalGasGlobal = empleados.reduce((s,e) => s+(getNom(e.id).gas||0), 0);
+  const totalNetoGlobal = empleados.reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))), 0);
+  const totalPrestGlobal = empleados.reduce((s,e) => s+getPrestDesc(e.id), 0);
+
+  $('nom-resumenes').innerHTML = `
+    <div style="margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <span style="font-size:13px;font-weight:500">Resumen por obra</span>
+      <span style="font-size:12px;color:var(--text2)">— Gasolina total esta semana: <strong style="color:var(--green)">${fmt(totalGasGlobal)}</strong> &nbsp;·&nbsp; Total neto global: <strong>${fmt(totalNetoGlobal)}</strong> &nbsp;·&nbsp; Desc. préstamos: <strong style="color:var(--amber)">${totalPrestGlobal>0?'-'+fmt(totalPrestGlobal):'$0'}</strong></span>
+    </div>
+    ${resumenObras.join('')}`;
 }
 
 function openNomModal(empId) {
