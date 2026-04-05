@@ -1,0 +1,14 @@
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/asistencia/index.html",
+      "has": [
+        {
+          "type": "host",
+          "value": "asistencia.hopeelectric.com.mx"
+        }
+      ]
+    }
+  ]
+}
