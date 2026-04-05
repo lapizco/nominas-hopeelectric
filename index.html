@@ -683,11 +683,15 @@ function renderNomina() {
   }).join('');
 
   // Resúmenes por obra
-  const obras = [...new Set(empleados.map(e => e.obra))].sort();
+  const obras = [...new Set(empleados.filter(e=>e.activo).map(e => e.obra))].sort();
   const resumenObras = obras.map(obra => {
-    const empsObra = empleados.filter(e => e.obra === obra);
+    const empsObra = empleados.filter(e => e.obra === obra && e.activo);
     const totalBase = empsObra.reduce((s,e) => s+e.salario, 0);
-    const totalGas = empsObra.reduce((s,e) => s+(getNom(e.id).gas||0), 0);
+    const totalGas = empsObra.reduce((s,e) => {
+      const faltas = getNom(e.id).faltas||0;
+      const diasTrab = 6 - faltas;
+      return s + (e.gasolina||0) * diasTrab / 6;
+    }, 0);
     const totalPrest = empsObra.reduce((s,e) => s+getPrestDesc(e.id), 0);
     const totalNeto = empsObra.reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))), 0);
     const totalDesc = empsObra.reduce((s,e) => s+(getNom(e.id).desc||0), 0);
@@ -724,7 +728,11 @@ function renderNomina() {
   });
 
   // Resumen global
-  const totalGasGlobal = empleados.reduce((s,e) => s+(getNom(e.id).gas||0), 0);
+  const totalGasGlobal = empleados.filter(e=>e.activo).reduce((s,e) => {
+    const faltas = getNom(e.id).faltas||0;
+    const diasTrab = 6 - faltas;
+    return s + (e.gasolina||0) * diasTrab / 6;
+  }, 0);
   const totalNetoGlobal = empleados.reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))), 0);
   const totalPrestGlobal = empleados.reduce((s,e) => s+getPrestDesc(e.id), 0);
 
