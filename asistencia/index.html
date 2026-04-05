@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asistencia — Hope Electric</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f5f4;--bg2:#fff;--bg3:#f0efea;
+  --border:#e5e5e3;--border2:#d1d0cc;
+  --text:#1a1a1a;--text2:#666662;--text3:#999996;
+  --green:#0f6e56;--green-bg:#e1f5ee;
+  --blue:#185fa5;--blue-bg:#e6f1fb;
+  --amber:#854f0b;--amber-bg:#faeeda;
+  --red:#a32d2d;--red-bg:#fcebeb;
+  --gray-bg:#f1efe8;--gray-text:#5f5e5a;
+  --radius:8px;--radius-lg:12px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh}
+
+/* LOGIN */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center}
+.login-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:36px 32px;width:340px}
+.login-logo{font-size:18px;font-weight:600;margin-bottom:4px}
+.login-sub{font-size:12px;color:var(--text2);margin-bottom:28px}
+.login-card label{font-size:12px;color:var(--text2);display:block;margin-bottom:4px}
+.login-card input{width:100%;padding:9px 12px;border:0.5px solid var(--border2);border-radius:var(--radius);font-size:14px;background:var(--bg3);color:var(--text);outline:none;margin-bottom:14px}
+.login-card input:focus{border-color:#888}
+.login-btn{width:100%;padding:10px;background:var(--text);color:#fff;border:none;border-radius:var(--radius);font-size:14px;cursor:pointer}
+.login-btn:hover{opacity:.85}
+.login-btn:disabled{opacity:.5;cursor:not-allowed}
+.err{color:var(--red);font-size:12px;margin-top:8px;text-align:center;display:none}
+
+/* APP */
+.app{display:none;flex-direction:column;min-height:100vh}
+.topbar{background:var(--bg2);border-bottom:0.5px solid var(--border);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:8px;position:sticky;top:0;z-index:10}
+.topbar-left{display:flex;align-items:center;gap:10px}
+.topbar h1{font-size:15px;font-weight:600}
+.obra-pill{background:var(--green-bg);color:var(--green);font-size:12px;font-weight:500;padding:3px 10px;border-radius:var(--radius)}
+.period-pill{background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--radius);padding:4px 11px;font-size:12px;color:var(--text2)}
+.period-pill strong{color:var(--text)}
+.logout-btn{font-size:12px;color:var(--text2);cursor:pointer;padding:4px 10px;border:0.5px solid var(--border);border-radius:var(--radius);background:none}
+.logout-btn:hover{background:var(--bg3)}
+.content{padding:16px 20px}
+
+/* CARDS */
+.cards-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:16px}
+.mcard{background:var(--bg3);border-radius:var(--radius);padding:11px}
+.mcard .lbl{font-size:11px;color:var(--text2);margin-bottom:3px}
+.mcard .val{font-size:19px;font-weight:500}
+.mcard .sub{font-size:11px;color:var(--text2);margin-top:1px}
+
+/* PANEL */
+.panel{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:14px}
+.phead{padding:10px 16px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.phead h2{font-size:13px;font-weight:500}
+.phead-r{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;font-size:12px;border-radius:var(--radius);border:0.5px solid var(--border2);background:var(--bg2);color:var(--text);cursor:pointer;white-space:nowrap}
+.btn:hover{background:var(--bg3)}
+.btn-primary{background:var(--text);color:#fff;border-color:var(--text)}
+.btn-primary:hover{opacity:.82}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-sm{padding:3px 9px;font-size:11px}
+
+/* TABLA ASISTENCIA */
+.asis-table{width:100%;border-collapse:collapse;font-size:13px;min-width:700px}
+.asis-table thead th{padding:8px 10px;text-align:center;font-size:11px;font-weight:500;color:var(--text2);border-bottom:0.5px solid var(--border);background:var(--bg3);white-space:nowrap}
+.asis-table thead th:first-child{text-align:left;min-width:160px}
+.asis-table tbody tr{border-bottom:0.5px solid var(--border)}
+.asis-table tbody tr:last-child{border:none}
+.asis-table tbody tr:hover{background:var(--bg3)}
+.asis-table td{padding:7px 8px;vertical-align:middle;text-align:center}
+.asis-table td:first-child{text-align:left;font-weight:500;padding-left:14px}
+.asis-table tfoot td{padding:8px 10px;background:var(--bg3);font-size:12px;font-weight:500}
+
+/* DÍA SELECTOR */
+.dia-wrap{display:flex;flex-direction:column;align-items:center;gap:3px}
+.dia-btn{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border2);cursor:pointer;font-size:11px;font-weight:500;transition:all .12s;background:var(--bg2);color:var(--text2)}
+.dia-btn.ok{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.dia-btn.falta{background:var(--red-bg);border-color:var(--red);color:var(--red)}
+.dia-btn.retardo{background:var(--amber-bg);border-color:var(--amber);color:var(--amber)}
+.hora-input{width:60px;font-size:11px;padding:2px 4px;border:0.5px solid var(--border2);border-radius:4px;text-align:center;background:var(--bg3);color:var(--text);display:none}
+.hora-input.visible{display:block}
+.desc-chip{font-size:10px;color:var(--text2);white-space:nowrap}
+.desc-chip.red{color:var(--red)}
+.desc-chip.amber{color:var(--amber)}
+
+/* OVERLAY */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:100;align-items:flex-start;justify-content:center;padding:40px 12px;overflow-y:auto}
+.overlay.open{display:flex}
+.modal{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius-lg);width:420px;max-width:98vw;padding:20px;margin:auto}
+.modal h3{font-size:14px;font-weight:500;margin-bottom:14px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.fg label{font-size:11px;color:var(--text2);display:block;margin-bottom:3px}
+.fg input,.fg select{width:100%;font-size:13px;padding:5px 9px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--bg3);color:var(--text);outline:none}
+.fg .full{grid-column:1/-1}
+.btn-row{display:flex;gap:8px;justify-content:flex-end}
+
+/* BANNER */
+.banner{padding:10px 14px;border-radius:var(--radius);font-size:12px;margin-bottom:14px}
+.banner.green{background:var(--green-bg);color:var(--green)}
+.banner.amber{background:var(--amber-bg);color:var(--amber)}
+.banner.blue{background:var(--blue-bg);color:var(--blue)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:#fff;padding:10px 16px;border-radius:var(--radius);font-size:13px;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.empty{padding:28px;text-align:center;color:var(--text2);font-size:13px}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="login-wrap">
+  <div class="login-card">
+    <div class="login-logo">Hope Electric</div>
+    <div class="login-sub">Portal de asistencia — Encargados</div>
+    <label>Correo electrónico</label>
+    <input type="email" id="login-email" placeholder="correo@ejemplo.com" autocomplete="email">
+    <label>Contraseña</label>
+    <input type="password" id="login-pass" placeholder="contraseña" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" id="login-btn" onclick="doLogin()">Entrar</button>
+    <div class="err" id="login-err">Correo o contraseña incorrectos</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="app-wrap">
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1>Asistencia semanal</h1>
+      <span class="obra-pill" id="obra-pill">—</span>
+      <span class="period-pill"><strong id="period-txt">—</strong></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span id="user-name" style="font-size:12px;color:var(--text2)"></span>
+      <button class="logout-btn" onclick="doLogout()">Salir</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div id="banner-area"></div>
+    <div class="cards-row" id="resumen-cards"></div>
+
+    <div class="panel">
+      <div class="phead">
+        <h2 id="panel-title">Asistencia de la semana</h2>
+        <div class="phead-r">
+          <button class="btn btn-primary" onclick="openNuevoEmp()">+ Agregar trabajador</button>
+          <button class="btn btn-primary" id="btn-enviar" onclick="confirmarEnvio()" style="background:var(--green);border-color:var(--green)">Enviar asistencia</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="asis-table">
+          <thead>
+            <tr>
+              <th style="text-align:left">Trabajador</th>
+              <th>Lunes</th>
+              <th>Martes</th>
+              <th>Miércoles</th>
+              <th>Jueves</th>
+              <th>Viernes</th>
+              <th>Sábado</th>
+              <th class="num" style="min-width:60px">Faltas</th>
+              <th class="num" style="min-width:80px">Desc. retardo</th>
+            </tr>
+          </thead>
+          <tbody id="asis-tbody"></tbody>
+          <tfoot>
+            <tr>
+              <td>Totales</td>
+              <td colspan="6"></td>
+              <td class="num" id="ft-faltas"></td>
+              <td class="num" id="ft-retardos"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NUEVO EMPLEADO -->
+<div class="overlay" id="overlay-emp">
+<div class="modal">
+  <h3>Agregar trabajador</h3>
+  <div class="fg">
+    <div class="full"><label>Nombre completo</label><input type="text" id="ef-nombre" style="width:100%;text-transform:uppercase" placeholder="NOMBRE APELLIDO"></div>
+    <div><label>Puesto</label><input type="text" id="ef-puesto" placeholder="Oficial Elect."></div>
+    <div><label>Salario semanal ($)</label><input type="number" id="ef-salario" placeholder="5000" oninput="document.getElementById('ef-diario').value=Math.round((+this.value||0)/6)"></div>
+    <div><label>Diario (auto)</label><input type="number" id="ef-diario" readonly style="opacity:.55"></div>
+  </div>
+  <p style="font-size:11px;color:var(--text2);margin-bottom:14px">El salario será asignado por el administrador. Puedes dejarlo en 0 si no lo sabes.</p>
+  <div class="btn-row">
+    <button class="btn" onclick="closeOv('overlay-emp')">Cancelar</button>
+    <button class="btn btn-primary" onclick="guardarNuevoEmp()">Guardar trabajador</button>
+  </div>
+</div>
+</div>
+
+<!-- MODAL CONFIRMAR ENVÍO -->
+<div class="overlay" id="overlay-confirm">
+<div class="modal">
+  <h3>Confirmar envío de asistencia</h3>
+  <div id="confirm-body" style="margin-bottom:14px"></div>
+  <p style="font-size:12px;color:var(--text2);margin-bottom:14px">Una vez enviada, la asistencia quedará registrada para que el administrador la revise y cierre la nómina. Ya no podrás hacer cambios.</p>
+  <div class="btn-row">
+    <button class="btn" onclick="closeOv('overlay-confirm')">Cancelar</button>
+    <button class="btn btn-primary" style="background:var(--green);border-color:var(--green)" onclick="enviarAsistencia()">Confirmar y enviar</button>
+  </div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SUPABASE_URL = 'https://ixfxvofdmyhmczchhjwc.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml4Znh2b2ZkbXlobWN6Y2hoandjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxNTEwNjUsImV4cCI6MjA5MDcyNzA2NX0.KRC9dz5CXG2WNvMCPMVuV8o2gdNPXpzbQ9M6cKIftco';
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const $ = id => document.getElementById(id);
+const fmt = n => '$' + (Math.round(n||0)).toLocaleString('es-MX');
+const DIAS = ['lunes','martes','miercoles','jueves','viernes','sabado'];
+const DIAS_LABEL = ['Lun','Mar','Mié','Jue','Vie','Sáb'];
+
+function getLunes(d){const day=d.getDay();const diff=day===0?-6:1-day;const l=new Date(d);l.setDate(d.getDate()+diff);l.setHours(0,0,0,0);return l;}
+function getSabado(l){const s=new Date(l);s.setDate(l.getDate()+5);return s;}
+function fmtD(d){if(!d)return'—';const dt=d instanceof Date?d:new Date(d);return dt.toLocaleDateString('es-MX',{day:'numeric',month:'short',year:'numeric'});}
+function toISO(d){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),dd=String(d.getDate()).padStart(2,'0');return`${y}-${m}-${dd}`;}
+function fromISO(s){if(!s)return null;const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);}
+
+function showToast(msg,dur=2500){const t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
+function closeOv(id){$(id).classList.remove('open');}
+
+// ─── ESTADO ───────────────────────────────────────────────────────────────────
+let encargado = null;
+let semanaActual = null;
+let empleados = [];
+let asistencias = {}; // {empId: {lunes:'ok', lunes_hora:'', ...}}
+let yaEnviada = false;
+let currentLunes, currentSabado;
+
+// ─── LOGIN ────────────────────────────────────────────────────────────────────
+async function doLogin() {
+  const email = $('login-email').value.trim();
+  const pass  = $('login-pass').value;
+  const errEl = $('login-err');
+  const btn   = $('login-btn');
+  errEl.style.display = 'none';
+  btn.textContent = 'Entrando...'; btn.disabled = true;
+
+  const { data, error } = await db.auth.signInWithPassword({ email, password: pass });
+  btn.textContent = 'Entrar'; btn.disabled = false;
+
+  if (error) { errEl.style.display = 'block'; return; }
+
+  // Verificar que sea encargado registrado
+  const { data: enc } = await db.from('encargados_obra').select('*').eq('email', email).eq('activo', true).single();
+  if (!enc) {
+    errEl.textContent = 'Este correo no tiene acceso al portal de encargados.';
+    errEl.style.display = 'block';
+    await db.auth.signOut();
+    return;
+  }
+  encargado = enc;
+  mostrarApp();
+}
+
+async function doLogout() {
+  await db.auth.signOut();
+  location.reload();
+}
+
+function mostrarApp() {
+  $('login-wrap').style.display = 'none';
+  $('app-wrap').style.display = 'flex';
+  $('obra-pill').textContent = encargado.obra;
+  $('user-name').textContent = encargado.nombre;
+  initApp();
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+async function initApp() {
+  currentLunes = getLunes(new Date());
+  currentSabado = getSabado(currentLunes);
+  $('period-txt').textContent = fmtD(currentLunes) + ' — ' + fmtD(currentSabado);
+
+  // Cargar o crear semana abierta
+  let { data: sems } = await db.from('semanas_nomina').select('*').eq('cerrada', false).order('desde', {ascending: false}).limit(1);
+  if (sems && sems.length > 0) {
+    semanaActual = sems[0];
+    currentLunes = fromISO(semanaActual.desde);
+    currentSabado = fromISO(semanaActual.hasta);
+    $('period-txt').textContent = fmtD(currentLunes) + ' — ' + fmtD(currentSabado);
+  }
+
+  // Cargar empleados de la obra
+  const { data: emps } = await db.from('empleados_nomina').select('*').eq('obra', encargado.obra).eq('activo', true).order('nombre');
+  empleados = emps || [];
+
+  // Cargar asistencias existentes
+  if (semanaActual) {
+    const { data: asistRows } = await db.from('asistencia_semanal').select('*').eq('semana_id', semanaActual.id);
+    (asistRows || []).forEach(row => {
+      asistencias[row.empleado_id] = row;
+      if (row.enviada) yaEnviada = true;
+    });
+  }
+
+  renderApp();
+}
+
+// ─── LÓGICA RETARDOS ──────────────────────────────────────────────────────────
+// Regla: 7:00-7:10 sin descuento, 7:11-7:54 descuento minutos, 7:55+ descuento 1h completa
+function calcDescRetardo(hora, salarioDiario) {
+  if (!hora) return { minutos: 0, descuento: 0 };
+  const [h, m] = hora.split(':').map(Number);
+  const totalMin = h * 60 + m;
+  const entrada = 7 * 60; // 7:00
+  const tolerancia = 7 * 60 + 10; // 7:10
+  const umbralHora = 7 * 60 + 45; // 7:45 — después de 45 min se descuenta hora completa
+
+  if (totalMin <= tolerancia) return { minutos: 0, descuento: 0 };
+
+  const minRetraso = totalMin - entrada; // minutos desde las 7:00
+  const salarioHora = salarioDiario / 8; // salario por hora (jornada 8h)
+
+  if (minRetraso >= 45) {
+    // Descuento hora completa
+    return { minutos: minRetraso, descuento: salarioHora, esHora: true };
+  } else {
+    // Descuento proporcional por minutos
+    const descuento = salarioHora * (minRetraso / 60);
+    return { minutos: minRetraso, descuento, esHora: false };
+  }
+}
+
+function getAsistencia(empId) {
+  if (!asistencias[empId]) {
+    asistencias[empId] = {
+      empleado_id: empId, semana_id: semanaActual?.id,
+      encargado_id: encargado.id,
+      lunes:'ok', martes:'ok', miercoles:'ok', jueves:'ok', viernes:'ok', sabado:'ok',
+      lunes_hora:'', martes_hora:'', miercoles_hora:'', jueves_hora:'', viernes_hora:'', sabado_hora:'',
+      enviada: false
+    };
+  }
+  return asistencias[empId];
+}
+
+function calcTotalesEmp(empId) {
+  const emp = empleados.find(e => e.id === empId);
+  const a = getAsistencia(empId);
+  const salarioDiario = (emp?.salario || 0) / 6;
+  let faltas = 0, descRetardo = 0, minRetardo = 0;
+
+  DIAS.forEach(dia => {
+    const estado = a[dia] || 'ok';
+    if (estado === 'falta') faltas++;
+    if (estado === 'retardo') {
+      const hora = a[dia + '_hora'];
+      const res = calcDescRetardo(hora, salarioDiario);
+      descRetardo += res.descuento;
+      minRetardo += res.minutos;
+    }
+  });
+
+  const descFaltas = faltas * salarioDiario;
+  return { faltas, descFaltas, descRetardo, minRetardo };
+}
+
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+function renderApp() {
+  $('panel-title').textContent = 'Asistencia — ' + encargado.obra;
+
+  if (yaEnviada) {
+    $('banner-area').innerHTML = `<div class="banner green">Asistencia enviada correctamente. El administrador ya puede verla y cerrar la nómina.</div>`;
+    $('btn-enviar').disabled = true;
+    $('btn-enviar').textContent = 'Ya enviada';
+  } else {
+    $('banner-area').innerHTML = `<div class="banner blue">Captura la asistencia de la semana y presiona <strong>Enviar asistencia</strong> cuando esté lista.</div>`;
+  }
+
+  // Cards resumen
+  const totalEmp = empleados.length;
+  let totalFaltas = 0, totalRetDesc = 0;
+  empleados.forEach(e => {
+    const t = calcTotalesEmp(e.id);
+    totalFaltas += t.faltas;
+    totalRetDesc += t.descRetardo;
+  });
+
+  $('resumen-cards').innerHTML = `
+    <div class="mcard"><div class="lbl">Trabajadores</div><div class="val">${totalEmp}</div><div class="sub">${encargado.obra}</div></div>
+    <div class="mcard"><div class="lbl">Total faltas semana</div><div class="val" style="color:var(--red)">${totalFaltas}</div></div>
+    <div class="mcard"><div class="lbl">Desc. retardos total</div><div class="val" style="font-size:16px;color:var(--amber)">${fmt(totalRetDesc)}</div></div>`;
+
+  // Tabla
+  let ftFaltas = 0, ftRetDesc = 0;
+  $('asis-tbody').innerHTML = empleados.map(emp => {
+    const a = getAsistencia(emp.id);
+    const t = calcTotalesEmp(emp.id);
+    ftFaltas += t.faltas; ftRetDesc += t.descRetardo;
+
+    const celdas = DIAS.map((dia, i) => {
+      const estado = a[dia] || 'ok';
+      const hora = a[dia+'_hora'] || '';
+      const salDiario = emp.salario / 6;
+      const ret = estado === 'retardo' ? calcDescRetardo(hora, salDiario) : null;
+      const descChip = ret && ret.descuento > 0
+        ? `<div class="desc-chip amber">${ret.esHora ? '-1h' : `-${ret.minutos}min`}<br>${fmt(ret.descuento)}</div>`
+        : '';
+
+      return `<td>
+        <div class="dia-wrap">
+          ${!yaEnviada ? `
+          <div class="dia-btn ${estado}" onclick="ciclarDia(${emp.id},'${dia}')" title="${DIAS_LABEL[i]}: ${estado}">
+            ${estado === 'ok' ? '✓' : estado === 'falta' ? '✗' : '↻'}
+          </div>` : `<div class="dia-btn ${estado}">${estado==='ok'?'✓':estado==='falta'?'✗':'↻'}</div>`}
+          ${!yaEnviada && estado === 'retardo' ? `<input type="time" class="hora-input visible" id="hora-${emp.id}-${dia}" value="${hora}" min="07:00" max="12:00" onchange="setHora(${emp.id},'${dia}',this.value)">` : (estado === 'retardo' && hora ? `<span style="font-size:10px;color:var(--amber)">${hora}</span>` : '')}
+          ${descChip}
+        </div>
+      </td>`;
+    }).join('');
+
+    return `<tr>
+      <td>${emp.nombre}<br><span style="font-size:11px;color:var(--text2)">${emp.puesto}</span></td>
+      ${celdas}
+      <td class="num" style="font-weight:500;color:${t.faltas>0?'var(--red)':'var(--text2)'}">${t.faltas>0?t.faltas:'—'}</td>
+      <td class="num" style="color:${t.descRetardo>0?'var(--amber)':'var(--text2)'}">${t.descRetardo>0?fmt(t.descRetardo):'—'}</td>
+    </tr>`;
+  }).join('');
+
+  $('ft-faltas').textContent = ftFaltas > 0 ? ftFaltas : '—';
+  $('ft-retardos').textContent = ftRetDesc > 0 ? fmt(ftRetDesc) : '—';
+}
+
+// ─── INTERACCIÓN DÍAS ─────────────────────────────────────────────────────────
+function ciclarDia(empId, dia) {
+  if (yaEnviada) return;
+  const a = getAsistencia(empId);
+  const ciclo = { ok: 'falta', falta: 'retardo', retardo: 'ok' };
+  a[dia] = ciclo[a[dia] || 'ok'];
+  if (a[dia] !== 'retardo') a[dia + '_hora'] = '';
+  autoSave(empId);
+  renderApp();
+}
+
+function setHora(empId, dia, hora) {
+  const a = getAsistencia(empId);
+  a[dia + '_hora'] = hora;
+  autoSave(empId);
+  renderApp();
+}
+
+// ─── AUTOGUARDADO ─────────────────────────────────────────────────────────────
+let saveTimers = {};
+function autoSave(empId) {
+  clearTimeout(saveTimers[empId]);
+  saveTimers[empId] = setTimeout(() => guardarAsistencia(empId), 800);
+}
+
+async function guardarAsistencia(empId) {
+  if (!semanaActual) return;
+  const a = getAsistencia(empId);
+  const emp = empleados.find(e => e.id === empId);
+  const t = calcTotalesEmp(empId);
+
+  const row = {
+    semana_id: semanaActual.id,
+    empleado_id: empId,
+    encargado_id: encargado.id,
+    lunes: a.lunes||'ok', martes: a.martes||'ok',
+    miercoles: a.miercoles||'ok', jueves: a.jueves||'ok',
+    viernes: a.viernes||'ok', sabado: a.sabado||'ok',
+    lunes_hora: a.lunes_hora||null, martes_hora: a.martes_hora||null,
+    miercoles_hora: a.miercoles_hora||null, jueves_hora: a.jueves_hora||null,
+    viernes_hora: a.viernes_hora||null, sabado_hora: a.sabado_hora||null,
+    total_faltas: t.faltas,
+    descuento_retardo: t.descRetardo,
+    descuento_faltas: t.descFaltas,
+    enviada: false,
+    updated_at: new Date().toISOString()
+  };
+
+  if (a.id) {
+    await db.from('asistencia_semanal').update(row).eq('id', a.id);
+  } else {
+    const { data } = await db.from('asistencia_semanal').insert([row]).select().single();
+    if (data) { asistencias[empId] = { ...a, id: data.id }; }
+  }
+}
+
+// ─── ENVÍO FINAL ──────────────────────────────────────────────────────────────
+function confirmarEnvio() {
+  let totalFaltas = 0, totalRetDesc = 0, empSinCaptura = 0;
+  empleados.forEach(e => {
+    const t = calcTotalesEmp(e.id);
+    totalFaltas += t.faltas;
+    totalRetDesc += t.descRetardo;
+  });
+
+  $('confirm-body').innerHTML = `
+    <div style="background:var(--bg3);border-radius:var(--radius);padding:12px;font-size:13px">
+      <div style="display:flex;justify-content:space-between;padding:3px 0"><span style="color:var(--text2)">Obra</span><strong>${encargado.obra}</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0"><span style="color:var(--text2)">Período</span><strong>${fmtD(currentLunes)} — ${fmtD(currentSabado)}</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0"><span style="color:var(--text2)">Trabajadores</span><strong>${empleados.length}</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0"><span style="color:var(--text2)">Total faltas</span><strong style="color:var(--red)">${totalFaltas}</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0;border-top:0.5px solid var(--border);margin-top:6px;padding-top:8px"><span style="color:var(--text2)">Desc. retardos</span><strong style="color:var(--amber)">${fmt(totalRetDesc)}</strong></div>
+    </div>`;
+  $('overlay-confirm').classList.add('open');
+}
+
+async function enviarAsistencia() {
+  // Guardar todos primero
+  for (const emp of empleados) {
+    await guardarAsistencia(emp.id);
+  }
+  // Marcar todas como enviadas
+  const ids = empleados.map(e => asistencias[e.id]?.id).filter(Boolean);
+  if (ids.length) {
+    await db.from('asistencia_semanal').update({ enviada: true }).in('id', ids);
+  }
+  yaEnviada = true;
+  closeOv('overlay-confirm');
+  showToast('Asistencia enviada ✓');
+  renderApp();
+}
+
+// ─── NUEVO EMPLEADO ───────────────────────────────────────────────────────────
+function openNuevoEmp() {
+  ['ef-nombre','ef-puesto','ef-salario','ef-diario'].forEach(id => $(id).value = '');
+  $('overlay-emp').classList.add('open');
+}
+
+async function guardarNuevoEmp() {
+  const nombre = $('ef-nombre').value.trim().toUpperCase();
+  const puesto = $('ef-puesto').value.trim();
+  const salario = +$('ef-salario').value || 0;
+  if (!nombre) { alert('El nombre es obligatorio.'); return; }
+
+  const { data } = await db.from('empleados_nomina')
+    .insert([{ nombre, puesto, obra: encargado.obra, salario, gasolina: 0, activo: true }])
+    .select().single();
+
+  if (data) {
+    empleados.push(data);
+    closeOv('overlay-emp');
+    showToast(nombre + ' agregado');
+    renderApp();
+  }
+}
+
+// ─── ARRANQUE ─────────────────────────────────────────────────────────────────
+(async () => {
+  const { data: { session } } = await db.auth.getSession();
+  if (session) {
+    const { data: enc } = await db.from('encargados_obra')
+      .select('*').eq('email', session.user.email).eq('activo', true).single();
+    if (enc) { encargado = enc; mostrarApp(); return; }
+  }
+  db.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_OUT') location.reload();
+  });
+})();
+</script>
+</body>
+</html>
