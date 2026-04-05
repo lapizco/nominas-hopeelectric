@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nóminas — Hope Electric</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -359,7 +360,7 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
 <div class="modal" style="width:680px;padding:0;overflow:hidden">
   <div class="detail-header">
     <div><div style="font-size:14px;font-weight:500" id="det-title"></div><div style="font-size:12px;color:var(--text2)" id="det-subtitle"></div></div>
-    <button class="btn" onclick="closeOv('overlay-detail')">Cerrar</button>
+    <div style="display:flex;gap:8px"><button class="btn" style="color:var(--green);border-color:var(--border)" onclick="exportExcelActual()">Descargar Excel</button><button class="btn" onclick="closeOv('overlay-detail')">Cerrar</button></div>
   </div>
   <div style="overflow-x:auto">
     <table>
@@ -782,13 +783,18 @@ async function renderHistorial() {
     <td class="num" style="font-weight:500">${fmt(h.total_pagado)}</td>
     <td class="num">${h.total_prest_desc>0?`<span class="prestamo-badge">-${fmt(h.total_prest_desc)}</span>`:'—'}</td>
     <td><span class="badge b-cerrada">Cerrada</span></td>
-    <td><button class="btn btn-sm" onclick="openDetail(${h.id});event.stopPropagation()">Ver</button></td>
+    <td style="display:flex;gap:4px"><button class="btn btn-sm" onclick="openDetail(${h.id});event.stopPropagation()">Ver</button><button class="btn btn-sm" style="color:var(--green);border-color:var(--border)" onclick="exportExcel(${h.id});event.stopPropagation()">Excel</button></td>
   </tr>`).join('') : `<tr><td colspan="8" class="empty">Aún no hay semanas cerradas</td></tr>`;
 }
+
+let detalleSemanaActual = null;
+let detalleEntradasActual = [];
 
 async function openDetail(semanaId) {
   const sem = semanas.find(s => s.id===semanaId); if (!sem) return;
   const { data: entradas } = await db.from('entradas_nomina').select('*').eq('semana_id', semanaId);
+  detalleSemanaActual = sem;
+  detalleEntradasActual = entradas || [];
   $('det-title').textContent = 'Nómina: ' + fmtD(fromISO(sem.desde)) + ' — ' + fmtD(fromISO(sem.hasta));
   $('det-subtitle').textContent = (entradas?.length||0)+' empleados · '+fmt(sem.total_pagado);
   $('det-tbody').innerHTML = (entradas||[]).map(e => {
@@ -799,6 +805,103 @@ async function openDetail(semanaId) {
   $('det-ft-base').textContent = fmt((entradas||[]).reduce((s,e)=>s+e.salario_base,0));
   $('det-ft-total').textContent = fmt(sem.total_pagado);
   $('overlay-detail').classList.add('open');
+}
+
+// =============================================
+// EXPORT EXCEL
+// =============================================
+async function exportExcel(semanaId) {
+  const sem = semanas.find(s => s.id===semanaId); if (!sem) return;
+  const { data: entradas } = await db.from('entradas_nomina').select('*').eq('semana_id', semanaId);
+  generarExcel(sem, entradas || []);
+}
+
+function exportExcelActual() {
+  if (!detalleSemanaActual) return;
+  generarExcel(detalleSemanaActual, detalleEntradasActual);
+}
+
+function generarExcel(sem, entradas) {
+  const desde = fmtD(fromISO(sem.desde));
+  const hasta = fmtD(fromISO(sem.hasta));
+  const nombreArchivo = `Nomina_${sem.desde}_${sem.hasta}.xlsx`;
+
+  // Construir filas
+  const rows = [];
+
+  // Encabezado principal
+  rows.push(['HOPE ELECTRIC — NÓMINA SEMANAL', '', '', '', '', '', '', '', '', '', '']);
+  rows.push([`Período: ${desde} — ${hasta}`, '', '', '', '', '', '', '', '', '', '']);
+  rows.push([]);
+
+  // Encabezados de columna
+  rows.push([
+    'Empleado', 'Puesto', 'Obra',
+    'Salario base', 'Desc. faltas', 'H. extras',
+    'Gasolina', 'Desc. préstamo', 'Descuentos', 'Se le debe', 'TOTAL A PERCIBIR'
+  ]);
+
+  let totalBase=0, totalPrest=0, totalGas=0, totalNeto=0;
+
+  // Agrupar por obra
+  const obras = [...new Set(entradas.map(e => {
+    const emp = empleados.find(x=>x.id===e.empleado_id);
+    return emp ? emp.obra : 'OTRO';
+  }))].sort();
+
+  obras.forEach(obra => {
+    const eObra = entradas.filter(e => {
+      const emp = empleados.find(x=>x.id===e.empleado_id);
+      return (emp?emp.obra:'OTRO') === obra;
+    });
+    // Separador de obra
+    rows.push([obra, '', '', '', '', '', '', '', '', '', '']);
+
+    let subtotalBase=0, subtotalNeto=0, subtotalGas=0;
+    eObra.forEach(e => {
+      const emp = empleados.find(x=>x.id===e.empleado_id)||{nombre:'?',puesto:''};
+      const dF = e.faltas*(e.salario_base/6);
+      const hE = e.horas_extras*(e.salario_base/6/8)*1.5;
+      rows.push([
+        emp.nombre, emp.puesto, obra,
+        e.salario_base,
+        dF > 0 ? -dF : 0,
+        hE > 0 ? hE : 0,
+        e.gasolina || 0,
+        e.prest_desc > 0 ? -e.prest_desc : 0,
+        e.descuentos > 0 ? -e.descuentos : 0,
+        e.se_le_debe || 0,
+        e.total
+      ]);
+      subtotalBase += e.salario_base;
+      subtotalNeto += e.total;
+      subtotalGas += e.gasolina||0;
+    });
+    rows.push(['Subtotal ' + obra, '', '', subtotalBase, '', '', subtotalGas, '', '', '', subtotalNeto]);
+    rows.push([]);
+    totalBase += subtotalBase;
+    totalGas += subtotalGas;
+    totalNeto += subtotalNeto;
+    totalPrest += eObra.reduce((s,e)=>s+(e.prest_desc||0),0);
+  });
+
+  // Total global
+  rows.push(['TOTAL GENERAL', '', '', totalBase, '', '', totalGas, -totalPrest, '', '', totalNeto]);
+
+  // Crear workbook
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+
+  // Anchos de columna
+  ws['!cols'] = [
+    {wch:22},{wch:18},{wch:8},
+    {wch:13},{wch:13},{wch:10},
+    {wch:11},{wch:14},{wch:11},{wch:10},{wch:15}
+  ];
+
+  XLSX.utils.book_append_sheet(wb, ws, 'Nómina');
+  XLSX.writeFile(wb, nombreArchivo);
+  showToast('Descargando ' + nombreArchivo);
 }
 
 // =============================================
