@@ -239,6 +239,7 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
       <div class="cards-row" id="dash-cards"></div>
       <div class="panel">
         <div class="phead"><h2 id="dash-nom-title">Nómina en curso</h2><button class="btn btn-primary" onclick="openCierre()">Cerrar semana y pagar</button></div>
+        <div id="dash-pagadores" style="padding:12px 16px;border-bottom:0.5px solid var(--border)"></div>
         <div class="table-wrap">
         <table>
           <thead><tr><th>Empleado</th><th>Obra</th><th class="num">Base</th><th class="num">Deducc.</th><th class="num">Extras</th><th class="num">Préstamo</th><th class="num">Total</th></tr></thead>
@@ -267,7 +268,7 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
         </div>
         <div class="table-wrap">
         <table>
-          <thead><tr><th>Empleado</th><th class="hide-mob">Obra</th><th class="num hide-mob">Base</th><th>Faltas</th><th class="hide-mob">H. extras</th><th class="num hide-mob">Gasolina</th><th class="num hide-mob">Préstamo</th><th class="num hide-mob">Desc.</th><th class="num hide-mob">Se debe</th><th class="num">Total</th><th></th></tr></thead>
+          <thead><tr><th>Empleado</th><th class="hide-mob">Obra</th><th class="num hide-mob">Base</th><th>Faltas</th><th class="hide-mob">H. extras</th><th class="num hide-mob">Gasolina</th><th class="num hide-mob">Préstamo</th><th class="num hide-mob">Desc.</th><th class="num hide-mob">Se debe</th><th class="num">Total</th><th class="hide-mob">Pagador</th><th></th></tr></thead>
           <tbody id="nom-tbody"></tbody>
         </table>
         </div>
@@ -321,7 +322,7 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
         </div>
         <div class="table-wrap">
         <table>
-          <thead><tr><th>#</th><th>Nombre</th><th>Puesto</th><th>Obra</th><th class="num">Salario/sem</th><th class="num">Diario</th><th class="num">Gasolina/sem</th><th>Préstamo activo</th><th>Estado</th><th></th></tr></thead>
+          <thead><tr><th>#</th><th>Nombre</th><th>Puesto</th><th>Obra</th><th class="num">Salario/sem</th><th class="num">Diario</th><th class="num">Gasolina/sem</th><th>Le paga</th><th>Préstamo activo</th><th>Estado</th><th></th></tr></thead>
           <tbody id="emp-tbody"></tbody>
         </table>
         </div>
@@ -403,6 +404,7 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
     <div class="nf"><label>Descuentos</label><input type="number" id="ne-desc" min="0" value="0" oninput="recalcNom()"></div>
     <div class="nf"><label>Se le debe</label><input type="number" id="ne-debe" min="0" value="0" oninput="recalcNom()"></div>
     <div class="nf"><label>Desc. préstamo (auto)</label><input type="number" id="ne-prest" min="0" value="0" readonly style="opacity:.55"></div>
+    <div class="nf"><label>¿Quién paga?</label><select id="ne-pagador"><option value="">Sin asignar</option><option value="Luis">Luis</option><option value="Joan">Joan</option><option value="Efectivo">Efectivo</option></select></div>
     <div class="nf" style="grid-column:1/-1"><label>Nota (permiso, incapacidad, etc.)</label><input type="text" id="ne-nota" placeholder="Opcional..." style="width:100%"></div>
   </div>
   <div class="nom-result" id="nom-result"></div>
@@ -461,6 +463,7 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
     <div><label>Diario (auto)</label><input type="number" id="ef-diario" readonly style="opacity:.55"></div>
     <div><label>Gasolina / transporte semanal ($)</label><input type="number" id="ef-gasolina" placeholder="0" min="0" value="0"></div>
     <div style="display:flex;align-items:flex-end"><span style="font-size:11px;color:var(--text2)">Proporcional si hay faltas. 0 si no aplica.</span></div>
+    <div><label>¿Quién le paga?</label><select id="ef-pagador"><option value="">Sin asignar</option><option>Luis</option><option>Joan</option><option>Efectivo</option></select></div>
   </div>
   <div class="btn-row"><button class="btn" onclick="closeOv('overlay-emp')">Cancelar</button><button class="btn btn-primary" onclick="saveEmp()">Guardar</button></div>
 </div>
@@ -484,7 +487,7 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
   </div>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>Empleado</th><th>Puesto</th><th>Obra</th><th class="num">Base</th><th class="num">Faltas</th><th class="num">H.ext</th><th class="num">Gas.</th><th class="num">Préstamo</th><th class="num">Desc.</th><th class="num">Se debe</th><th class="num">Total</th></tr></thead>
+      <thead><tr><th>Empleado</th><th>Puesto</th><th>Obra</th><th class="num">Base</th><th class="num">Faltas</th><th class="num">H.ext</th><th class="num">Gas.</th><th class="num">Préstamo</th><th class="num">Desc.</th><th class="num">Se debe</th><th class="num">Total</th><th>Pagador</th></tr></thead>
       <tbody id="det-tbody"></tbody>
       <tfoot><tr><td colspan="3" style="padding:7px 11px;font-weight:500;font-size:12px">Total</td><td class="num" id="det-ft-base" style="font-weight:500"></td><td colspan="5"></td><td></td><td class="num" id="det-ft-total" style="font-weight:500;font-size:14px"></td></tr></tfoot>
     </table>
@@ -625,7 +628,7 @@ async function initApp() {
     const { data } = await db.from('entradas_nomina').select('*').eq('semana_id', semAbierta.id);
     if (data) {
       data.forEach(e => {
-        nomina[e.empleado_id] = { faltas: e.faltas, hext: e.horas_extras, tarifa: e.tarifa_hext||1.5, desc: e.descuentos, debe: e.se_le_debe, nota: e.nota||'', id: e.id };
+        nomina[e.empleado_id] = { faltas: e.faltas, hext: e.horas_extras, tarifa: e.tarifa_hext||1.5, desc: e.descuentos, debe: e.se_le_debe, nota: e.nota||'', pagador: e.pagador||'', id: e.id };
       });
     }
     // Pre-cargar asistencias de encargados (solo donde no hay entrada manual)
@@ -729,7 +732,7 @@ function calcTotal(empId, en) {
 }
 
 function getNom(empId) {
-  if (!nomina[empId]) nomina[empId] = { faltas:0, hext:0, tarifa:1.5, desc:0, debe:0, nota:'' };
+  if (!nomina[empId]) nomina[empId] = { faltas:0, hext:0, tarifa:1.5, desc:0, debe:0, nota:'', pagador:'' };
   return nomina[empId];
 }
 
@@ -790,6 +793,51 @@ async function renderDash() {
     if (existing) existing.remove();
   }
   $('dash-nom-title').textContent = 'Nómina: ' + fmtD(currentLunes) + ' — ' + fmtD(currentSabado);
+
+  // Panel quién paga qué
+  const pagadores = ['Luis','Joan','Efectivo',''];
+  const pagadorLabels = {Luis:'Luis',Joan:'Joan',Efectivo:'Efectivo','':'Sin asignar'};
+  const pagadorColors = {Luis:'var(--blue-bg);color:var(--blue)',Joan:'var(--green-bg);color:var(--green)',Efectivo:'var(--amber-bg);color:var(--amber)','':'var(--gray-bg);color:var(--gray-text)'};
+
+  const resumenPagadores = pagadores.map(pag => {
+    const empsP = empActivos.filter(e => (e.pagador||'') === pag);
+    if (!empsP.length) return '';
+    const totP = empsP.reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))),0);
+    const nombres = empsP.map(e=>e.nombre.split(' ')[0]).join(', ');
+    return `<div style="background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius);padding:10px 14px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
+        <span><span style="display:inline-block;background:${pagadorColors[pag]};font-size:11px;font-weight:500;padding:2px 9px;border-radius:var(--radius)">${pagadorLabels[pag]}</span> <span style="font-size:12px;color:var(--text2);margin-left:6px">${empsP.length} trabajador(es)</span></span>
+        <span style="font-size:15px;font-weight:500">${fmt(totP)}</span>
+      </div>
+      <div style="font-size:11px;color:var(--text2)">${nombres}</div>
+    </div>`;
+  }).filter(Boolean).join('');
+
+  const dashPagEl = $('dash-pagadores');
+  if (dashPagEl) dashPagEl.innerHTML = resumenPagadores || '<div style="font-size:12px;color:var(--text2);padding:8px 0">No hay trabajadores con pagador asignado aún.</div>';
+
+  // Resumen por pagador
+  const pagadores = ['Luis','Joan','Efectivo',''];
+  const labPag = {'Luis':'Luis','Joan':'Joan','Efectivo':'Efectivo','':'Sin asignar'};
+  const colPag = {'Luis':'var(--blue-bg)','Joan':'var(--green-bg)','Efectivo':'var(--gray-bg)','':'var(--bg3)'};
+  const colTxtPag = {'Luis':'var(--blue)','Joan':'var(--green)','Efectivo':'var(--gray-text)','':'var(--text2)'};
+  let resumenPagHtml = '';
+  pagadores.forEach(pag => {
+    const empsP = empActivos.filter(e => (getNom(e.id).pagador||'') === pag);
+    if (!empsP.length) return;
+    const totalP = empsP.reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))),0);
+    resumenPagHtml += `<div style="padding:10px 14px;border-right:0.5px solid var(--border);flex:1;min-width:130px">
+      <div style="font-size:11px;color:var(--text2);margin-bottom:4px">${labPag[pag]}</div>
+      <div style="font-size:16px;font-weight:500">${fmt(totalP)}</div>
+      <div style="font-size:11px;color:var(--text2);margin-top:2px">${empsP.length} trabajador(es)</div>
+    </div>`;
+  });
+  if (resumenPagHtml) {
+    const existingPag = document.getElementById('dash-pagadores');
+    const html_pag = `<div class="panel" style="margin-bottom:14px"><div class="phead"><h2>Resumen por pagador — esta semana</h2></div><div style="display:flex;flex-wrap:wrap;border-top:0.5px solid var(--border)">${resumenPagHtml}</div></div>`;
+    if (existingPag) existingPag.outerHTML = html_pag;
+    else $('dash-nom-title').closest('.panel').insertAdjacentHTML('beforebegin', `<div id="dash-pagadores">${html_pag.replace('<div class="panel"','<div class="panel"').replace('</div></div>','</div></div>')}</div>`);
+  }
   let tB=0,tD=0,tE=0,tP=0,tT=0;
   $('dash-tbody').innerHTML = empActivos.map(e => {
     const en=getNom(e.id); const d=e.salario/6;
@@ -968,12 +1016,12 @@ async function saveNomEntry() {
   const emp = empleados.find(e => e.id===editNomEmpId);
   const en = getNom(editNomEmpId);
   const d = emp.salario/6;
-  const newEn = { faltas:+$('ne-faltas').value||0, hext:+$('ne-hext').value||0, tarifa:parseFloat($('ne-tarifa').value)||1.5, desc:+$('ne-desc').value||0, debe:+$('ne-debe').value||0, nota:$('ne-nota').value.trim() };
+  const newEn = { faltas:+$('ne-faltas').value||0, hext:+$('ne-hext').value||0, tarifa:parseFloat($('ne-tarifa').value)||1.5, desc:+$('ne-desc').value||0, debe:+$('ne-debe').value||0, nota:$('ne-nota').value.trim(), pagador:$('ne-pagador').value };
   const diasTrab = 6 - newEn.faltas;
   const gasNeto = (emp.gasolina||0) * diasTrab / 6;
   const pD = getPrestDesc(editNomEmpId);
   const tot = calcTotal(editNomEmpId, newEn);
-  const row = { semana_id:semAbierta.id, empleado_id:editNomEmpId, salario_base:emp.salario, faltas:newEn.faltas, horas_extras:newEn.hext, tarifa_hext:newEn.tarifa, gasolina:gasNeto, descuentos:newEn.desc, se_le_debe:newEn.debe, prest_desc:pD, total:Math.max(0,tot), nota:newEn.nota };
+  const row = { semana_id:semAbierta.id, empleado_id:editNomEmpId, salario_base:emp.salario, faltas:newEn.faltas, horas_extras:newEn.hext, tarifa_hext:newEn.tarifa, gasolina:gasNeto, descuentos:newEn.desc, se_le_debe:newEn.debe, prest_desc:pD, total:Math.max(0,tot), nota:newEn.nota, pagador:newEn.pagador };
   if (en.id) {
     await db.from('entradas_nomina').update(row).eq('id', en.id);
     newEn.id = en.id;
@@ -991,6 +1039,20 @@ async function saveNomEntry() {
 function openCierre() {
   const neto = empleados.reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))), 0);
   const pDesc = empleados.reduce((s,e) => s+getPrestDesc(e.id), 0);
+  // Desglose por pagador
+  const empActivos2 = empleados.filter(e=>e.activo);
+  const pagResumen = ['Luis','Joan','Efectivo',''].map(pag => {
+    const empsP = empActivos2.filter(e=>(e.pagador||'')=== pag);
+    if (!empsP.length) return '';
+    const totP = empsP.reduce((s,e)=>s+Math.max(0,calcTotal(e.id,getNom(e.id))),0);
+    const lbl = {Luis:'Luis',Joan:'Joan',Efectivo:'Efectivo','':'Sin asignar'}[pag];
+    const nombres = empsP.map(e=>e.nombre.split(' ')[0]).join(', ');
+    return `<div style="display:flex;justify-content:space-between;align-items:flex-start;padding:6px 0;border-bottom:0.5px solid var(--border);font-size:13px;gap:8px">
+      <div><span style="font-weight:500">${lbl}</span> <span style="color:var(--text2);font-size:11px">(${empsP.length})</span><br><span style="font-size:11px;color:var(--text2)">${nombres}</span></div>
+      <span style="font-weight:500;white-space:nowrap">${fmt(totP)}</span>
+    </div>`;
+  }).filter(Boolean).join('');
+
   $('cierre-body').innerHTML = `
     <div class="confirm-box">
       <div class="row"><span>Período</span><strong>${fmtD(currentLunes)} — ${fmtD(currentSabado)}</strong></div>
@@ -998,6 +1060,7 @@ function openCierre() {
       <div class="row"><span>Descuentos préstamos</span><strong style="color:var(--amber)">-${fmt(pDesc)}</strong></div>
       <div class="row" style="border-top:0.5px solid var(--border);margin-top:6px;padding-top:6px"><span>Total a pagar</span><strong style="font-size:15px">${fmt(neto)}</strong></div>
     </div>
+    ${pagResumen ? `<div style="margin-bottom:12px"><div style="font-size:12px;font-weight:500;color:var(--text2);margin-bottom:8px">Desglose por pagador</div>${pagResumen}</div>` : ''}
     <p style="font-size:12px;color:var(--text2);margin-bottom:12px">Al confirmar se guardará esta nómina en el historial, se aplicarán los descuentos de préstamos y la semana avanzará.</p>`;
   $('cierre-btns').innerHTML = `<button class="btn" onclick="closeOv('overlay-cierre')">Cancelar</button><button class="btn btn-primary" onclick="confirmarCierre()">Confirmar y cerrar semana</button>`;
   $('overlay-cierre').classList.add('open');
@@ -1014,7 +1077,7 @@ async function confirmarCierre() {
       const pD = getPrestDesc(emp.id);
       const tot = Math.max(0, calcTotal(emp.id, en));
       const gasNeto = emp.gasolina||0;
-      const row = { semana_id:semAbierta.id, empleado_id:emp.id, salario_base:emp.salario, faltas:0, horas_extras:0, gasolina:gasNeto, descuentos:0, se_le_debe:0, prest_desc:pD, total:tot };
+      const row = { semana_id:semAbierta.id, empleado_id:emp.id, salario_base:emp.salario, faltas:0, horas_extras:0, gasolina:gasNeto, descuentos:0, se_le_debe:0, prest_desc:pD, total:tot, pagador:getNom(emp.id).pagador||'' };
       await db.from('entradas_nomina').insert([row]);
     }
   }
@@ -1076,7 +1139,7 @@ async function openDetail(semanaId) {
   $('det-tbody').innerHTML = (entradas||[]).map(e => {
     const emp = empleados.find(x => x.id===e.empleado_id)||{nombre:'?',puesto:'',obra:''};
     const dF = e.faltas*(e.salario_base/6), hE = e.horas_extras*(e.salario_base/6/8)*1.5;
-    return `<tr><td style="font-weight:500">${emp.nombre}${e.nota?`<br><span style='font-size:11px;color:var(--blue);font-style:italic'>${e.nota}</span>`:''}</td><td style="font-size:12px;color:var(--text2)">${emp.puesto}</td><td><span class="badge ${obc(emp.obra)}">${emp.obra}</span></td><td class="num">${fmt(e.salario_base)}</td><td class="num">${e.faltas>0?`<span style="color:var(--red)">-${fmt(dF)}</span>`:'—'}</td><td class="num">${e.horas_extras>0?`<span style="color:var(--green)">+${fmt(hE)}</span>`:'—'}</td><td class="num">${e.gasolina>0?fmt(e.gasolina):'—'}</td><td class="num">${e.prest_desc>0?`<span class="prestamo-badge">-${fmt(e.prest_desc)}</span>`:'—'}</td><td class="num">${e.descuentos>0?`<span style="color:var(--red)">-${fmt(e.descuentos)}</span>`:'—'}</td><td class="num">${e.se_le_debe>0?`<span style="color:var(--green)">+${fmt(e.se_le_debe)}</span>`:'—'}</td><td class="num" style="font-weight:500">${fmt(e.total)}</td></tr>`;
+    return `<tr><td style="font-weight:500">${emp.nombre}${e.nota?`<br><span style='font-size:11px;color:var(--blue);font-style:italic'>${e.nota}</span>`:''}</td><td style="font-size:12px;color:var(--text2)">${emp.puesto}</td><td><span class="badge ${obc(emp.obra)}">${emp.obra}</span></td><td class="num">${fmt(e.salario_base)}</td><td class="num">${e.faltas>0?`<span style="color:var(--red)">-${fmt(dF)}</span>`:'—'}</td><td class="num">${e.horas_extras>0?`<span style="color:var(--green)">+${fmt(hE)}</span>`:'—'}</td><td class="num">${e.gasolina>0?fmt(e.gasolina):'—'}</td><td class="num">${e.prest_desc>0?`<span class="prestamo-badge">-${fmt(e.prest_desc)}</span>`:'—'}</td><td class="num">${e.descuentos>0?`<span style="color:var(--red)">-${fmt(e.descuentos)}</span>`:'—'}</td><td class="num">${e.se_le_debe>0?`<span style="color:var(--green)">+${fmt(e.se_le_debe)}</span>`:'—'}</td><td class="num" style="font-weight:500">${fmt(e.total)}</td><td style="font-size:11px">${e.pagador||'—'}</td></tr>`;
   }).join('');
   $('det-ft-base').textContent = fmt((entradas||[]).reduce((s,e)=>s+e.salario_base,0));
   $('det-ft-total').textContent = fmt(sem.total_pagado);
@@ -1393,6 +1456,7 @@ function renderEmpleados() {
       <td class="num">${fmt(e.salario)}</td>
       <td class="num" style="color:var(--text2)">${fmt(e.salario/6)}</td>
       <td class="num" style="color:var(--green)">${e.gasolina>0?fmt(e.gasolina):'—'}</td>
+      <td>${e.pagador?`<span class="badge" style="background:var(--blue-bg);color:var(--blue)">${e.pagador}</span>`:'<span style="font-size:12px;color:var(--text3)">—</span>'}</td>
       <td>${pA?`<span class="${new Date(pA.inicia_cobro+'T00:00:00')<=currentSabado?'prestamo-badge':'pending-badge'}">-${fmt(pA.cuota)}/sem · ${new Date(pA.inicia_cobro+'T00:00:00')<=currentSabado?'cobrando':'inicia '+fmtDS(fromISO(pA.inicia_cobro))}</span>`:'<span style="font-size:12px;color:var(--text2)">sin préstamo</span>'}</td>
       <td><span class="badge ${e.activo?'b-activo':'b-pagado'}">${e.activo?'Activo':'Baja'}</span></td>
       <td><div style="display:flex;gap:4px">
@@ -1407,6 +1471,7 @@ function openEmpModal() {
   editEmpId=null; $('emp-modal-title').textContent='Nuevo empleado';
   ['ef-nombre','ef-puesto','ef-salario','ef-diario','ef-gasolina'].forEach(id=>$(id).value='');
   $('ef-gasolina').value=0;
+  $('ef-pagador').value='';
   $('overlay-emp').classList.add('open');
 }
 
@@ -1416,19 +1481,20 @@ function editEmp(id) {
   $('ef-nombre').value=e.nombre; $('ef-puesto').value=e.puesto; $('ef-obra').value=e.obra;
   $('ef-salario').value=e.salario; $('ef-diario').value=Math.round(e.salario/6);
   $('ef-gasolina').value=e.gasolina||0;
+  $('ef-pagador').value=e.pagador||'';
   $('overlay-emp').classList.add('open');
 }
 
 async function saveEmp() {
   const nombre=$('ef-nombre').value.trim().toUpperCase(), puesto=$('ef-puesto').value.trim();
-  const obra=$('ef-obra').value, salario=+$('ef-salario').value||0, gasolina=+$('ef-gasolina').value||0;
+  const obra=$('ef-obra').value, salario=+$('ef-salario').value||0, gasolina=+$('ef-gasolina').value||0, pagador=$('ef-pagador').value||null;
   if (!nombre||!salario) return;
   if (editEmpId) {
-    await db.from('empleados_nomina').update({nombre,puesto,obra,salario,gasolina}).eq('id',editEmpId);
+    await db.from('empleados_nomina').update({nombre,puesto,obra,salario,gasolina,pagador}).eq('id',editEmpId);
     const idx=empleados.findIndex(e=>e.id===editEmpId);
-    if (idx>=0) empleados[idx]={...empleados[idx],nombre,puesto,obra,salario,gasolina};
+    if (idx>=0) empleados[idx]={...empleados[idx],nombre,puesto,obra,salario,gasolina,pagador};
   } else {
-    const { data } = await db.from('empleados_nomina').insert([{nombre,puesto,obra,salario,gasolina}]).select().single();
+    const { data } = await db.from('empleados_nomina').insert([{nombre,puesto,obra,salario,gasolina,pagador}]).select().single();
     if (data) empleados.push(data);
   }
   closeOv('overlay-emp'); renderEmpleados(); showToast('Empleado guardado');
