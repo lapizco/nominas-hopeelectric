@@ -816,28 +816,7 @@ async function renderDash() {
   const dashPagEl = $('dash-pagadores');
   if (dashPagEl) dashPagEl.innerHTML = resumenPagadores || '<div style="font-size:12px;color:var(--text2);padding:8px 0">No hay trabajadores con pagador asignado aún.</div>';
 
-  // Resumen por pagador
-  const pagadores = ['Luis','Joan','Efectivo',''];
-  const labPag = {'Luis':'Luis','Joan':'Joan','Efectivo':'Efectivo','':'Sin asignar'};
-  const colPag = {'Luis':'var(--blue-bg)','Joan':'var(--green-bg)','Efectivo':'var(--gray-bg)','':'var(--bg3)'};
-  const colTxtPag = {'Luis':'var(--blue)','Joan':'var(--green)','Efectivo':'var(--gray-text)','':'var(--text2)'};
-  let resumenPagHtml = '';
-  pagadores.forEach(pag => {
-    const empsP = empActivos.filter(e => (getNom(e.id).pagador||'') === pag);
-    if (!empsP.length) return;
-    const totalP = empsP.reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))),0);
-    resumenPagHtml += `<div style="padding:10px 14px;border-right:0.5px solid var(--border);flex:1;min-width:130px">
-      <div style="font-size:11px;color:var(--text2);margin-bottom:4px">${labPag[pag]}</div>
-      <div style="font-size:16px;font-weight:500">${fmt(totalP)}</div>
-      <div style="font-size:11px;color:var(--text2);margin-top:2px">${empsP.length} trabajador(es)</div>
-    </div>`;
-  });
-  if (resumenPagHtml) {
-    const existingPag = document.getElementById('dash-pagadores');
-    const html_pag = `<div class="panel" style="margin-bottom:14px"><div class="phead"><h2>Resumen por pagador — esta semana</h2></div><div style="display:flex;flex-wrap:wrap;border-top:0.5px solid var(--border)">${resumenPagHtml}</div></div>`;
-    if (existingPag) existingPag.outerHTML = html_pag;
-    else $('dash-nom-title').closest('.panel').insertAdjacentHTML('beforebegin', `<div id="dash-pagadores">${html_pag.replace('<div class="panel"','<div class="panel"').replace('</div></div>','</div></div>')}</div>`);
-  }
+
   let tB=0,tD=0,tE=0,tP=0,tT=0;
   $('dash-tbody').innerHTML = empActivos.map(e => {
     const en=getNom(e.id); const d=e.salario/6;
