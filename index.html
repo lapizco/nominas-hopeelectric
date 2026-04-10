@@ -11,15 +11,15 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f5f5f4;--bg2:#ffffff;--bg3:#f0efea;
-  --border:#e5e5e3;--border2:#d1d0cc;
-  --text:#1a1a1a;--text2:#666662;--text3:#999996;
-  --green:#0f6e56;--green-bg:#e1f5ee;
-  --blue:#185fa5;--blue-bg:#e6f1fb;
-  --amber:#854f0b;--amber-bg:#faeeda;
-  --red:#a32d2d;--red-bg:#fcebeb;
-  --gray-bg:#f1efe8;--gray-text:#5f5e5a;
-  --radius:8px;--radius-lg:12px;
+--bg:#f5f5f4;--bg2:#ffffff;--bg3:#f0efea;
+--border:#e5e5e3;--border2:#d1d0cc;
+--text:#1a1a1a;--text2:#666662;--text3:#999996;
+--green:#0f6e56;--green-bg:#e1f5ee;
+--blue:#185fa5;--blue-bg:#e6f1fb;
+--amber:#854f0b;--amber-bg:#faeeda;
+--red:#a32d2d;--red-bg:#fcebeb;
+--gray-bg:#f1efe8;--gray-text:#5f5e5a;
+--radius:8px;--radius-lg:12px;
 }
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh}
 
@@ -145,56 +145,56 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
 
 /* ── RESPONSIVE MÓVIL ─────────────────────────────── */
 @media(max-width:768px){
-  .content{padding:10px 12px}
-  .topbar{padding:8px 12px}
-  .topbar h1{font-size:13px}
-  .period-pill{display:none}
-  .topbar-left{gap:6px}
-  #user-email{display:none}
-  .tabs{padding:0 8px}
-  .tab{padding:8px 10px;font-size:12px}
-  .cards-row{grid-template-columns:repeat(2,1fr);gap:8px}
-  .mcard .val{font-size:16px}
-  .phead{padding:8px 12px;gap:6px}
-  .phead h2{font-size:12px}
-  .phead-r{gap:6px}
-  .phead-r select{font-size:11px;padding:4px 6px}
-  .btn{padding:5px 10px;font-size:11px}
-  .btn-sm{padding:3px 7px;font-size:10px}
-  /* Tablas — scroll horizontal con indicador visual */
-  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:0 0 var(--radius-lg) var(--radius-lg)}
-  .table-wrap::after{content:'← desliza →';display:block;text-align:center;font-size:10px;color:var(--text3);padding:4px;background:var(--bg3)}
-  table{font-size:11px;min-width:500px}
-  thead th{padding:5px 7px;font-size:10px}
-  td{padding:5px 7px}
-  /* Modales — pantalla completa en móvil */
-  .overlay{padding:0;align-items:flex-end}
-  .modal{width:100%;max-width:100%;border-radius:var(--radius-lg) var(--radius-lg) 0 0;padding:16px;max-height:90vh;overflow-y:auto;margin:0}
-  .modal.modal-wide{width:100%;max-width:100%}
-  .fg{grid-template-columns:1fr}
-  .fg .full{grid-column:1}
-  .nom-fields{grid-template-columns:1fr 1fr;padding:10px 12px}
-  .btn-row{flex-wrap:wrap}
-  .btn-row .btn{flex:1;justify-content:center}
-  /* Dashboard — tabla principal simplificada */
-  #dash-tbody tr td:nth-child(3),
-  #dash-tbody tr td:nth-child(4),
-  #dash-tbody tr td:nth-child(5){display:none}
-  #dash-tbody thead th:nth-child(3),
-  #dash-tbody thead th:nth-child(4),
-  #dash-tbody thead th:nth-child(5){display:none}
-  /* Resúmenes por obra — stack vertical */
-  .resumen-grid{grid-template-columns:1fr 1fr!important}
-  /* Period pill en topbar — compacto */
-  .period-mob{display:block;font-size:10px;color:var(--text2);padding:2px 0}
-  /* Ocultar columnas secundarias en tabla nómina */
-  .hide-mob{display:none!important}
+.content{padding:10px 12px}
+.topbar{padding:8px 12px}
+.topbar h1{font-size:13px}
+.period-pill{display:none}
+.topbar-left{gap:6px}
+#user-email{display:none}
+.tabs{padding:0 8px}
+.tab{padding:8px 10px;font-size:12px}
+.cards-row{grid-template-columns:repeat(2,1fr);gap:8px}
+.mcard .val{font-size:16px}
+.phead{padding:8px 12px;gap:6px}
+.phead h2{font-size:12px}
+.phead-r{gap:6px}
+.phead-r select{font-size:11px;padding:4px 6px}
+.btn{padding:5px 10px;font-size:11px}
+.btn-sm{padding:3px 7px;font-size:10px}
+/* Tablas — scroll horizontal con indicador visual */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:0 0 var(--radius-lg) var(--radius-lg)}
+.table-wrap::after{content:'← desliza →';display:block;text-align:center;font-size:10px;color:var(--text3);padding:4px;background:var(--bg3)}
+table{font-size:11px;min-width:500px}
+thead th{padding:5px 7px;font-size:10px}
+td{padding:5px 7px}
+/* Modales — pantalla completa en móvil */
+.overlay{padding:0;align-items:flex-end}
+.modal{width:100%;max-width:100%;border-radius:var(--radius-lg) var(--radius-lg) 0 0;padding:16px;max-height:90vh;overflow-y:auto;margin:0}
+.modal.modal-wide{width:100%;max-width:100%}
+.fg{grid-template-columns:1fr}
+.fg .full{grid-column:1}
+.nom-fields{grid-template-columns:1fr 1fr;padding:10px 12px}
+.btn-row{flex-wrap:wrap}
+.btn-row .btn{flex:1;justify-content:center}
+/* Dashboard — tabla principal simplificada */
+#dash-tbody tr td:nth-child(3),
+#dash-tbody tr td:nth-child(4),
+#dash-tbody tr td:nth-child(5){display:none}
+#dash-tbody thead th:nth-child(3),
+#dash-tbody thead th:nth-child(4),
+#dash-tbody thead th:nth-child(5){display:none}
+/* Resúmenes por obra — stack vertical */
+.resumen-grid{grid-template-columns:1fr 1fr!important}
+/* Period pill en topbar — compacto */
+.period-mob{display:block;font-size:10px;color:var(--text2);padding:2px 0}
+/* Ocultar columnas secundarias en tabla nómina */
+.hide-mob{display:none!important}
 }
 @media(max-width:480px){
-  .cards-row{grid-template-columns:1fr 1fr}
-  .tabs{padding:0 4px}
-  .tab{padding:7px 8px;font-size:11px}
-  .topbar h1{font-size:12px}
+.cards-row{grid-template-columns:1fr 1fr}
+.tabs{padding:0 4px}
+.tab{padding:7px 8px;font-size:11px}
+.topbar h1{font-size:12px}
 }
 </style>
 </head>
@@ -202,191 +202,191 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
 
 <!-- LOGIN -->
 <div class="login-wrap" id="login-wrap">
-  <div class="login-card">
-    <div class="login-logo">Hope Electric</div>
-    <div class="login-sub">Sistema de nóminas</div>
-    <label>Correo electrónico</label>
-    <input type="email" id="login-user" placeholder="correo@empresa.com" autocomplete="email">
-    <label>Contraseña</label>
-    <input type="password" id="login-pass" placeholder="contraseña" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
-    <button class="login-btn" onclick="doLogin()">Entrar</button>
-    <div class="login-err" id="login-err">Usuario o contraseña incorrectos</div>
-  </div>
+<div class="login-card">
+<div class="login-logo">Hope Electric</div>
+<div class="login-sub">Sistema de nóminas</div>
+<label>Correo electrónico</label>
+<input type="email" id="login-user" placeholder="correo@empresa.com" autocomplete="email">
+<label>Contraseña</label>
+<input type="password" id="login-pass" placeholder="contraseña" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+<button class="login-btn" onclick="doLogin()">Entrar</button>
+<div class="login-err" id="login-err">Usuario o contraseña incorrectos</div>
+</div>
 </div>
 
 <!-- APP -->
 <div class="app" id="app-wrap">
-  <div class="topbar">
-    <div class="topbar-left">
-      <div><h1>Hope Electric — Nóminas</h1><div class="period-mob" id="period-mob-txt"></div></div>
-      <div class="period-pill"><span>Semana:</span><strong id="period-txt">—</strong><span id="period-dias"></span></div>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px"><span id="user-email" style="font-size:11px;color:var(--text2)"></span><button class="logout-btn" onclick="doLogout()">Cerrar sesión</button></div>
-  </div>
-  <div class="tabs">
-    <div class="tab active" onclick="sw('dashboard')">Dashboard</div>
-    <div class="tab" onclick="sw('nomina')">Nómina actual</div>
-    <div class="tab" onclick="sw('historial')">Historial</div>
-    <div class="tab" onclick="sw('prestamos')">Préstamos</div>
-    <div class="tab" onclick="sw('empleados')">Empleados</div>
-    <div class="tab" onclick="sw('anual')">Resumen anual</div>
-    <div class="tab" onclick="sw('config')">Configuración</div>
-  </div>
+<div class="topbar">
+<div class="topbar-left">
+<div><h1>Hope Electric — Nóminas</h1><div class="period-mob" id="period-mob-txt"></div></div>
+<div class="period-pill"><span>Semana:</span><strong id="period-txt">—</strong><span id="period-dias"></span></div>
+</div>
+<div style="display:flex;align-items:center;gap:10px"><span id="user-email" style="font-size:11px;color:var(--text2)"></span><button class="logout-btn" onclick="doLogout()">Cerrar sesión</button></div>
+</div>
+<div class="tabs">
+<div class="tab active" onclick="sw('dashboard')">Dashboard</div>
+<div class="tab" onclick="sw('nomina')">Nómina actual</div>
+<div class="tab" onclick="sw('historial')">Historial</div>
+<div class="tab" onclick="sw('prestamos')">Préstamos</div>
+<div class="tab" onclick="sw('empleados')">Empleados</div>
+<div class="tab" onclick="sw('anual')">Resumen anual</div>
+<div class="tab" onclick="sw('config')">Configuración</div>
+</div>
 
-  <div class="content">
-    <!-- DASHBOARD -->
-    <div id="t-dashboard" class="tab-content active">
-      <div class="cards-row" id="dash-cards"></div>
-      <div class="panel">
-        <div class="phead"><h2 id="dash-nom-title">Nómina en curso</h2><button class="btn btn-primary" onclick="openCierre()">Cerrar semana y pagar</button></div>
-        <div id="dash-pagadores" style="padding:12px 16px;border-bottom:0.5px solid var(--border)"></div>
-        <div class="table-wrap">
-        <table>
-          <thead><tr><th>Empleado</th><th>Obra</th><th class="num">Base</th><th class="num">Deducc.</th><th class="num">Extras</th><th class="num">Préstamo</th><th class="num">Total</th></tr></thead>
-          <tbody id="dash-tbody"></tbody>
-          <tfoot><tr><td colspan="2" style="font-weight:500;font-size:12px">Total</td><td class="num" id="dft-base" style="font-weight:500"></td><td class="num" id="dft-ded" style="color:var(--red)"></td><td class="num" id="dft-ext" style="color:var(--green)"></td><td class="num" id="dft-prest" style="color:var(--amber)"></td><td class="num" id="dft-total" style="font-weight:500;font-size:14px"></td></tr></tfoot>
-        </table>
-        </div>
-      </div>
-    </div>
+<div class="content">
+<!-- DASHBOARD -->
+<div id="t-dashboard" class="tab-content active">
+<div class="cards-row" id="dash-cards"></div>
+<div class="panel">
+<div class="phead"><h2 id="dash-nom-title">Nómina en curso</h2><button class="btn btn-primary" onclick="openCierre()">Cerrar semana y pagar</button></div>
+<div id="dash-pagadores" style="padding:12px 16px;border-bottom:0.5px solid var(--border)"></div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Empleado</th><th>Obra</th><th class="num">Base</th><th class="num">Deducc.</th><th class="num">Extras</th><th class="num">Préstamo</th><th class="num">Total</th></tr></thead>
+<tbody id="dash-tbody"></tbody>
+<tfoot><tr><td colspan="2" style="font-weight:500;font-size:12px">Total</td><td class="num" id="dft-base" style="font-weight:500"></td><td class="num" id="dft-ded" style="color:var(--red)"></td><td class="num" id="dft-ext" style="color:var(--green)"></td><td class="num" id="dft-prest" style="color:var(--amber)"></td><td class="num" id="dft-total" style="font-weight:500;font-size:14px"></td></tr></tfoot>
+</table>
+</div>
+</div>
+</div>
 
-    <!-- NÓMINA ACTUAL -->
-    <div id="t-nomina" class="tab-content">
-      <div class="panel">
-        <div id="nom-banner"></div>
-        <div class="phead"><h2 id="nom-panel-title">Nómina en curso</h2>
-          <div class="phead-r">
-            <select id="nom-filtro-obra" onchange="renderNomina()"><option value="">Todas las obras</option><option>OMANA</option><option>SANTA</option><option>CASA</option></select>
-            <select id="nom-orden" onchange="renderNomina()">
-              <option value="obra">Ordenar por obra</option>
-              <option value="alfa">Ordenar A-Z</option>
-              <option value="total-desc">Mayor total primero</option>
-              <option value="total-asc">Menor total primero</option>
-            </select>
-            <button class="btn btn-primary" onclick="openCierre()">Cerrar semana y pagar</button>
-          </div>
-        </div>
-        <div class="table-wrap">
-        <table>
-          <thead><tr><th>Empleado</th><th class="hide-mob">Obra</th><th class="num hide-mob">Base</th><th>Faltas</th><th class="hide-mob">H. extras</th><th class="num hide-mob">Gasolina</th><th class="num hide-mob">Préstamo</th><th class="num hide-mob">Desc.</th><th class="num hide-mob">Se debe</th><th class="num">Total</th><th class="hide-mob">Pagador</th><th></th></tr></thead>
-          <tbody id="nom-tbody"></tbody>
-        </table>
-        </div>
-      </div>
-      <div id="nom-resumenes"></div>
-    </div>
+<!-- NÓMINA ACTUAL -->
+<div id="t-nomina" class="tab-content">
+<div class="panel">
+<div id="nom-banner"></div>
+<div class="phead"><h2 id="nom-panel-title">Nómina en curso</h2>
+<div class="phead-r">
+<select id="nom-filtro-obra" onchange="renderNomina()"><option value="">Todas las obras</option><option>OMANA</option><option>SANTA</option><option>CASA</option></select>
+<select id="nom-orden" onchange="renderNomina()">
+<option value="obra">Ordenar por obra</option>
+<option value="alfa">Ordenar A-Z</option>
+<option value="total-desc">Mayor total primero</option>
+<option value="total-asc">Menor total primero</option>
+</select>
+<button class="btn btn-primary" onclick="openCierre()">Cerrar semana y pagar</button>
+</div>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Empleado</th><th class="hide-mob">Obra</th><th class="num hide-mob">Base</th><th>Faltas</th><th class="hide-mob">H. extras</th><th class="num hide-mob">Gasolina</th><th class="num hide-mob">Préstamo</th><th class="num hide-mob">Desc.</th><th class="num hide-mob">Se debe</th><th class="num">Total</th><th class="hide-mob">Pagador</th><th></th></tr></thead>
+<tbody id="nom-tbody"></tbody>
+</table>
+</div>
+</div>
+<div id="nom-resumenes"></div>
+</div>
 
-    <!-- HISTORIAL -->
-    <div id="t-historial" class="tab-content">
-      <div class="cards-row" id="hist-cards"></div>
-      <div class="panel">
-        <div class="phead"><h2>Nóminas cerradas</h2></div>
-        <div class="table-wrap">
-        <table>
-          <thead><tr><th>Período</th><th>Del</th><th>Al (sábado)</th><th class="num">Empleados</th><th class="num">Total pagado</th><th class="num">Desc. préstamos</th><th>Estado</th><th></th></tr></thead>
-          <tbody id="hist-tbody"></tbody>
-        </table>
-        </div>
-      </div>
-    </div>
+<!-- HISTORIAL -->
+<div id="t-historial" class="tab-content">
+<div class="cards-row" id="hist-cards"></div>
+<div class="panel">
+<div class="phead"><h2>Nóminas cerradas</h2></div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Período</th><th>Del</th><th>Al (sábado)</th><th class="num">Empleados</th><th class="num">Total pagado</th><th class="num">Desc. préstamos</th><th>Estado</th><th></th></tr></thead>
+<tbody id="hist-tbody"></tbody>
+</table>
+</div>
+</div>
+</div>
 
-    <!-- PRÉSTAMOS -->
-    <div id="t-prestamos" class="tab-content">
-      <div class="cards-row" id="prest-cards"></div>
-      <div class="panel">
-        <div class="phead"><h2>Préstamos</h2>
-          <div class="phead-r">
-            <select id="prest-filtro" onchange="renderPrestamos()"><option value="">Todos</option><option value="activo">Activos</option><option value="pendiente">Pendientes</option><option value="pagado">Liquidados</option></select>
-            <button class="btn btn-primary" onclick="openPrestModal()">+ Nuevo préstamo</button>
-          </div>
-        </div>
-        <div class="table-wrap">
-        <table>
-          <thead><tr><th>Empleado</th><th>Obra</th><th class="num">Préstamo</th><th class="num">Desc./sem</th><th>Inicia cobro</th><th class="num">Pagado</th><th class="num">Saldo</th><th>Letras rest.</th><th>Progreso</th><th>Estado</th><th></th></tr></thead>
-          <tbody id="prest-tbody"></tbody>
-        </table>
-        </div>
-      </div>
-    </div>
+<!-- PRÉSTAMOS -->
+<div id="t-prestamos" class="tab-content">
+<div class="cards-row" id="prest-cards"></div>
+<div class="panel">
+<div class="phead"><h2>Préstamos</h2>
+<div class="phead-r">
+<select id="prest-filtro" onchange="renderPrestamos()"><option value="">Todos</option><option value="activo">Activos</option><option value="pendiente">Pendientes</option><option value="pagado">Liquidados</option></select>
+<button class="btn btn-primary" onclick="openPrestModal()">+ Nuevo préstamo</button>
+</div>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Empleado</th><th>Obra</th><th class="num">Préstamo</th><th class="num">Desc./sem</th><th>Inicia cobro</th><th class="num">Pagado</th><th class="num">Saldo</th><th>Letras rest.</th><th>Progreso</th><th>Estado</th><th></th></tr></thead>
+<tbody id="prest-tbody"></tbody>
+</table>
+</div>
+</div>
+</div>
 
-    <!-- EMPLEADOS -->
-    <div id="t-empleados" class="tab-content">
-      <div class="panel">
-        <div class="phead"><h2>Empleados</h2>
-          <div class="phead-r">
-            <input type="text" id="emp-search" placeholder="Buscar..." oninput="renderEmpleados()" style="width:150px">
-            <select id="emp-estado-f" onchange="renderEmpleados()"><option value="activo">Solo activos</option><option value="">Todos</option><option value="baja">Solo bajas</option></select>
-            <select id="emp-obra-f" onchange="renderEmpleados()"><option value="">Todas las obras</option><option>OMANA</option><option>SANTA</option><option>CASA</option></select>
-            <button class="btn btn-primary" onclick="openEmpModal()">+ Nuevo empleado</button>
-          </div>
-        </div>
-        <div class="table-wrap">
-        <table>
-          <thead><tr><th>#</th><th>Nombre</th><th>Puesto</th><th>Obra</th><th class="num">Salario/sem</th><th class="num">Diario</th><th class="num">Gasolina/sem</th><th>Le paga</th><th>Préstamo activo</th><th>Estado</th><th></th></tr></thead>
-          <tbody id="emp-tbody"></tbody>
-        </table>
-        </div>
-      </div>
-    </div>
+<!-- EMPLEADOS -->
+<div id="t-empleados" class="tab-content">
+<div class="panel">
+<div class="phead"><h2>Empleados</h2>
+<div class="phead-r">
+<input type="text" id="emp-search" placeholder="Buscar..." oninput="renderEmpleados()" style="width:150px">
+<select id="emp-estado-f" onchange="renderEmpleados()"><option value="activo">Solo activos</option><option value="">Todos</option><option value="baja">Solo bajas</option></select>
+<select id="emp-obra-f" onchange="renderEmpleados()"><option value="">Todas las obras</option><option>OMANA</option><option>SANTA</option><option>CASA</option></select>
+<button class="btn btn-primary" onclick="openEmpModal()">+ Nuevo empleado</button>
+</div>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>#</th><th>Nombre</th><th>Puesto</th><th>Obra</th><th class="num">Salario/sem</th><th class="num">Diario</th><th class="num">Gasolina/sem</th><th>Le paga</th><th>Préstamo activo</th><th>Estado</th><th></th></tr></thead>
+<tbody id="emp-tbody"></tbody>
+</table>
+</div>
+</div>
+</div>
 
-    <!-- RESUMEN ANUAL -->
-    <div id="t-anual" class="tab-content">
-      <div class="cards-row" id="anual-cards"></div>
-      <div class="panel">
-        <div class="phead">
-          <h2>Resumen por mes</h2>
-          <div class="phead-r">
-            <select id="anual-year" onchange="renderAnual()"></select>
-            <button class="btn" style="color:var(--green);border-color:var(--border)" onclick="exportExcelAnual()">Descargar Excel anual</button>
-          </div>
-        </div>
-        <div class="table-wrap">
-        <table>
-          <thead><tr><th>Mes</th><th class="num">Semanas</th><th class="num">Total pagado</th><th class="num">Desc. préstamos</th><th class="num">Promedio/semana</th></tr></thead>
-          <tbody id="anual-tbody"></tbody>
-          <tfoot><tr><td style="font-weight:500;padding:7px 11px">Total</td><td class="num" id="anual-ft-sems" style="font-weight:500"></td><td class="num" id="anual-ft-total" style="font-weight:500;font-size:14px"></td><td class="num" id="anual-ft-prest"></td><td></td></tr></tfoot>
-        </table>
-        </div>
-      </div>
+<!-- RESUMEN ANUAL -->
+<div id="t-anual" class="tab-content">
+<div class="cards-row" id="anual-cards"></div>
+<div class="panel">
+<div class="phead">
+<h2>Resumen por mes</h2>
+<div class="phead-r">
+<select id="anual-year" onchange="renderAnual()"></select>
+<button class="btn" style="color:var(--green);border-color:var(--border)" onclick="exportExcelAnual()">Descargar Excel anual</button>
+</div>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Mes</th><th class="num">Semanas</th><th class="num">Total pagado</th><th class="num">Desc. préstamos</th><th class="num">Promedio/semana</th></tr></thead>
+<tbody id="anual-tbody"></tbody>
+<tfoot><tr><td style="font-weight:500;padding:7px 11px">Total</td><td class="num" id="anual-ft-sems" style="font-weight:500"></td><td class="num" id="anual-ft-total" style="font-weight:500;font-size:14px"></td><td class="num" id="anual-ft-prest"></td><td></td></tr></tfoot>
+</table>
+</div>
+</div>
 
-      <!-- GRÁFICA COMPARATIVA -->
-      <div class="panel" style="margin-bottom:14px">
-        <div class="phead"><h2>Gráfica de pagos por semana</h2></div>
-        <div style="padding:16px;overflow-x:auto">
-          <canvas id="grafica-nomina" style="max-height:280px"></canvas>
-        </div>
-      </div>
+<!-- GRÁFICA COMPARATIVA -->
+<div class="panel" style="margin-bottom:14px">
+<div class="phead"><h2>Gráfica de pagos por semana</h2></div>
+<div style="padding:16px;overflow-x:auto">
+<canvas id="grafica-nomina" style="max-height:280px"></canvas>
+</div>
+</div>
 
-      <div class="panel">
-        <div class="phead"><h2>Reporte de préstamos</h2>
-          <button class="btn" style="color:var(--green);border-color:var(--border)" onclick="exportExcelPrestamos()">Descargar Excel préstamos</button>
-        </div>
-        <div class="table-wrap">
-        <table>
-          <thead><tr><th>Empleado</th><th>Obra</th><th class="num">Préstamo</th><th class="num">Desc./sem</th><th>Inició</th><th class="num">Pagado</th><th class="num">Saldo</th><th>Letras rest.</th><th>Progreso</th><th>Estado</th></tr></thead>
-          <tbody id="anual-prest-tbody"></tbody>
-        </table>
-        </div>
-      </div>
-    </div>
+<div class="panel">
+<div class="phead"><h2>Reporte de préstamos</h2>
+<button class="btn" style="color:var(--green);border-color:var(--border)" onclick="exportExcelPrestamos()">Descargar Excel préstamos</button>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Empleado</th><th>Obra</th><th class="num">Préstamo</th><th class="num">Desc./sem</th><th>Inició</th><th class="num">Pagado</th><th class="num">Saldo</th><th>Letras rest.</th><th>Progreso</th><th>Estado</th></tr></thead>
+<tbody id="anual-prest-tbody"></tbody>
+</table>
+</div>
+</div>
+</div>
 
-    <!-- CONFIGURACIÓN -->
-    <div id="t-config" class="tab-content">
-      <div class="panel">
-        <div class="phead">
-          <h2>Encargados de obra</h2>
-          <button class="btn btn-primary" onclick="openEncModal()">+ Nuevo encargado</button>
-        </div>
-        <div class="table-wrap">
-        <table>
-          <thead><tr><th>Nombre</th><th>Correo</th><th>Obra</th><th>Estado</th><th></th></tr></thead>
-          <tbody id="enc-tbody"></tbody>
-        </table>
-        </div>
-      </div>
-    </div>
+<!-- CONFIGURACIÓN -->
+<div id="t-config" class="tab-content">
+<div class="panel">
+<div class="phead">
+<h2>Encargados de obra</h2>
+<button class="btn btn-primary" onclick="openEncModal()">+ Nuevo encargado</button>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Nombre</th><th>Correo</th><th>Obra</th><th>Estado</th><th></th></tr></thead>
+<tbody id="enc-tbody"></tbody>
+</table>
+</div>
+</div>
+</div>
 
-  </div>
+</div>
 </div>
 
 <!-- TOAST -->
@@ -395,138 +395,138 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
 <!-- MODAL: EDITAR NÓMINA -->
 <div class="overlay" id="overlay-nom">
 <div class="modal">
-  <h3 id="nom-modal-title">Editar nómina</h3>
-  <div class="nom-emp-hdr" id="nom-emp-hdr"></div>
-  <div class="nom-fields">
-    <div class="nf"><label>Faltas (días)</label><input type="number" id="ne-faltas" min="0" max="6" value="0" oninput="recalcNom()"></div>
-    <div class="nf"><label>Horas extras</label><input type="number" id="ne-hext" min="0" value="0" oninput="recalcNom()"></div>
-    <div class="nf"><label>Tarifa h. extra</label><select id="ne-tarifa" onchange="recalcNom()"><option value="1.5">Normal ×1.5</option><option value="2">Doble ×2</option><option value="3">Triple ×3</option></select></div>
-    <div class="nf"><label>Descuentos</label><input type="number" id="ne-desc" min="0" value="0" oninput="recalcNom()"></div>
-    <div class="nf"><label>Se le debe</label><input type="number" id="ne-debe" min="0" value="0" oninput="recalcNom()"></div>
-    <div class="nf"><label>Desc. préstamo (auto)</label><input type="number" id="ne-prest" min="0" value="0" readonly style="opacity:.55"></div>
-    <div class="nf"><label>¿Quién paga?</label><select id="ne-pagador"><option value="">Sin asignar</option><option value="Luis">Luis</option><option value="Joan">Joan</option><option value="Efectivo">Efectivo</option></select></div>
-    <div class="nf" style="grid-column:1/-1"><label>Nota (permiso, incapacidad, etc.)</label><input type="text" id="ne-nota" placeholder="Opcional..." style="width:100%"></div>
-  </div>
-  <div class="nom-result" id="nom-result"></div>
-  <div class="btn-row"><button class="btn" onclick="closeOv('overlay-nom')">Cancelar</button><button class="btn btn-primary" onclick="saveNomEntry()">Guardar</button></div>
+<h3 id="nom-modal-title">Editar nómina</h3>
+<div class="nom-emp-hdr" id="nom-emp-hdr"></div>
+<div class="nom-fields">
+<div class="nf"><label>Faltas (días)</label><input type="number" id="ne-faltas" min="0" max="6" value="0" oninput="recalcNom()"></div>
+<div class="nf"><label>Horas extras</label><input type="number" id="ne-hext" min="0" value="0" oninput="recalcNom()"></div>
+<div class="nf"><label>Tarifa h. extra</label><select id="ne-tarifa" onchange="recalcNom()"><option value="1.5">Normal ×1.5</option><option value="2">Doble ×2</option><option value="3">Triple ×3</option></select></div>
+<div class="nf"><label>Descuentos</label><input type="number" id="ne-desc" min="0" value="0" oninput="recalcNom()"></div>
+<div class="nf"><label>Se le debe</label><input type="number" id="ne-debe" min="0" value="0" oninput="recalcNom()"></div>
+<div class="nf"><label>Desc. préstamo (auto)</label><input type="number" id="ne-prest" min="0" value="0" readonly style="opacity:.55"></div>
+<div class="nf"><label>¿Quién paga?</label><select id="ne-pagador"><option value="">Sin asignar</option><option value="Luis">Luis</option><option value="Joan">Joan</option><option value="Efectivo">Efectivo</option></select></div>
+<div class="nf" style="grid-column:1/-1"><label>Nota (permiso, incapacidad, etc.)</label><input type="text" id="ne-nota" placeholder="Opcional..." style="width:100%"></div>
+</div>
+<div class="nom-result" id="nom-result"></div>
+<div class="btn-row"><button class="btn" onclick="closeOv('overlay-nom')">Cancelar</button><button class="btn btn-primary" onclick="saveNomEntry()">Guardar</button></div>
 </div>
 </div>
 
 <!-- MODAL: NUEVO PRÉSTAMO -->
 <div class="overlay" id="overlay-prest">
 <div class="modal" style="width:520px">
-  <h3>Nuevo préstamo</h3>
-  <div class="fg">
-    <div class="full"><label>Empleado</label><select id="pf-emp" style="width:100%" onchange="calcPrestPrev()"></select></div>
-    <div><label>Monto total ($)</label><input type="number" id="pf-monto" min="0" placeholder="2000" oninput="calcPrestPrev()"></div>
-    <div><label>Descuento semanal ($)</label><input type="number" id="pf-cuota" min="0" placeholder="500" oninput="calcPrestPrev()"></div>
-    <div class="full"><label>¿Cuándo inicia el descuento?</label>
-      <div class="inicio-opts">
-        <div class="inicio-opt selected" data-val="esta" onclick="selectInicio('esta')"><div class="dot"></div><div><div style="font-size:12px">Esta semana</div><div id="lbl-esta" style="font-size:11px;opacity:.7"></div></div></div>
-        <div class="inicio-opt" data-val="siguiente" onclick="selectInicio('siguiente')"><div class="dot"></div><div><div style="font-size:12px">Siguiente semana</div><div id="lbl-sig" style="font-size:11px;opacity:.7"></div></div></div>
-        <div class="inicio-opt" data-val="otra" onclick="selectInicio('otra')"><div class="dot"></div><div><div style="font-size:12px">Otra fecha</div><div style="font-size:11px;opacity:.7">Elige el sábado</div></div></div>
-      </div>
-      <div id="fecha-custom-wrap" style="display:none;margin-top:8px">
-        <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px">Sábado de inicio</label>
-        <input type="date" id="pf-fecha-custom" style="width:100%" onchange="calcPrestPrev()">
-      </div>
-    </div>
-    <div class="full"><label>Nota (opcional)</label><input type="text" id="pf-nota" placeholder="Anticipo, emergencia..."></div>
-  </div>
-  <div id="prest-preview" class="preview-box"><div style="color:var(--text2);font-size:12px">Completa los campos para ver el resumen</div></div>
-  <div class="btn-row"><button class="btn" onclick="closeOv('overlay-prest')">Cancelar</button><button class="btn btn-primary" onclick="savePrestamo()">Registrar préstamo</button></div>
+<h3>Nuevo préstamo</h3>
+<div class="fg">
+<div class="full"><label>Empleado</label><select id="pf-emp" style="width:100%" onchange="calcPrestPrev()"></select></div>
+<div><label>Monto total ($)</label><input type="number" id="pf-monto" min="0" placeholder="2000" oninput="calcPrestPrev()"></div>
+<div><label>Descuento semanal ($)</label><input type="number" id="pf-cuota" min="0" placeholder="500" oninput="calcPrestPrev()"></div>
+<div class="full"><label>¿Cuándo inicia el descuento?</label>
+<div class="inicio-opts">
+<div class="inicio-opt selected" data-val="esta" onclick="selectInicio('esta')"><div class="dot"></div><div><div style="font-size:12px">Esta semana</div><div id="lbl-esta" style="font-size:11px;opacity:.7"></div></div></div>
+<div class="inicio-opt" data-val="siguiente" onclick="selectInicio('siguiente')"><div class="dot"></div><div><div style="font-size:12px">Siguiente semana</div><div id="lbl-sig" style="font-size:11px;opacity:.7"></div></div></div>
+<div class="inicio-opt" data-val="otra" onclick="selectInicio('otra')"><div class="dot"></div><div><div style="font-size:12px">Otra fecha</div><div style="font-size:11px;opacity:.7">Elige el sábado</div></div></div>
+</div>
+<div id="fecha-custom-wrap" style="display:none;margin-top:8px">
+<label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px">Sábado de inicio</label>
+<input type="date" id="pf-fecha-custom" style="width:100%" onchange="calcPrestPrev()">
+</div>
+</div>
+<div class="full"><label>Nota (opcional)</label><input type="text" id="pf-nota" placeholder="Anticipo, emergencia..."></div>
+</div>
+<div id="prest-preview" class="preview-box"><div style="color:var(--text2);font-size:12px">Completa los campos para ver el resumen</div></div>
+<div class="btn-row"><button class="btn" onclick="closeOv('overlay-prest')">Cancelar</button><button class="btn btn-primary" onclick="savePrestamo()">Registrar préstamo</button></div>
 </div>
 </div>
 
 <!-- MODAL: ELIMINAR PRÉSTAMO -->
 <div class="overlay" id="overlay-delete-prest">
 <div class="modal" style="width:420px">
-  <h3>Eliminar préstamo</h3>
-  <div class="del-box" id="delete-prest-info"></div>
-  <p style="font-size:13px;color:var(--text2);margin-bottom:16px">Esta acción no se puede deshacer. ¿Confirmas que deseas eliminar este préstamo?</p>
-  <div class="btn-row">
-    <button class="btn" onclick="closeOv('overlay-delete-prest')">Cancelar</button>
-    <button class="btn" style="background:#e24b4a;color:#fff;border-color:#e24b4a" onclick="confirmarEliminarPrestamo()">Sí, eliminar</button>
-  </div>
+<h3>Eliminar préstamo</h3>
+<div class="del-box" id="delete-prest-info"></div>
+<p style="font-size:13px;color:var(--text2);margin-bottom:16px">Esta acción no se puede deshacer. ¿Confirmas que deseas eliminar este préstamo?</p>
+<div class="btn-row">
+<button class="btn" onclick="closeOv('overlay-delete-prest')">Cancelar</button>
+<button class="btn" style="background:#e24b4a;color:#fff;border-color:#e24b4a" onclick="confirmarEliminarPrestamo()">Sí, eliminar</button>
+</div>
 </div>
 </div>
 
 <!-- MODAL: EMPLEADO -->
 <div class="overlay" id="overlay-emp">
 <div class="modal">
-  <h3 id="emp-modal-title">Nuevo empleado</h3>
-  <div class="fg">
-    <div class="full"><label>Nombre completo</label><input type="text" id="ef-nombre" style="width:100%;text-transform:uppercase"></div>
-    <div><label>Puesto</label><input type="text" id="ef-puesto"></div>
-    <div><label>Obra</label><select id="ef-obra"><option>OMANA</option><option>SANTA</option><option>CASA</option><option>OTRO</option></select></div>
-    <div><label>Salario semanal ($)</label><input type="number" id="ef-salario" oninput="document.getElementById('ef-diario').value=Math.round((+this.value||0)/6)"></div>
-    <div><label>Diario (auto)</label><input type="number" id="ef-diario" readonly style="opacity:.55"></div>
-    <div><label>Gasolina / transporte semanal ($)</label><input type="number" id="ef-gasolina" placeholder="0" min="0" value="0"></div>
-    <div style="display:flex;align-items:flex-end"><span style="font-size:11px;color:var(--text2)">Proporcional si hay faltas. 0 si no aplica.</span></div>
-    <div><label>¿Quién le paga?</label><select id="ef-pagador"><option value="">Sin asignar</option><option>Luis</option><option>Joan</option><option>Efectivo</option></select></div>
-  </div>
-  <div class="btn-row"><button class="btn" onclick="closeOv('overlay-emp')">Cancelar</button><button class="btn btn-primary" onclick="saveEmp()">Guardar</button></div>
+<h3 id="emp-modal-title">Nuevo empleado</h3>
+<div class="fg">
+<div class="full"><label>Nombre completo</label><input type="text" id="ef-nombre" style="width:100%;text-transform:uppercase"></div>
+<div><label>Puesto</label><input type="text" id="ef-puesto"></div>
+<div><label>Obra</label><select id="ef-obra"><option>OMANA</option><option>SANTA</option><option>CASA</option><option>OTRO</option></select></div>
+<div><label>Salario semanal ($)</label><input type="number" id="ef-salario" oninput="document.getElementById('ef-diario').value=Math.round((+this.value||0)/6)"></div>
+<div><label>Diario (auto)</label><input type="number" id="ef-diario" readonly style="opacity:.55"></div>
+<div><label>Gasolina / transporte semanal ($)</label><input type="number" id="ef-gasolina" placeholder="0" min="0" value="0"></div>
+<div style="display:flex;align-items:flex-end"><span style="font-size:11px;color:var(--text2)">Proporcional si hay faltas. 0 si no aplica.</span></div>
+<div><label>¿Quién le paga?</label><select id="ef-pagador"><option value="">Sin asignar</option><option>Luis</option><option>Joan</option><option>Efectivo</option></select></div>
+</div>
+<div class="btn-row"><button class="btn" onclick="closeOv('overlay-emp')">Cancelar</button><button class="btn btn-primary" onclick="saveEmp()">Guardar</button></div>
 </div>
 </div>
 
 <!-- MODAL: CERRAR SEMANA -->
 <div class="overlay" id="overlay-cierre">
 <div class="modal" style="width:540px">
-  <h3>Cerrar semana y registrar pago</h3>
-  <div id="cierre-body"></div>
-  <div class="btn-row" id="cierre-btns"></div>
+<h3>Cerrar semana y registrar pago</h3>
+<div id="cierre-body"></div>
+<div class="btn-row" id="cierre-btns"></div>
 </div>
 </div>
 
 <!-- MODAL: DETALLE HISTORIAL -->
 <div class="overlay" id="overlay-detail">
 <div class="modal" style="width:680px;padding:0;overflow:hidden">
-  <div class="detail-header">
-    <div><div style="font-size:14px;font-weight:500" id="det-title"></div><div style="font-size:12px;color:var(--text2)" id="det-subtitle"></div></div>
-    <div style="display:flex;gap:8px"><button class="btn" style="color:var(--blue);border-color:var(--border)" onclick="abrirEdicionNomina()">Editar</button><button class="btn" style="color:var(--green);border-color:var(--border)" onclick="exportExcelActual()">Excel</button><button class="btn" style="color:var(--text2);border-color:var(--border)" onclick="imprimirNomina()">Imprimir / PDF</button><button class="btn" onclick="closeOv('overlay-detail')">Cerrar</button></div>
-  </div>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Empleado</th><th>Puesto</th><th>Obra</th><th class="num">Base</th><th class="num">Faltas</th><th class="num">H.ext</th><th class="num">Gas.</th><th class="num">Préstamo</th><th class="num">Desc.</th><th class="num">Se debe</th><th class="num">Total</th><th>Pagador</th></tr></thead>
-      <tbody id="det-tbody"></tbody>
-      <tfoot><tr><td colspan="3" style="padding:7px 11px;font-weight:500;font-size:12px">Total</td><td class="num" id="det-ft-base" style="font-weight:500"></td><td colspan="5"></td><td></td><td class="num" id="det-ft-total" style="font-weight:500;font-size:14px"></td></tr></tfoot>
-    </table>
-  </div>
+<div class="detail-header">
+<div><div style="font-size:14px;font-weight:500" id="det-title"></div><div style="font-size:12px;color:var(--text2)" id="det-subtitle"></div></div>
+<div style="display:flex;gap:8px"><button class="btn" style="color:var(--blue);border-color:var(--border)" onclick="abrirEdicionNomina()">Editar</button><button class="btn" style="color:var(--green);border-color:var(--border)" onclick="exportExcelActual()">Excel</button><button class="btn" style="color:var(--text2);border-color:var(--border)" onclick="imprimirNomina()">Imprimir / PDF</button><button class="btn" onclick="closeOv('overlay-detail')">Cerrar</button></div>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Empleado</th><th>Puesto</th><th>Obra</th><th class="num">Base</th><th class="num">Faltas</th><th class="num">H.ext</th><th class="num">Gas.</th><th class="num">Préstamo</th><th class="num">Desc.</th><th class="num">Se debe</th><th class="num">Total</th><th>Pagador</th></tr></thead>
+<tbody id="det-tbody"></tbody>
+<tfoot><tr><td colspan="3" style="padding:7px 11px;font-weight:500;font-size:12px">Total</td><td class="num" id="det-ft-base" style="font-weight:500"></td><td colspan="5"></td><td></td><td class="num" id="det-ft-total" style="font-weight:500;font-size:14px"></td></tr></tfoot>
+</table>
+</div>
 </div>
 </div>
 
 <!-- MODAL: EDITAR NÓMINA CERRADA -->
 <div class="overlay" id="overlay-edit-hist">
 <div class="modal" style="width:680px;padding:0;overflow:hidden">
-  <div class="detail-header">
-    <div><div style="font-size:14px;font-weight:500" id="edit-hist-title">Editar nómina</div><div style="font-size:12px;color:var(--text2)">Haz clic en cualquier empleado para editar su pago</div></div>
-    <div style="display:flex;gap:8px">
-      <button class="btn btn-primary" onclick="guardarEdicionNomina()">Guardar cambios</button>
-      <button class="btn" onclick="closeOv('overlay-edit-hist')">Cancelar</button>
-    </div>
-  </div>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Empleado</th><th>Obra</th><th class="num">Base</th><th class="num">Desc. faltas</th><th class="num">H. extras</th><th class="num">Gasolina</th><th class="num">Préstamo</th><th class="num">Descuentos</th><th class="num">Se le debe</th><th class="num">Total</th></tr></thead>
-      <tbody id="edit-hist-tbody"></tbody>
-    </table>
-  </div>
+<div class="detail-header">
+<div><div style="font-size:14px;font-weight:500" id="edit-hist-title">Editar nómina</div><div style="font-size:12px;color:var(--text2)">Haz clic en cualquier empleado para editar su pago</div></div>
+<div style="display:flex;gap:8px">
+<button class="btn btn-primary" onclick="guardarEdicionNomina()">Guardar cambios</button>
+<button class="btn" onclick="closeOv('overlay-edit-hist')">Cancelar</button>
+</div>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Empleado</th><th>Obra</th><th class="num">Base</th><th class="num">Desc. faltas</th><th class="num">H. extras</th><th class="num">Gasolina</th><th class="num">Préstamo</th><th class="num">Descuentos</th><th class="num">Se le debe</th><th class="num">Total</th></tr></thead>
+<tbody id="edit-hist-tbody"></tbody>
+</table>
+</div>
 </div>
 </div>
 
 <!-- MODAL: ENCARGADO -->
 <div class="overlay" id="overlay-enc">
 <div class="modal">
-  <h3 id="enc-modal-title">Nuevo encargado</h3>
-  <div class="fg">
-    <div class="full"><label>Nombre completo</label><input type="text" id="enc-nombre" style="width:100%;text-transform:uppercase" placeholder="NOMBRE ENCARGADO"></div>
-    <div class="full"><label>Correo electrónico</label><input type="email" id="enc-email" style="width:100%" placeholder="correo@hopeelectric.com.mx"></div>
-    <div><label>Obra</label><select id="enc-obra"><option>OMANA</option><option>SANTA</option><option>CASA</option><option>OTRO</option></select></div>
-  </div>
-  <div style="background:var(--amber-bg);border-radius:var(--radius);padding:10px;margin-bottom:12px;font-size:12px;color:var(--amber)">
-    Recuerda crear el usuario primero en <strong>Supabase → Authentication → Users</strong> con este mismo correo antes de guardar.
-  </div>
-  <div class="btn-row"><button class="btn" onclick="closeOv('overlay-enc')">Cancelar</button><button class="btn btn-primary" onclick="guardarEncargado()">Guardar encargado</button></div>
+<h3 id="enc-modal-title">Nuevo encargado</h3>
+<div class="fg">
+<div class="full"><label>Nombre completo</label><input type="text" id="enc-nombre" style="width:100%;text-transform:uppercase" placeholder="NOMBRE ENCARGADO"></div>
+<div class="full"><label>Correo electrónico</label><input type="email" id="enc-email" style="width:100%" placeholder="correo@hopeelectric.com.mx"></div>
+<div><label>Obra</label><select id="enc-obra"><option>OMANA</option><option>SANTA</option><option>CASA</option><option>OTRO</option></select></div>
+</div>
+<div style="background:var(--amber-bg);border-radius:var(--radius);padding:10px;margin-bottom:12px;font-size:12px;color:var(--amber)">
+Recuerda crear el usuario primero en <strong>Supabase → Authentication → Users</strong> con este mismo correo antes de guardar.
+</div>
+<div class="btn-row"><button class="btn" onclick="closeOv('overlay-enc')">Cancelar</button><button class="btn btn-primary" onclick="guardarEncargado()">Guardar encargado</button></div>
 </div>
 </div>
 
@@ -545,32 +545,32 @@ const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 let loggedIn = false;
 
 async function doLogin() {
-  const email = document.getElementById('login-user').value.trim();
-  const pass  = document.getElementById('login-pass').value;
-  const errEl = document.getElementById('login-err');
-  const btn   = document.querySelector('.login-btn');
-  errEl.style.display = 'none';
-  btn.textContent = 'Entrando...'; btn.disabled = true;
-  const { data, error } = await db.auth.signInWithPassword({ email, password: pass });
-  btn.textContent = 'Entrar'; btn.disabled = false;
-  if (error) {
-    errEl.textContent = 'Correo o contraseña incorrectos';
-    errEl.style.display = 'block';
-    return;
-  }
-  loggedIn = true;
-  mostrarApp();
+const email = document.getElementById('login-user').value.trim();
+const pass  = document.getElementById('login-pass').value;
+const errEl = document.getElementById('login-err');
+const btn   = document.querySelector('.login-btn');
+errEl.style.display = 'none';
+btn.textContent = 'Entrando...'; btn.disabled = true;
+const { data, error } = await db.auth.signInWithPassword({ email, password: pass });
+btn.textContent = 'Entrar'; btn.disabled = false;
+if (error) {
+errEl.textContent = 'Correo o contraseña incorrectos';
+errEl.style.display = 'block';
+return;
+}
+loggedIn = true;
+mostrarApp();
 }
 
 async function doLogout() {
-  await db.auth.signOut();
-  location.reload();
+await db.auth.signOut();
+location.reload();
 }
 
 function mostrarApp() {
-  document.getElementById('login-wrap').style.display = 'none';
-  document.getElementById('app-wrap').style.display = 'flex';
-  initApp();
+document.getElementById('login-wrap').style.display = 'none';
+document.getElementById('app-wrap').style.display = 'flex';
+initApp();
 }
 
 // =============================================
@@ -587,8 +587,8 @@ function fromISO(s) { if (!s) return null; const [y,m,d]=s.split('-').map(Number
 function obc(o) { const m={OMANA:'b-omana',SANTA:'b-santa',CASA:'b-casa'}; return m[(o||'').toUpperCase()]||'b-otro'; }
 
 function showToast(msg, dur=2500) {
-  const t = $('toast'); t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), dur);
+const t = $('toast'); t.textContent = msg; t.classList.add('show');
+setTimeout(() => t.classList.remove('show'), dur);
 }
 
 // =============================================
@@ -603,238 +603,245 @@ let editEmpId = null, editNomEmpId = null, inicioSel = 'esta', prestToDelete = n
 // INIT
 // =============================================
 async function initApp() {
-  // Mostrar correo del usuario logueado
-  const { data: { user } } = await db.auth.getUser();
-  if (user && $('user-email')) $('user-email').textContent = user.email;
+// Mostrar correo del usuario logueado
+const { data: { user } } = await db.auth.getUser();
+if (user && $('user-email')) $('user-email').textContent = user.email;
 
-  currentLunes = getLunes(new Date());
-  currentSabado = getSabado(currentLunes);
-  updatePeriod();
-  await loadAll();
-  // Buscar o crear semana abierta
-  let semAbierta = semanas.find(s => !s.cerrada);
-  if (!semAbierta) {
-    const { data } = await db.from('semanas_nomina').insert([{
-      desde: toISO(currentLunes), hasta: toISO(currentSabado), cerrada: false
-    }]).select().single();
-    if (data) { semanas.unshift(data); semAbierta = data; }
-  } else {
-    currentLunes = fromISO(semAbierta.desde) || currentLunes;
-    currentSabado = fromISO(semAbierta.hasta) || currentSabado;
-    updatePeriod();
-  }
-  // Cargar entradas de la semana abierta
-  if (semAbierta) {
-    const { data } = await db.from('entradas_nomina').select('*').eq('semana_id', semAbierta.id);
-    if (data) {
-      data.forEach(e => {
-        nomina[e.empleado_id] = { faltas: e.faltas, hext: e.horas_extras, tarifa: e.tarifa_hext||1.5, desc: e.descuentos, debe: e.se_le_debe, nota: e.nota||'', pagador: e.pagador||'', id: e.id };
-      });
-    }
-    // Pre-cargar asistencias de encargados (solo donde no hay entrada manual)
-    await cargarAsistenciasEncargado(semAbierta.id);
-  }
-  renderDash();
+currentLunes = getLunes(new Date());
+currentSabado = getSabado(currentLunes);
+updatePeriod();
+await loadAll();
+// Buscar o crear semana abierta
+let semAbierta = semanas.find(s => !s.cerrada);
+if (!semAbierta) {
+const { data } = await db.from('semanas_nomina').insert([{
+desde: toISO(currentLunes), hasta: toISO(currentSabado), cerrada: false
+}]).select().single();
+if (data) { semanas.unshift(data); semAbierta = data; }
+} else {
+currentLunes = fromISO(semAbierta.desde) || currentLunes;
+currentSabado = fromISO(semAbierta.hasta) || currentSabado;
+updatePeriod();
+}
+// Cargar entradas de la semana abierta
+if (semAbierta) {
+const { data } = await db.from('entradas_nomina').select('*').eq('semana_id', semAbierta.id);
+if (data) {
+data.forEach(e => {
+nomina[e.empleado_id] = { faltas: e.faltas, hext: e.horas_extras, tarifa: e.tarifa_hext||1.5, desc: e.descuentos, debe: e.se_le_debe, nota: e.nota||'', pagador: e.pagador||'', id: e.id };
+});
+}
+// Pre-cargar asistencias de encargados ANTES de renderDash
+// para que getNom() no inicialice entradas vacías que bloqueen la carga
+await cargarAsistenciasEncargado(semAbierta.id);
+}
+renderDash();
 }
 
 async function loadAll() {
-  const [empRes, prestRes, semRes] = await Promise.all([
-    db.from('empleados_nomina').select('*').order('nombre'),
-    db.from('prestamos_nomina').select('*').order('fecha_registro', {ascending:false}),
-    db.from('semanas_nomina').select('*').order('desde', {ascending:false})
-  ]);
-  empleados = empRes.data || [];
-  prestamos = prestRes.data || [];
-  semanas = semRes.data || [];
-  const encRes = await db.from('encargados_obra').select('*').order('nombre');
-  encargados = encRes.data || [];
+const [empRes, prestRes, semRes] = await Promise.all([
+db.from('empleados_nomina').select('*').order('nombre'),
+db.from('prestamos_nomina').select('*').order('fecha_registro', {ascending:false}),
+db.from('semanas_nomina').select('*').order('desde', {ascending:false})
+]);
+empleados = empRes.data || [];
+prestamos = prestRes.data || [];
+semanas = semRes.data || [];
+const encRes = await db.from('encargados_obra').select('*').order('nombre');
+encargados = encRes.data || [];
 }
 
 async function cargarAsistenciasEncargado(semanaId) {
-  const { data } = await db.from('asistencia_semanal').select('*').eq('semana_id', semanaId).eq('enviada', true);
-  if (!data || !data.length) return;
+const { data } = await db.from('asistencia_semanal').select('*').eq('semana_id', semanaId);
+if (!data || !data.length) return;
+const registros = data.filter(r => r.enviada || r.dias_bloqueados);
+if (!registros.length) return;
 
-  const DIAS = ['lunes','martes','miercoles','jueves','viernes','sabado'];
+registros.forEach(row => {
+const emp = empleados.find(e => e.id === row.empleado_id);
+if (!emp) return;
+    // Solo saltar si tiene entrada manual guardada en BD (con id)
+    // Solo saltar si tiene entrada manual guardada en BD (con id real)
+const enEx = nomina[row.empleado_id];
+if (enEx && enEx.id) return;
+    // Borrar entrada vacía inicializada por getNom() para poder sobreescribir
+    delete nomina[row.empleado_id];
 
-  data.forEach(row => {
-    const emp = empleados.find(e => e.id === row.empleado_id);
-    if (!emp) return;
-    // Solo cargar si no fue editado manualmente ya
-    const enExistente = nomina[row.empleado_id];
-    if (enExistente && enExistente.id) return; // ya fue editado manualmente
+// Días a considerar: todos si es envío final, solo bloqueados si es parcial
+let diasConDatos = ['lunes','martes','miercoles','jueves','viernes','sabado'];
+if (!row.enviada && row.dias_bloqueados) {
+try { diasConDatos = JSON.parse(row.dias_bloqueados); } catch(e) {}
+}
 
-    // Calcular faltas y descuento retardo
-    let faltas = 0;
-    let descRetardo = 0;
-    const salDiario = emp.salario / 6;
-    const salHora = salDiario / 8;
+let faltas = 0, descRetardo = 0;
+const salHora = (emp.salario / 6) / 8;
 
-    DIAS.forEach(dia => {
-      const estado = row[dia] || 'ok';
-      if (estado === 'falta') faltas++;
-      if (estado === 'retardo') {
-        const hora = row[dia + '_hora'];
-        if (hora) {
-          const [h, m] = hora.split(':').map(Number);
-          const totalMin = h * 60 + m;
-          const entrada = 7 * 60;
-          const tolerancia = 7 * 60 + 10;
-          if (totalMin > tolerancia) {
-            const minRetraso = totalMin - entrada;
-            if (minRetraso >= 45) {
-              descRetardo += salHora;
-            } else {
-              descRetardo += salHora * (minRetraso / 60);
-            }
-          }
-        }
-      }
-    });
+diasConDatos.forEach(dia => {
+const estado = row[dia] || 'ok';
+if (estado === 'falta') faltas++;
+if (estado === 'retardo' && row[dia + '_hora']) {
+const [h, m] = row[dia + '_hora'].split(':').map(Number);
+const totalMin = h * 60 + m;
+if (totalMin > 7 * 60 + 10) {
+const minRetraso = totalMin - 7 * 60;
+descRetardo += minRetraso >= 45 ? salHora : salHora * (minRetraso / 60);
+}
+}
+});
 
-    // Pre-cargar en nómina (sin id para que sea editable)
-    nomina[row.empleado_id] = {
-      faltas,
-      hext: 0,
-      tarifa: 1.5,
-      desc: Math.round(descRetardo),
-      debe: 0,
-      nota: faltas > 0 ? `${faltas} falta(s) según encargado` : (descRetardo > 0 ? 'Retardo(s) según encargado' : ''),
-      desdеEncargado: true
-    };
-  });
+const esParcial = !row.enviada && !!row.dias_bloqueados;
+const notaBase = esParcial ? ' (parcial Lun-Mié)' : '';
+const nota = faltas > 0
+? faltas + ' falta(s) según encargado' + notaBase
+: descRetardo > 0
+? 'Retardo(s) según encargado' + notaBase
+: esParcial ? 'Parcial Lun-Mié recibido' : '';
+
+    // Sobreescribir siempre (aunque getNom haya creado entrada vacía sin id)
+nomina[row.empleado_id] = {
+faltas: faltas,
+hext: 0,
+tarifa: 1.5,
+desc: Math.round(descRetardo),
+debe: 0,
+nota: nota,
+desdeEncargado: true,
+esParcial: esParcial
+};
+});
 }
 
 function updatePeriod() {
-  const txt = fmtD(currentLunes) + ' — ' + fmtD(currentSabado);
-  $('period-txt').textContent = txt;
-  if ($('period-mob-txt')) $('period-mob-txt').textContent = txt;
-  const today = new Date(); today.setHours(0,0,0,0);
-  const diff = Math.ceil((currentSabado - today) / 86400000);
-  $('period-dias').textContent = diff === 0 ? '(pago hoy)' : diff > 0 ? `(sábado en ${diff}d)` : '';
+const txt = fmtD(currentLunes) + ' — ' + fmtD(currentSabado);
+$('period-txt').textContent = txt;
+if ($('period-mob-txt')) $('period-mob-txt').textContent = txt;
+const today = new Date(); today.setHours(0,0,0,0);
+const diff = Math.ceil((currentSabado - today) / 86400000);
+$('period-dias').textContent = diff === 0 ? '(pago hoy)' : diff > 0 ? `(sábado en ${diff}d)` : '';
 }
 
 // =============================================
 // PRESTAMOS HELPERS
 // =============================================
 function getPrestDesc(empId) {
-  return prestamos
-    .filter(p => p.empleado_id === empId && p.saldo > 0 && new Date(p.inicia_cobro+'T00:00:00') <= currentSabado)
-    .reduce((s, p) => s + Math.min(p.cuota, p.saldo), 0);
+return prestamos
+.filter(p => p.empleado_id === empId && p.saldo > 0 && new Date(p.inicia_cobro+'T00:00:00') <= currentSabado)
+.reduce((s, p) => s + Math.min(p.cuota, p.saldo), 0);
 }
 
 function calcTotal(empId, en) {
-  const emp = empleados.find(e => e.id === empId); if (!emp) return 0;
-  const d = emp.salario / 6;
-  const diasTrab = 6 - (en.faltas||0);
-  const gasNeto = (emp.gasolina||0) * diasTrab / 6;
-  const tarifa = en.tarifa||1.5;
-  return emp.salario - (en.faltas||0)*d + (en.hext||0)*(d/8)*tarifa + gasNeto + (en.debe||0) - (en.desc||0) - getPrestDesc(empId);
+const emp = empleados.find(e => e.id === empId); if (!emp) return 0;
+const d = emp.salario / 6;
+const diasTrab = 6 - (en.faltas||0);
+const gasNeto = (emp.gasolina||0) * diasTrab / 6;
+const tarifa = en.tarifa||1.5;
+return emp.salario - (en.faltas||0)*d + (en.hext||0)*(d/8)*tarifa + gasNeto + (en.debe||0) - (en.desc||0) - getPrestDesc(empId);
 }
 
 function getNom(empId) {
-  if (!nomina[empId]) nomina[empId] = { faltas:0, hext:0, tarifa:1.5, desc:0, debe:0, nota:'', pagador:'' };
-  return nomina[empId];
+if (!nomina[empId]) nomina[empId] = { faltas:0, hext:0, tarifa:1.5, desc:0, debe:0, nota:'', pagador:'' };
+return nomina[empId];
 }
 
 // =============================================
 // TAB SWITCHING
 // =============================================
 function sw(t) {
-  document.querySelectorAll('.tab').forEach((el, i) => {
-    ['dashboard','nomina','historial','prestamos','empleados','anual','config'].forEach((n,j) => el.classList.toggle('active', j===i && n===t));
-  });
-  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-  $('t-' + t).classList.add('active');
-  ({dashboard:renderDash, nomina:renderNomina, historial:renderHistorial, prestamos:renderPrestamos, empleados:renderEmpleados, anual:renderAnual, config:renderConfig}[t]||renderDash)();
+document.querySelectorAll('.tab').forEach((el, i) => {
+['dashboard','nomina','historial','prestamos','empleados','anual','config'].forEach((n,j) => el.classList.toggle('active', j===i && n===t));
+});
+document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+$('t-' + t).classList.add('active');
+({dashboard:renderDash, nomina:renderNomina, historial:renderHistorial, prestamos:renderPrestamos, empleados:renderEmpleados, anual:renderAnual, config:renderConfig}[t]||renderDash)();
 }
 
 // =============================================
 // DASHBOARD
 // =============================================
 async function renderDash() {
-  updatePeriod();
-  const empActivos = empleados.filter(e=>e.activo);
-  const bT = empActivos.reduce((s,e) => s+e.salario, 0);
-  const nT = empActivos.reduce((s,e) => s+calcTotal(e.id, getNom(e.id)), 0);
-  const pA = prestamos.filter(p => p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado && empActivos.find(e=>e.id===p.empleado_id)).length;
-  const pP = prestamos.filter(p => p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')>currentSabado && empActivos.find(e=>e.id===p.empleado_id)).length;
-  $('dash-cards').innerHTML = `
-    <div class="mcard"><div class="lbl">Empleados</div><div class="val">${empleados.length}</div></div>
-    <div class="mcard"><div class="lbl">Nómina base/sem</div><div class="val" style="font-size:16px">${fmt(bT)}</div></div>
-    <div class="mcard"><div class="lbl">Total neto esta sem</div><div class="val" style="font-size:16px">${fmt(nT)}</div></div>
-    <div class="mcard"><div class="lbl">Préstamos cobrando</div><div class="val">${pA}${pP>0?`<span style="font-size:12px;color:var(--amber);margin-left:4px">+${pP} próx.</span>`:''}</div></div>
-    <div class="mcard"><div class="lbl">Semanas cerradas</div><div class="val">${semanas.filter(s=>s.cerrada).length}</div></div>`;
+updatePeriod();
+const empActivos = empleados.filter(e=>e.activo);
+const bT = empActivos.reduce((s,e) => s+e.salario, 0);
+const nT = empActivos.reduce((s,e) => s+calcTotal(e.id, getNom(e.id)), 0);
+const pA = prestamos.filter(p => p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado && empActivos.find(e=>e.id===p.empleado_id)).length;
+const pP = prestamos.filter(p => p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')>currentSabado && empActivos.find(e=>e.id===p.empleado_id)).length;
+$('dash-cards').innerHTML = `
+   <div class="mcard"><div class="lbl">Empleados</div><div class="val">${empleados.length}</div></div>
+   <div class="mcard"><div class="lbl">Nómina base/sem</div><div class="val" style="font-size:16px">${fmt(bT)}</div></div>
+   <div class="mcard"><div class="lbl">Total neto esta sem</div><div class="val" style="font-size:16px">${fmt(nT)}</div></div>
+   <div class="mcard"><div class="lbl">Préstamos cobrando</div><div class="val">${pA}${pP>0?`<span style="font-size:12px;color:var(--amber);margin-left:4px">+${pP} próx.</span>`:''}</div></div>
+   <div class="mcard"><div class="lbl">Semanas cerradas</div><div class="val">${semanas.filter(s=>s.cerrada).length}</div></div>`;
 
-  // Alertas préstamos próximos a liquidar (1-2 semanas)
-  const proxLiquidar = prestamos.filter(p => p.saldo>0 && p.letras_restantes>0 && p.letras_restantes<=2);
+// Alertas préstamos próximos a liquidar (1-2 semanas)
+const proxLiquidar = prestamos.filter(p => p.saldo>0 && p.letras_restantes>0 && p.letras_restantes<=2);
 
-  // Alertas de asistencia — analizar últimas 4 semanas
-  const alertasAsistencia = await generarAlertasAsistencia();
+// Alertas de asistencia — analizar últimas 4 semanas
+const alertasAsistencia = await generarAlertasAsistencia();
 
-  let alertasHtml = '';
+let alertasHtml = '';
 
-  if (proxLiquidar.length) {
-    const items = proxLiquidar.map(p=>{
-      const emp=empleados.find(e=>e.id===p.empleado_id);
-      return `<div style="padding:3px 0">&#9888; <span style="font-weight:500">${emp?emp.nombre:'?'}</span> — préstamo a <strong>${p.letras_restantes} semana(s)</strong> de liquidarse, saldo ${fmt(p.saldo)}</div>`;
-    }).join('');
-    alertasHtml += `<div style="background:var(--amber-bg);border:0.5px solid #EF9F27;border-radius:var(--radius);padding:10px 14px;margin-bottom:10px;font-size:12px;color:var(--amber)"><strong>Préstamos próximos a liquidarse</strong>${items}</div>`;
-  }
+if (proxLiquidar.length) {
+const items = proxLiquidar.map(p=>{
+const emp=empleados.find(e=>e.id===p.empleado_id);
+return `<div style="padding:3px 0">&#9888; <span style="font-weight:500">${emp?emp.nombre:'?'}</span> — préstamo a <strong>${p.letras_restantes} semana(s)</strong> de liquidarse, saldo ${fmt(p.saldo)}</div>`;
+}).join('');
+alertasHtml += `<div style="background:var(--amber-bg);border:0.5px solid #EF9F27;border-radius:var(--radius);padding:10px 14px;margin-bottom:10px;font-size:12px;color:var(--amber)"><strong>Préstamos próximos a liquidarse</strong>${items}</div>`;
+}
 
-  if (alertasAsistencia.length) {
-    const items = alertasAsistencia.map(a => `<div style="padding:3px 0">&#9888; ${a}</div>`).join('');
-    alertasHtml += `<div style="background:var(--red-bg);border:0.5px solid #F09595;border-radius:var(--radius);padding:10px 14px;margin-bottom:10px;font-size:12px;color:var(--red)"><strong>Alertas de asistencia</strong>${items}</div>`;
-  }
+if (alertasAsistencia.length) {
+const items = alertasAsistencia.map(a => `<div style="padding:3px 0">&#9888; ${a}</div>`).join('');
+alertasHtml += `<div style="background:var(--red-bg);border:0.5px solid #F09595;border-radius:var(--radius);padding:10px 14px;margin-bottom:10px;font-size:12px;color:var(--red)"><strong>Alertas de asistencia</strong>${items}</div>`;
+}
 
-  if (alertasHtml) {
-    $('dash-cards').insertAdjacentHTML('afterend', `<div id="dash-alertas">${alertasHtml}</div>`);
-  } else {
-    const existing = $('dash-alertas');
-    if (existing) existing.remove();
-  }
-  $('dash-nom-title').textContent = 'Nómina: ' + fmtD(currentLunes) + ' — ' + fmtD(currentSabado);
+if (alertasHtml) {
+$('dash-cards').insertAdjacentHTML('afterend', `<div id="dash-alertas">${alertasHtml}</div>`);
+} else {
+const existing = $('dash-alertas');
+if (existing) existing.remove();
+}
+$('dash-nom-title').textContent = 'Nómina: ' + fmtD(currentLunes) + ' — ' + fmtD(currentSabado);
 
-  // Panel quién paga qué
-  const pagadores = ['Luis','Joan','Efectivo',''];
-  const pagadorLabels = {Luis:'Luis',Joan:'Joan',Efectivo:'Efectivo','':'Sin asignar'};
-  const pagadorColors = {Luis:'var(--blue-bg);color:var(--blue)',Joan:'var(--green-bg);color:var(--green)',Efectivo:'var(--amber-bg);color:var(--amber)','':'var(--gray-bg);color:var(--gray-text)'};
+// Panel quién paga qué
+const pagadores = ['Luis','Joan','Efectivo',''];
+const pagadorLabels = {Luis:'Luis',Joan:'Joan',Efectivo:'Efectivo','':'Sin asignar'};
+const pagadorColors = {Luis:'var(--blue-bg);color:var(--blue)',Joan:'var(--green-bg);color:var(--green)',Efectivo:'var(--amber-bg);color:var(--amber)','':'var(--gray-bg);color:var(--gray-text)'};
 
-  const resumenPagadores = pagadores.map(pag => {
-    const empsP = empActivos.filter(e => (e.pagador||'') === pag);
-    if (!empsP.length) return '';
-    const totP = empsP.reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))),0);
-    const nombres = empsP.map(e=>e.nombre.split(' ')[0]).join(', ');
-    return `<div style="background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius);padding:10px 14px;margin-bottom:8px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
-        <span><span style="display:inline-block;background:${pagadorColors[pag]};font-size:11px;font-weight:500;padding:2px 9px;border-radius:var(--radius)">${pagadorLabels[pag]}</span> <span style="font-size:12px;color:var(--text2);margin-left:6px">${empsP.length} trabajador(es)</span></span>
-        <span style="font-size:15px;font-weight:500">${fmt(totP)}</span>
-      </div>
-      <div style="font-size:11px;color:var(--text2)">${nombres}</div>
-    </div>`;
-  }).filter(Boolean).join('');
+const resumenPagadores = pagadores.map(pag => {
+const empsP = empActivos.filter(e => (e.pagador||'') === pag);
+if (!empsP.length) return '';
+const totP = empsP.reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))),0);
+const nombres = empsP.map(e=>e.nombre.split(' ')[0]).join(', ');
+return `<div style="background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius);padding:10px 14px;margin-bottom:8px">
+     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
+       <span><span style="display:inline-block;background:${pagadorColors[pag]};font-size:11px;font-weight:500;padding:2px 9px;border-radius:var(--radius)">${pagadorLabels[pag]}</span> <span style="font-size:12px;color:var(--text2);margin-left:6px">${empsP.length} trabajador(es)</span></span>
+       <span style="font-size:15px;font-weight:500">${fmt(totP)}</span>
+     </div>
+     <div style="font-size:11px;color:var(--text2)">${nombres}</div>
+   </div>`;
+}).filter(Boolean).join('');
 
-  const dashPagEl = $('dash-pagadores');
-  if (dashPagEl) dashPagEl.innerHTML = resumenPagadores || '<div style="font-size:12px;color:var(--text2);padding:8px 0">No hay trabajadores con pagador asignado aún.</div>';
+const dashPagEl = $('dash-pagadores');
+if (dashPagEl) dashPagEl.innerHTML = resumenPagadores || '<div style="font-size:12px;color:var(--text2);padding:8px 0">No hay trabajadores con pagador asignado aún.</div>';
 
 
-  let tB=0,tD=0,tE=0,tP=0,tT=0;
-  $('dash-tbody').innerHTML = empActivos.map(e => {
-    const en=getNom(e.id); const d=e.salario/6;
-    const ded=(en.faltas||0)*d, ext=(en.hext||0)*(d/8)*1.5, pD=getPrestDesc(e.id), tot=calcTotal(e.id,en);
-    tB+=e.salario; tD+=ded; tE+=ext; tP+=pD; tT+=tot;
-    return `<tr onclick="openNomModal(${e.id})" style="cursor:pointer">
-      <td style="font-weight:500">${e.nombre}</td>
-      <td><span class="badge ${obc(e.obra)}">${e.obra}</span></td>
-      <td class="num">${fmt(e.salario)}</td>
-      <td class="num">${ded>0?`<span style="color:var(--red)">-${fmt(ded)}</span>`:'—'}</td>
-      <td class="num">${ext>0?`<span style="color:var(--green)">+${fmt(ext)}</span>`:'—'}</td>
-      <td class="num">${pD>0?`<span class="prestamo-badge">-${fmt(pD)}</span>`:''}</td>
-      <td class="num" style="font-weight:500">${fmt(tot)}</td>
-    </tr>`;
-  }).join('');
-  $('dft-base').textContent=fmt(tB); $('dft-ded').textContent=tD>0?'-'+fmt(tD):'—';
-  $('dft-ext').textContent=tE>0?'+'+fmt(tE):'—'; $('dft-prest').textContent=tP>0?'-'+fmt(tP):'—';
-  $('dft-total').textContent=fmt(tT);
+let tB=0,tD=0,tE=0,tP=0,tT=0;
+$('dash-tbody').innerHTML = empActivos.map(e => {
+const en=getNom(e.id); const d=e.salario/6;
+const ded=(en.faltas||0)*d, ext=(en.hext||0)*(d/8)*1.5, pD=getPrestDesc(e.id), tot=calcTotal(e.id,en);
+tB+=e.salario; tD+=ded; tE+=ext; tP+=pD; tT+=tot;
+return `<tr onclick="openNomModal(${e.id})" style="cursor:pointer">
+     <td style="font-weight:500">${e.nombre}</td>
+     <td><span class="badge ${obc(e.obra)}">${e.obra}</span></td>
+     <td class="num">${fmt(e.salario)}</td>
+     <td class="num">${ded>0?`<span style="color:var(--red)">-${fmt(ded)}</span>`:'—'}</td>
+     <td class="num">${ext>0?`<span style="color:var(--green)">+${fmt(ext)}</span>`:'—'}</td>
+     <td class="num">${pD>0?`<span class="prestamo-badge">-${fmt(pD)}</span>`:''}</td>
+     <td class="num" style="font-weight:500">${fmt(tot)}</td>
+   </tr>`;
+}).join('');
+$('dft-base').textContent=fmt(tB); $('dft-ded').textContent=tD>0?'-'+fmt(tD):'—';
+$('dft-ext').textContent=tE>0?'+'+fmt(tE):'—'; $('dft-prest').textContent=tP>0?'-'+fmt(tP):'—';
+$('dft-total').textContent=fmt(tT);
 }
 
 // =============================================
@@ -842,287 +849,287 @@ async function renderDash() {
 // NÓMINA ACTUAL
 // =============================================
 function renderNomina() {
-  const f = $('nom-filtro-obra').value;
-  const orden = $('nom-orden').value;
-  $('nom-panel-title').textContent = 'Nómina: ' + fmtD(currentLunes) + ' — ' + fmtD(currentSabado);
+const f = $('nom-filtro-obra').value;
+const orden = $('nom-orden').value;
+$('nom-panel-title').textContent = 'Nómina: ' + fmtD(currentLunes) + ' — ' + fmtD(currentSabado);
 
-  // Banner si hay datos precargados de encargado
-  const conDatosEncargado = empleados.filter(e => nomina[e.id]?.desdеEncargado).length;
-  const bannerEl = document.getElementById('nom-banner');
-  if (bannerEl) {
-    bannerEl.innerHTML = conDatosEncargado > 0
-      ? `<div style="background:#e1f5ee;border:0.5px solid #9FE1CB;border-radius:var(--radius);padding:9px 14px;margin-bottom:12px;font-size:12px;color:#0f6e56"><strong>${conDatosEncargado} trabajador(es)</strong> con asistencia precargada por el encargado. Revisa y edita antes de cerrar.</div>`
-      : '';
-  }
+// Banner si hay datos precargados de encargado
+const conDatosEncargado = empleados.filter(e => nomina[e.id]?.desdeEncargado).length;
+const bannerEl = document.getElementById('nom-banner');
+if (bannerEl) {
+bannerEl.innerHTML = conDatosEncargado > 0
+? `<div style="background:#e1f5ee;border:0.5px solid #9FE1CB;border-radius:var(--radius);padding:9px 14px;margin-bottom:12px;font-size:12px;color:#0f6e56"><strong>${conDatosEncargado} trabajador(es)</strong> con asistencia precargada por el encargado. Revisa y edita antes de cerrar.</div>`
+: '';
+}
 
-  let lista = empleados.filter(e => !f || e.obra === f);
+let lista = empleados.filter(e => !f || e.obra === f);
 
-  // Ordenar
-  if (orden === 'alfa') {
-    lista = [...lista].sort((a,b) => a.nombre.localeCompare(b.nombre));
-  } else if (orden === 'obra') {
-    lista = [...lista].sort((a,b) => a.obra.localeCompare(b.obra) || a.nombre.localeCompare(b.nombre));
-  } else if (orden === 'total-desc') {
-    lista = [...lista].sort((a,b) => calcTotal(b.id,getNom(b.id)) - calcTotal(a.id,getNom(a.id)));
-  } else if (orden === 'total-asc') {
-    lista = [...lista].sort((a,b) => calcTotal(a.id,getNom(a.id)) - calcTotal(b.id,getNom(b.id)));
-  }
+// Ordenar
+if (orden === 'alfa') {
+lista = [...lista].sort((a,b) => a.nombre.localeCompare(b.nombre));
+} else if (orden === 'obra') {
+lista = [...lista].sort((a,b) => a.obra.localeCompare(b.obra) || a.nombre.localeCompare(b.nombre));
+} else if (orden === 'total-desc') {
+lista = [...lista].sort((a,b) => calcTotal(b.id,getNom(b.id)) - calcTotal(a.id,getNom(a.id)));
+} else if (orden === 'total-asc') {
+lista = [...lista].sort((a,b) => calcTotal(a.id,getNom(a.id)) - calcTotal(b.id,getNom(b.id)));
+}
 
-  // Si ordena por obra, insertar separadores de grupo
-  let prevObra = null;
-  $('nom-tbody').innerHTML = lista.map(e => {
-    const en=getNom(e.id); const d=e.salario/6;
-    const diasTrab=6-(en.faltas||0);
-    const gasN=(e.gasolina||0)*diasTrab/6;
-    const pD=getPrestDesc(e.id), tot=calcTotal(e.id,en), hE=(en.hext||0)*(d/8)*1.5, dF=(en.faltas||0)*d;
-    let separador = '';
-    if (orden === 'obra' && e.obra !== prevObra) {
-      prevObra = e.obra;
-      separador = `<tr><td colspan="11" style="padding:6px 11px 4px;font-size:11px;font-weight:500;color:var(--text2);background:var(--bg3);border-bottom:0.5px solid var(--border);letter-spacing:.5px">${e.obra}</td></tr>`;
-    }
-    return separador + `<tr>
-      <td style="font-weight:500">${e.nombre}<br><span style="font-size:11px;color:var(--text2)">${e.puesto}</span>${getNom(e.id).nota?`<br><span style="font-size:11px;color:var(--blue);font-style:italic">${getNom(e.id).nota}</span>`:''} ${getNom(e.id).desdеEncargado?'<span style="font-size:10px;background:#e1f5ee;color:#0f6e56;padding:1px 5px;border-radius:4px;margin-left:2px">encargado</span>':''}</td>
-      <td><span class="badge ${obc(e.obra)}">${e.obra}</span></td>
-      <td class="num">${fmt(e.salario)}</td>
-      <td class="num">${en.faltas>0?`<span style="color:var(--red)">${en.faltas}d/-${fmt(dF)}</span>`:'<span style="color:var(--text2)">0</span>'}</td>
-      <td class="num">${en.hext>0?`<span style="color:var(--green)">${en.hext}h/+${fmt(hE)}</span>`:'<span style="color:var(--text2)">0</span>'}</td>
-      <td class="num">${e.gasolina>0?`<span style="color:var(--green)">${fmt(gasN)}${en.faltas>0?' ('+diasTrab+'/6d)':''}</span>`:'—'}</td>
-      <td class="num">${pD>0?`<span class="prestamo-badge">-${fmt(pD)}</span>`:'—'}</td>
-      <td class="num">${en.desc>0?`<span style="color:var(--red)">-${fmt(en.desc)}</span>`:'—'}</td>
-      <td class="num">${en.debe>0?`<span style="color:var(--green)">+${fmt(en.debe)}</span>`:'—'}</td>
-      <td class="num" style="font-weight:500">${fmt(tot)}</td>
-      <td><button class="btn btn-sm" onclick="openNomModal(${e.id})">Editar</button></td>
-    </tr>`;
-  }).join('');
+// Si ordena por obra, insertar separadores de grupo
+let prevObra = null;
+$('nom-tbody').innerHTML = lista.map(e => {
+const en=getNom(e.id); const d=e.salario/6;
+const diasTrab=6-(en.faltas||0);
+const gasN=(e.gasolina||0)*diasTrab/6;
+const pD=getPrestDesc(e.id), tot=calcTotal(e.id,en), hE=(en.hext||0)*(d/8)*1.5, dF=(en.faltas||0)*d;
+let separador = '';
+if (orden === 'obra' && e.obra !== prevObra) {
+prevObra = e.obra;
+separador = `<tr><td colspan="11" style="padding:6px 11px 4px;font-size:11px;font-weight:500;color:var(--text2);background:var(--bg3);border-bottom:0.5px solid var(--border);letter-spacing:.5px">${e.obra}</td></tr>`;
+}
+return separador + `<tr>
+     <td style="font-weight:500">${e.nombre}<br><span style="font-size:11px;color:var(--text2)">${e.puesto}</span>${getNom(e.id).nota?`<br><span style="font-size:11px;color:var(--blue);font-style:italic">${getNom(e.id).nota}</span>`:''} ${getNom(e.id).desdeEncargado?'<span style="font-size:10px;background:#e1f5ee;color:#0f6e56;padding:1px 5px;border-radius:4px;margin-left:2px">encargado</span>':''}</td>
+     <td><span class="badge ${obc(e.obra)}">${e.obra}</span></td>
+     <td class="num">${fmt(e.salario)}</td>
+     <td class="num">${en.faltas>0?`<span style="color:var(--red)">${en.faltas}d/-${fmt(dF)}</span>`:'<span style="color:var(--text2)">0</span>'}</td>
+     <td class="num">${en.hext>0?`<span style="color:var(--green)">${en.hext}h/+${fmt(hE)}</span>`:'<span style="color:var(--text2)">0</span>'}</td>
+     <td class="num">${e.gasolina>0?`<span style="color:var(--green)">${fmt(gasN)}${en.faltas>0?' ('+diasTrab+'/6d)':''}</span>`:'—'}</td>
+     <td class="num">${pD>0?`<span class="prestamo-badge">-${fmt(pD)}</span>`:'—'}</td>
+     <td class="num">${en.desc>0?`<span style="color:var(--red)">-${fmt(en.desc)}</span>`:'—'}</td>
+     <td class="num">${en.debe>0?`<span style="color:var(--green)">+${fmt(en.debe)}</span>`:'—'}</td>
+     <td class="num" style="font-weight:500">${fmt(tot)}</td>
+     <td><button class="btn btn-sm" onclick="openNomModal(${e.id})">Editar</button></td>
+   </tr>`;
+}).join('');
 
-  // Resúmenes por obra
-  const obras = [...new Set(empleados.filter(e=>e.activo).map(e => e.obra))].sort();
-  const resumenObras = obras.map(obra => {
-    const empsObra = empleados.filter(e => e.obra === obra && e.activo);
-    const totalBase = empsObra.reduce((s,e) => s+e.salario, 0);
-    const totalGas = empsObra.reduce((s,e) => {
-      const faltas = getNom(e.id).faltas||0;
-      const diasTrab = 6 - faltas;
-      return s + (e.gasolina||0) * diasTrab / 6;
-    }, 0);
-    const totalPrest = empsObra.reduce((s,e) => s+getPrestDesc(e.id), 0);
-    const totalNeto = empsObra.reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))), 0);
-    const totalDesc = empsObra.reduce((s,e) => s+(getNom(e.id).desc||0), 0);
-    const totalFaltas = empsObra.reduce((s,e) => { const d=e.salario/6; return s+(getNom(e.id).faltas||0)*d; }, 0);
-    return `
-      <div class="panel" style="margin-bottom:10px">
-        <div class="phead" style="padding:8px 16px">
-          <h2 style="font-size:13px"><span class="badge ${obc(obra)}" style="margin-right:8px">${obra}</span>${empsObra.length} empleados</h2>
-          <span style="font-size:12px;font-weight:500">Total neto: ${fmt(totalNeto)}</span>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:0;border-top:0.5px solid var(--border)">
-          <div style="padding:10px 14px;border-right:0.5px solid var(--border)">
-            <div style="font-size:11px;color:var(--text2);margin-bottom:2px">Base semanal</div>
-            <div style="font-size:15px;font-weight:500">${fmt(totalBase)}</div>
-          </div>
-          <div style="padding:10px 14px;border-right:0.5px solid var(--border)">
-            <div style="font-size:11px;color:var(--text2);margin-bottom:2px">Gasolina / transporte</div>
-            <div style="font-size:15px;font-weight:500;color:var(--green)">${totalGas>0?fmt(totalGas):'—'}</div>
-          </div>
-          <div style="padding:10px 14px;border-right:0.5px solid var(--border)">
-            <div style="font-size:11px;color:var(--text2);margin-bottom:2px">Desc. préstamos</div>
-            <div style="font-size:15px;font-weight:500;color:var(--amber)">${totalPrest>0?'-'+fmt(totalPrest):'—'}</div>
-          </div>
-          <div style="padding:10px 14px;border-right:0.5px solid var(--border)">
-            <div style="font-size:11px;color:var(--text2);margin-bottom:2px">Desc. faltas</div>
-            <div style="font-size:15px;font-weight:500;color:var(--red)">${totalFaltas>0?'-'+fmt(totalFaltas):'—'}</div>
-          </div>
-          <div style="padding:10px 14px">
-            <div style="font-size:11px;color:var(--text2);margin-bottom:2px">Otros descuentos</div>
-            <div style="font-size:15px;font-weight:500;color:var(--red)">${totalDesc>0?'-'+fmt(totalDesc):'—'}</div>
-          </div>
-        </div>
-      </div>`;
-  });
+// Resúmenes por obra
+const obras = [...new Set(empleados.filter(e=>e.activo).map(e => e.obra))].sort();
+const resumenObras = obras.map(obra => {
+const empsObra = empleados.filter(e => e.obra === obra && e.activo);
+const totalBase = empsObra.reduce((s,e) => s+e.salario, 0);
+const totalGas = empsObra.reduce((s,e) => {
+const faltas = getNom(e.id).faltas||0;
+const diasTrab = 6 - faltas;
+return s + (e.gasolina||0) * diasTrab / 6;
+}, 0);
+const totalPrest = empsObra.reduce((s,e) => s+getPrestDesc(e.id), 0);
+const totalNeto = empsObra.reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))), 0);
+const totalDesc = empsObra.reduce((s,e) => s+(getNom(e.id).desc||0), 0);
+const totalFaltas = empsObra.reduce((s,e) => { const d=e.salario/6; return s+(getNom(e.id).faltas||0)*d; }, 0);
+return `
+     <div class="panel" style="margin-bottom:10px">
+       <div class="phead" style="padding:8px 16px">
+         <h2 style="font-size:13px"><span class="badge ${obc(obra)}" style="margin-right:8px">${obra}</span>${empsObra.length} empleados</h2>
+         <span style="font-size:12px;font-weight:500">Total neto: ${fmt(totalNeto)}</span>
+       </div>
+       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:0;border-top:0.5px solid var(--border)">
+         <div style="padding:10px 14px;border-right:0.5px solid var(--border)">
+           <div style="font-size:11px;color:var(--text2);margin-bottom:2px">Base semanal</div>
+           <div style="font-size:15px;font-weight:500">${fmt(totalBase)}</div>
+         </div>
+         <div style="padding:10px 14px;border-right:0.5px solid var(--border)">
+           <div style="font-size:11px;color:var(--text2);margin-bottom:2px">Gasolina / transporte</div>
+           <div style="font-size:15px;font-weight:500;color:var(--green)">${totalGas>0?fmt(totalGas):'—'}</div>
+         </div>
+         <div style="padding:10px 14px;border-right:0.5px solid var(--border)">
+           <div style="font-size:11px;color:var(--text2);margin-bottom:2px">Desc. préstamos</div>
+           <div style="font-size:15px;font-weight:500;color:var(--amber)">${totalPrest>0?'-'+fmt(totalPrest):'—'}</div>
+         </div>
+         <div style="padding:10px 14px;border-right:0.5px solid var(--border)">
+           <div style="font-size:11px;color:var(--text2);margin-bottom:2px">Desc. faltas</div>
+           <div style="font-size:15px;font-weight:500;color:var(--red)">${totalFaltas>0?'-'+fmt(totalFaltas):'—'}</div>
+         </div>
+         <div style="padding:10px 14px">
+           <div style="font-size:11px;color:var(--text2);margin-bottom:2px">Otros descuentos</div>
+           <div style="font-size:15px;font-weight:500;color:var(--red)">${totalDesc>0?'-'+fmt(totalDesc):'—'}</div>
+         </div>
+       </div>
+     </div>`;
+});
 
-  // Resumen global
-  const totalGasGlobal = empleados.filter(e=>e.activo).reduce((s,e) => {
-    const faltas = getNom(e.id).faltas||0;
-    const diasTrab = 6 - faltas;
-    return s + (e.gasolina||0) * diasTrab / 6;
-  }, 0);
-  const totalNetoGlobal = empleados.reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))), 0);
-  const totalPrestGlobal = empleados.reduce((s,e) => s+getPrestDesc(e.id), 0);
+// Resumen global
+const totalGasGlobal = empleados.filter(e=>e.activo).reduce((s,e) => {
+const faltas = getNom(e.id).faltas||0;
+const diasTrab = 6 - faltas;
+return s + (e.gasolina||0) * diasTrab / 6;
+}, 0);
+const totalNetoGlobal = empleados.reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))), 0);
+const totalPrestGlobal = empleados.reduce((s,e) => s+getPrestDesc(e.id), 0);
 
-  $('nom-resumenes').innerHTML = `
-    <div style="margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-      <span style="font-size:13px;font-weight:500">Resumen por obra</span>
-      <span style="font-size:12px;color:var(--text2)">— Gasolina total esta semana: <strong style="color:var(--green)">${fmt(totalGasGlobal)}</strong> &nbsp;·&nbsp; Total neto global: <strong>${fmt(totalNetoGlobal)}</strong> &nbsp;·&nbsp; Desc. préstamos: <strong style="color:var(--amber)">${totalPrestGlobal>0?'-'+fmt(totalPrestGlobal):'$0'}</strong></span>
-    </div>
-    ${resumenObras.join('')}`;
+$('nom-resumenes').innerHTML = `
+   <div style="margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+     <span style="font-size:13px;font-weight:500">Resumen por obra</span>
+     <span style="font-size:12px;color:var(--text2)">— Gasolina total esta semana: <strong style="color:var(--green)">${fmt(totalGasGlobal)}</strong> &nbsp;·&nbsp; Total neto global: <strong>${fmt(totalNetoGlobal)}</strong> &nbsp;·&nbsp; Desc. préstamos: <strong style="color:var(--amber)">${totalPrestGlobal>0?'-'+fmt(totalPrestGlobal):'$0'}</strong></span>
+   </div>
+   ${resumenObras.join('')}`;
 }
 
 function openNomModal(empId) {
-  editNomEmpId = empId;
-  const emp = empleados.find(e => e.id===empId); const en = getNom(empId);
-  const ini = emp.nombre.split(' ').map(w=>w[0]).slice(0,2).join('');
-  $('nom-modal-title').textContent = 'Nómina — ' + emp.nombre;
-  $('nom-emp-hdr').innerHTML = `<div class="avatar">${ini}</div><div><div style="font-weight:500;font-size:13px">${emp.nombre}</div><div style="font-size:12px;color:var(--text2)">${emp.puesto} · <span class="badge ${obc(emp.obra)}" style="font-size:10px">${emp.obra}</span></div></div><div style="margin-left:auto;font-size:12px;color:var(--text2)">${fmtDS(currentLunes)} – ${fmtDS(currentSabado)}</div>`;
-  $('ne-faltas').value=en.faltas||0; $('ne-hext').value=en.hext||0; 
-  $('ne-desc').value=en.desc||0; $('ne-debe').value=en.debe||0; $('ne-prest').value=getPrestDesc(empId);
-  recalcNom(); $('overlay-nom').classList.add('open');
+editNomEmpId = empId;
+const emp = empleados.find(e => e.id===empId); const en = getNom(empId);
+const ini = emp.nombre.split(' ').map(w=>w[0]).slice(0,2).join('');
+$('nom-modal-title').textContent = 'Nómina — ' + emp.nombre;
+$('nom-emp-hdr').innerHTML = `<div class="avatar">${ini}</div><div><div style="font-weight:500;font-size:13px">${emp.nombre}</div><div style="font-size:12px;color:var(--text2)">${emp.puesto} · <span class="badge ${obc(emp.obra)}" style="font-size:10px">${emp.obra}</span></div></div><div style="margin-left:auto;font-size:12px;color:var(--text2)">${fmtDS(currentLunes)} – ${fmtDS(currentSabado)}</div>`;
+$('ne-faltas').value=en.faltas||0; $('ne-hext').value=en.hext||0; 
+$('ne-desc').value=en.desc||0; $('ne-debe').value=en.debe||0; $('ne-prest').value=getPrestDesc(empId);
+recalcNom(); $('overlay-nom').classList.add('open');
 }
 
 function recalcNom() {
-  if (!editNomEmpId) return;
-  const emp = empleados.find(e => e.id===editNomEmpId); if (!emp) return;
-  const d=emp.salario/6, f=+$('ne-faltas').value||0, h=+$('ne-hext').value||0;
-  const desc=+$('ne-desc').value||0, db=+$('ne-debe').value||0;
-  const tarifa=parseFloat($('ne-tarifa').value)||1.5;
-  const diasTrab=6-f;
-  const gasNeto=(emp.gasolina||0)*diasTrab/6;
-  const p=getPrestDesc(editNomEmpId); $('ne-prest').value=p;
-  const dF=f*d, iH=h*(d/8)*tarifa, tot=emp.salario-dF+iH+gasNeto+db-desc-p;
-  $('nom-result').innerHTML = `
-    <div class="calc-row"><span>Salario semanal</span><span>${fmt(emp.salario)}</span></div>
-    ${dF>0?`<div class="calc-row"><span>Descuento ${f} falta(s)</span><span style="color:var(--red)">-${fmt(dF)}</span></div>`:''}
-    ${iH>0?`<div class="calc-row"><span>${h} h. extras (×${tarifa})</span><span style="color:var(--green)">+${fmt(iH)}</span></div>`:''}
-    ${emp.gasolina>0?`<div class="calc-row"><span>Gasolina (${diasTrab}/6 días)</span><span style="color:var(--green)">+${fmt(gasNeto)}</span></div>`:''}
-    ${db>0?`<div class="calc-row"><span>Se le debe</span><span style="color:var(--green)">+${fmt(db)}</span></div>`:''}
-    ${desc>0?`<div class="calc-row"><span>Descuentos</span><span style="color:var(--red)">-${fmt(desc)}</span></div>`:''}
-    ${p>0?`<div class="calc-row"><span>Desc. préstamo (auto)</span><span style="color:var(--amber)">-${fmt(p)}</span></div>`:''}
-    <div class="calc-row"><span>Total a percibir</span><span style="font-size:15px">${fmt(Math.max(0,tot))}</span></div>`;
+if (!editNomEmpId) return;
+const emp = empleados.find(e => e.id===editNomEmpId); if (!emp) return;
+const d=emp.salario/6, f=+$('ne-faltas').value||0, h=+$('ne-hext').value||0;
+const desc=+$('ne-desc').value||0, db=+$('ne-debe').value||0;
+const tarifa=parseFloat($('ne-tarifa').value)||1.5;
+const diasTrab=6-f;
+const gasNeto=(emp.gasolina||0)*diasTrab/6;
+const p=getPrestDesc(editNomEmpId); $('ne-prest').value=p;
+const dF=f*d, iH=h*(d/8)*tarifa, tot=emp.salario-dF+iH+gasNeto+db-desc-p;
+$('nom-result').innerHTML = `
+   <div class="calc-row"><span>Salario semanal</span><span>${fmt(emp.salario)}</span></div>
+   ${dF>0?`<div class="calc-row"><span>Descuento ${f} falta(s)</span><span style="color:var(--red)">-${fmt(dF)}</span></div>`:''}
+   ${iH>0?`<div class="calc-row"><span>${h} h. extras (×${tarifa})</span><span style="color:var(--green)">+${fmt(iH)}</span></div>`:''}
+   ${emp.gasolina>0?`<div class="calc-row"><span>Gasolina (${diasTrab}/6 días)</span><span style="color:var(--green)">+${fmt(gasNeto)}</span></div>`:''}
+   ${db>0?`<div class="calc-row"><span>Se le debe</span><span style="color:var(--green)">+${fmt(db)}</span></div>`:''}
+   ${desc>0?`<div class="calc-row"><span>Descuentos</span><span style="color:var(--red)">-${fmt(desc)}</span></div>`:''}
+   ${p>0?`<div class="calc-row"><span>Desc. préstamo (auto)</span><span style="color:var(--amber)">-${fmt(p)}</span></div>`:''}
+   <div class="calc-row"><span>Total a percibir</span><span style="font-size:15px">${fmt(Math.max(0,tot))}</span></div>`;
 }
 
 async function saveNomEntry() {
-  if (!editNomEmpId) return;
-  const semAbierta = semanas.find(s => !s.cerrada); if (!semAbierta) return;
-  const emp = empleados.find(e => e.id===editNomEmpId);
-  const en = getNom(editNomEmpId);
-  const d = emp.salario/6;
-  const newEn = { faltas:+$('ne-faltas').value||0, hext:+$('ne-hext').value||0, tarifa:parseFloat($('ne-tarifa').value)||1.5, desc:+$('ne-desc').value||0, debe:+$('ne-debe').value||0, nota:$('ne-nota').value.trim(), pagador:$('ne-pagador').value };
-  const diasTrab = 6 - newEn.faltas;
-  const gasNeto = (emp.gasolina||0) * diasTrab / 6;
-  const pD = getPrestDesc(editNomEmpId);
-  const tot = calcTotal(editNomEmpId, newEn);
-  const row = { semana_id:semAbierta.id, empleado_id:editNomEmpId, salario_base:emp.salario, faltas:newEn.faltas, horas_extras:newEn.hext, tarifa_hext:newEn.tarifa, gasolina:gasNeto, descuentos:newEn.desc, se_le_debe:newEn.debe, prest_desc:pD, total:Math.max(0,tot), nota:newEn.nota, pagador:newEn.pagador };
-  if (en.id) {
-    await db.from('entradas_nomina').update(row).eq('id', en.id);
-    newEn.id = en.id;
-  } else {
-    const { data } = await db.from('entradas_nomina').insert([row]).select().single();
-    if (data) newEn.id = data.id;
-  }
-  nomina[editNomEmpId] = newEn;
-  closeOv('overlay-nom'); renderNomina(); renderDash(); showToast('Guardado ✓');
+if (!editNomEmpId) return;
+const semAbierta = semanas.find(s => !s.cerrada); if (!semAbierta) return;
+const emp = empleados.find(e => e.id===editNomEmpId);
+const en = getNom(editNomEmpId);
+const d = emp.salario/6;
+const newEn = { faltas:+$('ne-faltas').value||0, hext:+$('ne-hext').value||0, tarifa:parseFloat($('ne-tarifa').value)||1.5, desc:+$('ne-desc').value||0, debe:+$('ne-debe').value||0, nota:$('ne-nota').value.trim(), pagador:$('ne-pagador').value };
+const diasTrab = 6 - newEn.faltas;
+const gasNeto = (emp.gasolina||0) * diasTrab / 6;
+const pD = getPrestDesc(editNomEmpId);
+const tot = calcTotal(editNomEmpId, newEn);
+const row = { semana_id:semAbierta.id, empleado_id:editNomEmpId, salario_base:emp.salario, faltas:newEn.faltas, horas_extras:newEn.hext, tarifa_hext:newEn.tarifa, gasolina:gasNeto, descuentos:newEn.desc, se_le_debe:newEn.debe, prest_desc:pD, total:Math.max(0,tot), nota:newEn.nota, pagador:newEn.pagador };
+if (en.id) {
+await db.from('entradas_nomina').update(row).eq('id', en.id);
+newEn.id = en.id;
+} else {
+const { data } = await db.from('entradas_nomina').insert([row]).select().single();
+if (data) newEn.id = data.id;
+}
+nomina[editNomEmpId] = newEn;
+closeOv('overlay-nom'); renderNomina(); renderDash(); showToast('Guardado ✓');
 }
 
 // =============================================
 // CERRAR SEMANA
 // =============================================
 function openCierre() {
-  const neto = empleados.reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))), 0);
-  const pDesc = empleados.reduce((s,e) => s+getPrestDesc(e.id), 0);
-  // Desglose por pagador
-  const empActivos2 = empleados.filter(e=>e.activo);
-  const pagResumen = ['Luis','Joan','Efectivo',''].map(pag => {
-    const empsP = empActivos2.filter(e=>(e.pagador||'')=== pag);
-    if (!empsP.length) return '';
-    const totP = empsP.reduce((s,e)=>s+Math.max(0,calcTotal(e.id,getNom(e.id))),0);
-    const lbl = {Luis:'Luis',Joan:'Joan',Efectivo:'Efectivo','':'Sin asignar'}[pag];
-    const nombres = empsP.map(e=>e.nombre.split(' ')[0]).join(', ');
-    return `<div style="display:flex;justify-content:space-between;align-items:flex-start;padding:6px 0;border-bottom:0.5px solid var(--border);font-size:13px;gap:8px">
-      <div><span style="font-weight:500">${lbl}</span> <span style="color:var(--text2);font-size:11px">(${empsP.length})</span><br><span style="font-size:11px;color:var(--text2)">${nombres}</span></div>
-      <span style="font-weight:500;white-space:nowrap">${fmt(totP)}</span>
-    </div>`;
-  }).filter(Boolean).join('');
+const neto = empleados.reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))), 0);
+const pDesc = empleados.reduce((s,e) => s+getPrestDesc(e.id), 0);
+// Desglose por pagador
+const empActivos2 = empleados.filter(e=>e.activo);
+const pagResumen = ['Luis','Joan','Efectivo',''].map(pag => {
+const empsP = empActivos2.filter(e=>(e.pagador||'')=== pag);
+if (!empsP.length) return '';
+const totP = empsP.reduce((s,e)=>s+Math.max(0,calcTotal(e.id,getNom(e.id))),0);
+const lbl = {Luis:'Luis',Joan:'Joan',Efectivo:'Efectivo','':'Sin asignar'}[pag];
+const nombres = empsP.map(e=>e.nombre.split(' ')[0]).join(', ');
+return `<div style="display:flex;justify-content:space-between;align-items:flex-start;padding:6px 0;border-bottom:0.5px solid var(--border);font-size:13px;gap:8px">
+     <div><span style="font-weight:500">${lbl}</span> <span style="color:var(--text2);font-size:11px">(${empsP.length})</span><br><span style="font-size:11px;color:var(--text2)">${nombres}</span></div>
+     <span style="font-weight:500;white-space:nowrap">${fmt(totP)}</span>
+   </div>`;
+}).filter(Boolean).join('');
 
-  $('cierre-body').innerHTML = `
-    <div class="confirm-box">
-      <div class="row"><span>Período</span><strong>${fmtD(currentLunes)} — ${fmtD(currentSabado)}</strong></div>
-      <div class="row"><span>Empleados</span><strong>${empleados.length}</strong></div>
-      <div class="row"><span>Descuentos préstamos</span><strong style="color:var(--amber)">-${fmt(pDesc)}</strong></div>
-      <div class="row" style="border-top:0.5px solid var(--border);margin-top:6px;padding-top:6px"><span>Total a pagar</span><strong style="font-size:15px">${fmt(neto)}</strong></div>
-    </div>
-    ${pagResumen ? `<div style="margin-bottom:12px"><div style="font-size:12px;font-weight:500;color:var(--text2);margin-bottom:8px">Desglose por pagador</div>${pagResumen}</div>` : ''}
-    <p style="font-size:12px;color:var(--text2);margin-bottom:12px">Al confirmar se guardará esta nómina en el historial, se aplicarán los descuentos de préstamos y la semana avanzará.</p>`;
-  $('cierre-btns').innerHTML = `<button class="btn" onclick="closeOv('overlay-cierre')">Cancelar</button><button class="btn btn-primary" onclick="confirmarCierre()">Confirmar y cerrar semana</button>`;
-  $('overlay-cierre').classList.add('open');
+$('cierre-body').innerHTML = `
+   <div class="confirm-box">
+     <div class="row"><span>Período</span><strong>${fmtD(currentLunes)} — ${fmtD(currentSabado)}</strong></div>
+     <div class="row"><span>Empleados</span><strong>${empleados.length}</strong></div>
+     <div class="row"><span>Descuentos préstamos</span><strong style="color:var(--amber)">-${fmt(pDesc)}</strong></div>
+     <div class="row" style="border-top:0.5px solid var(--border);margin-top:6px;padding-top:6px"><span>Total a pagar</span><strong style="font-size:15px">${fmt(neto)}</strong></div>
+   </div>
+   ${pagResumen ? `<div style="margin-bottom:12px"><div style="font-size:12px;font-weight:500;color:var(--text2);margin-bottom:8px">Desglose por pagador</div>${pagResumen}</div>` : ''}
+   <p style="font-size:12px;color:var(--text2);margin-bottom:12px">Al confirmar se guardará esta nómina en el historial, se aplicarán los descuentos de préstamos y la semana avanzará.</p>`;
+$('cierre-btns').innerHTML = `<button class="btn" onclick="closeOv('overlay-cierre')">Cancelar</button><button class="btn btn-primary" onclick="confirmarCierre()">Confirmar y cerrar semana</button>`;
+$('overlay-cierre').classList.add('open');
 }
 
 async function confirmarCierre() {
-  const semAbierta = semanas.find(s => !s.cerrada); if (!semAbierta) return;
-  const totalPagado = empleados.reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))), 0);
-  const totalPrest = empleados.reduce((s,e) => s+getPrestDesc(e.id), 0);
-  // Asegurar entradas para todos los empleados
-  for (const emp of empleados) {
-    const en = getNom(emp.id);
-    if (!en.id) {
-      const pD = getPrestDesc(emp.id);
-      const tot = Math.max(0, calcTotal(emp.id, en));
-      const gasNeto = emp.gasolina||0;
-      const row = { semana_id:semAbierta.id, empleado_id:emp.id, salario_base:emp.salario, faltas:0, horas_extras:0, gasolina:gasNeto, descuentos:0, se_le_debe:0, prest_desc:pD, total:tot, pagador:getNom(emp.id).pagador||'' };
-      await db.from('entradas_nomina').insert([row]);
-    }
-  }
-  // Cerrar semana
-  await db.from('semanas_nomina').update({ cerrada:true, total_pagado:totalPagado, total_prest_desc:totalPrest, cerrada_en:new Date().toISOString() }).eq('id', semAbierta.id);
-  // Aplicar descuentos de préstamos
-  for (const p of prestamos) {
-    if (p.saldo > 0 && new Date(p.inicia_cobro+'T00:00:00') <= currentSabado) {
-      const pago = Math.min(p.cuota, p.saldo);
-      const nuevoSaldo = Math.max(0, p.saldo - pago);
-      const nuevoPagado = (p.pagado||0) + pago;
-      const nuevasLetras = p.cuota > 0 ? Math.ceil(nuevoSaldo / p.cuota) : 0;
-      await db.from('prestamos_nomina').update({ saldo:nuevoSaldo, pagado:nuevoPagado, letras_restantes:nuevasLetras }).eq('id', p.id);
-    }
-  }
-  // Crear nueva semana
-  const nuevoLunes = new Date(currentLunes); nuevoLunes.setDate(nuevoLunes.getDate()+7);
-  const nuevoSabado = getSabado(nuevoLunes);
-  const { data:nuevaSem } = await db.from('semanas_nomina').insert([{ desde:toISO(nuevoLunes), hasta:toISO(nuevoSabado), cerrada:false }]).select().single();
-  nomina = {};
-  currentLunes = nuevoLunes; currentSabado = nuevoSabado;
-  await loadAll();
-  if (nuevaSem) semanas.unshift(nuevaSem);
-  closeOv('overlay-cierre'); updatePeriod(); renderDash();
-  showToast('Semana cerrada y guardada');
+const semAbierta = semanas.find(s => !s.cerrada); if (!semAbierta) return;
+const totalPagado = empleados.reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))), 0);
+const totalPrest = empleados.reduce((s,e) => s+getPrestDesc(e.id), 0);
+// Asegurar entradas para todos los empleados
+for (const emp of empleados) {
+const en = getNom(emp.id);
+if (!en.id) {
+const pD = getPrestDesc(emp.id);
+const tot = Math.max(0, calcTotal(emp.id, en));
+const gasNeto = emp.gasolina||0;
+const row = { semana_id:semAbierta.id, empleado_id:emp.id, salario_base:emp.salario, faltas:0, horas_extras:0, gasolina:gasNeto, descuentos:0, se_le_debe:0, prest_desc:pD, total:tot, pagador:getNom(emp.id).pagador||'' };
+await db.from('entradas_nomina').insert([row]);
+}
+}
+// Cerrar semana
+await db.from('semanas_nomina').update({ cerrada:true, total_pagado:totalPagado, total_prest_desc:totalPrest, cerrada_en:new Date().toISOString() }).eq('id', semAbierta.id);
+// Aplicar descuentos de préstamos
+for (const p of prestamos) {
+if (p.saldo > 0 && new Date(p.inicia_cobro+'T00:00:00') <= currentSabado) {
+const pago = Math.min(p.cuota, p.saldo);
+const nuevoSaldo = Math.max(0, p.saldo - pago);
+const nuevoPagado = (p.pagado||0) + pago;
+const nuevasLetras = p.cuota > 0 ? Math.ceil(nuevoSaldo / p.cuota) : 0;
+await db.from('prestamos_nomina').update({ saldo:nuevoSaldo, pagado:nuevoPagado, letras_restantes:nuevasLetras }).eq('id', p.id);
+}
+}
+// Crear nueva semana
+const nuevoLunes = new Date(currentLunes); nuevoLunes.setDate(nuevoLunes.getDate()+7);
+const nuevoSabado = getSabado(nuevoLunes);
+const { data:nuevaSem } = await db.from('semanas_nomina').insert([{ desde:toISO(nuevoLunes), hasta:toISO(nuevoSabado), cerrada:false }]).select().single();
+nomina = {};
+currentLunes = nuevoLunes; currentSabado = nuevoSabado;
+await loadAll();
+if (nuevaSem) semanas.unshift(nuevaSem);
+closeOv('overlay-cierre'); updatePeriod(); renderDash();
+showToast('Semana cerrada y guardada');
 }
 
 // =============================================
 // HISTORIAL
 // =============================================
 async function renderHistorial() {
-  const cerradas = semanas.filter(s => s.cerrada);
-  const tot = cerradas.reduce((s,h) => s+(h.total_pagado||0), 0);
-  $('hist-cards').innerHTML = `
-    <div class="mcard"><div class="lbl">Semanas cerradas</div><div class="val">${cerradas.length}</div></div>
-    <div class="mcard"><div class="lbl">Total histórico</div><div class="val" style="font-size:15px">${fmt(tot)}</div></div>
-    <div class="mcard"><div class="lbl">Promedio/semana</div><div class="val" style="font-size:15px">${cerradas.length?fmt(tot/cerradas.length):'—'}</div></div>`;
-  $('hist-tbody').innerHTML = cerradas.length ? cerradas.map((h,i) => `<tr style="cursor:pointer" onclick="openDetail(${h.id})">
-    <td style="font-weight:500">Semana #${cerradas.length-i}</td>
-    <td>${fmtD(fromISO(h.desde))}</td><td>${fmtD(fromISO(h.hasta))}</td>
-    <td class="num">${empleados.length}</td>
-    <td class="num" style="font-weight:500">${fmt(h.total_pagado)}</td>
-    <td class="num">${h.total_prest_desc>0?`<span class="prestamo-badge">-${fmt(h.total_prest_desc)}</span>`:'—'}</td>
-    <td><span class="badge b-cerrada">Cerrada</span></td>
-    <td style="display:flex;gap:4px"><button class="btn btn-sm" onclick="openDetail(${h.id});event.stopPropagation()">Ver</button><button class="btn btn-sm" style="color:var(--green);border-color:var(--border)" onclick="exportExcel(${h.id});event.stopPropagation()">Excel</button></td>
-  </tr>`).join('') : `<tr><td colspan="8" class="empty">Aún no hay semanas cerradas</td></tr>`;
+const cerradas = semanas.filter(s => s.cerrada);
+const tot = cerradas.reduce((s,h) => s+(h.total_pagado||0), 0);
+$('hist-cards').innerHTML = `
+   <div class="mcard"><div class="lbl">Semanas cerradas</div><div class="val">${cerradas.length}</div></div>
+   <div class="mcard"><div class="lbl">Total histórico</div><div class="val" style="font-size:15px">${fmt(tot)}</div></div>
+   <div class="mcard"><div class="lbl">Promedio/semana</div><div class="val" style="font-size:15px">${cerradas.length?fmt(tot/cerradas.length):'—'}</div></div>`;
+$('hist-tbody').innerHTML = cerradas.length ? cerradas.map((h,i) => `<tr style="cursor:pointer" onclick="openDetail(${h.id})">
+   <td style="font-weight:500">Semana #${cerradas.length-i}</td>
+   <td>${fmtD(fromISO(h.desde))}</td><td>${fmtD(fromISO(h.hasta))}</td>
+   <td class="num">${empleados.length}</td>
+   <td class="num" style="font-weight:500">${fmt(h.total_pagado)}</td>
+   <td class="num">${h.total_prest_desc>0?`<span class="prestamo-badge">-${fmt(h.total_prest_desc)}</span>`:'—'}</td>
+   <td><span class="badge b-cerrada">Cerrada</span></td>
+   <td style="display:flex;gap:4px"><button class="btn btn-sm" onclick="openDetail(${h.id});event.stopPropagation()">Ver</button><button class="btn btn-sm" style="color:var(--green);border-color:var(--border)" onclick="exportExcel(${h.id});event.stopPropagation()">Excel</button></td>
+ </tr>`).join('') : `<tr><td colspan="8" class="empty">Aún no hay semanas cerradas</td></tr>`;
 }
 
 let detalleSemanaActual = null;
 let detalleEntradasActual = [];
 
 async function openDetail(semanaId) {
-  const sem = semanas.find(s => s.id===semanaId); if (!sem) return;
-  const { data: entradas } = await db.from('entradas_nomina').select('*').eq('semana_id', semanaId);
-  detalleSemanaActual = sem;
-  detalleEntradasActual = entradas || [];
-  $('det-title').textContent = 'Nómina: ' + fmtD(fromISO(sem.desde)) + ' — ' + fmtD(fromISO(sem.hasta));
-  $('det-subtitle').textContent = (entradas?.length||0)+' empleados · '+fmt(sem.total_pagado);
-  $('det-tbody').innerHTML = (entradas||[]).map(e => {
-    const emp = empleados.find(x => x.id===e.empleado_id)||{nombre:'?',puesto:'',obra:''};
-    const dF = e.faltas*(e.salario_base/6), hE = e.horas_extras*(e.salario_base/6/8)*1.5;
-    return `<tr><td style="font-weight:500">${emp.nombre}${e.nota?`<br><span style='font-size:11px;color:var(--blue);font-style:italic'>${e.nota}</span>`:''}</td><td style="font-size:12px;color:var(--text2)">${emp.puesto}</td><td><span class="badge ${obc(emp.obra)}">${emp.obra}</span></td><td class="num">${fmt(e.salario_base)}</td><td class="num">${e.faltas>0?`<span style="color:var(--red)">-${fmt(dF)}</span>`:'—'}</td><td class="num">${e.horas_extras>0?`<span style="color:var(--green)">+${fmt(hE)}</span>`:'—'}</td><td class="num">${e.gasolina>0?fmt(e.gasolina):'—'}</td><td class="num">${e.prest_desc>0?`<span class="prestamo-badge">-${fmt(e.prest_desc)}</span>`:'—'}</td><td class="num">${e.descuentos>0?`<span style="color:var(--red)">-${fmt(e.descuentos)}</span>`:'—'}</td><td class="num">${e.se_le_debe>0?`<span style="color:var(--green)">+${fmt(e.se_le_debe)}</span>`:'—'}</td><td class="num" style="font-weight:500">${fmt(e.total)}</td><td style="font-size:11px">${e.pagador||'—'}</td></tr>`;
-  }).join('');
-  $('det-ft-base').textContent = fmt((entradas||[]).reduce((s,e)=>s+e.salario_base,0));
-  $('det-ft-total').textContent = fmt(sem.total_pagado);
-  $('overlay-detail').classList.add('open');
+const sem = semanas.find(s => s.id===semanaId); if (!sem) return;
+const { data: entradas } = await db.from('entradas_nomina').select('*').eq('semana_id', semanaId);
+detalleSemanaActual = sem;
+detalleEntradasActual = entradas || [];
+$('det-title').textContent = 'Nómina: ' + fmtD(fromISO(sem.desde)) + ' — ' + fmtD(fromISO(sem.hasta));
+$('det-subtitle').textContent = (entradas?.length||0)+' empleados · '+fmt(sem.total_pagado);
+$('det-tbody').innerHTML = (entradas||[]).map(e => {
+const emp = empleados.find(x => x.id===e.empleado_id)||{nombre:'?',puesto:'',obra:''};
+const dF = e.faltas*(e.salario_base/6), hE = e.horas_extras*(e.salario_base/6/8)*1.5;
+return `<tr><td style="font-weight:500">${emp.nombre}${e.nota?`<br><span style='font-size:11px;color:var(--blue);font-style:italic'>${e.nota}</span>`:''}</td><td style="font-size:12px;color:var(--text2)">${emp.puesto}</td><td><span class="badge ${obc(emp.obra)}">${emp.obra}</span></td><td class="num">${fmt(e.salario_base)}</td><td class="num">${e.faltas>0?`<span style="color:var(--red)">-${fmt(dF)}</span>`:'—'}</td><td class="num">${e.horas_extras>0?`<span style="color:var(--green)">+${fmt(hE)}</span>`:'—'}</td><td class="num">${e.gasolina>0?fmt(e.gasolina):'—'}</td><td class="num">${e.prest_desc>0?`<span class="prestamo-badge">-${fmt(e.prest_desc)}</span>`:'—'}</td><td class="num">${e.descuentos>0?`<span style="color:var(--red)">-${fmt(e.descuentos)}</span>`:'—'}</td><td class="num">${e.se_le_debe>0?`<span style="color:var(--green)">+${fmt(e.se_le_debe)}</span>`:'—'}</td><td class="num" style="font-weight:500">${fmt(e.total)}</td><td style="font-size:11px">${e.pagador||'—'}</td></tr>`;
+}).join('');
+$('det-ft-base').textContent = fmt((entradas||[]).reduce((s,e)=>s+e.salario_base,0));
+$('det-ft-total').textContent = fmt(sem.total_pagado);
+$('overlay-detail').classList.add('open');
 }
 
 // =============================================
@@ -1131,421 +1138,421 @@ async function openDetail(semanaId) {
 let editHistEntradas = [];
 
 function abrirEdicionNomina() {
-  if (!detalleSemanaActual) return;
-  $('edit-hist-title').textContent = 'Editar — ' + fmtD(fromISO(detalleSemanaActual.desde)) + ' a ' + fmtD(fromISO(detalleSemanaActual.hasta));
-  editHistEntradas = detalleEntradasActual.map(e => ({...e}));
-  renderEditHistTbody();
-  $('overlay-edit-hist').classList.add('open');
+if (!detalleSemanaActual) return;
+$('edit-hist-title').textContent = 'Editar — ' + fmtD(fromISO(detalleSemanaActual.desde)) + ' a ' + fmtD(fromISO(detalleSemanaActual.hasta));
+editHistEntradas = detalleEntradasActual.map(e => ({...e}));
+renderEditHistTbody();
+$('overlay-edit-hist').classList.add('open');
 }
 
 function renderEditHistTbody() {
-  $('edit-hist-tbody').innerHTML = editHistEntradas.map((e, idx) => {
-    const emp = empleados.find(x => x.id===e.empleado_id)||{nombre:'?',obra:''};
-    const dF = e.faltas*(e.salario_base/6), hE = e.horas_extras*(e.salario_base/6/8)*1.5;
-    return `<tr>
-      <td style="font-weight:500">${emp.nombre}</td>
-      <td><span class="badge ${obc(emp.obra)}">${emp.obra}</span></td>
-      <td class="num">${fmt(e.salario_base)}</td>
-      <td class="num"><input type="number" min="0" value="${e.faltas}" style="width:50px;text-align:right" onchange="updateEditHist(${idx},'faltas',this.value)"></td>
-      <td class="num"><input type="number" min="0" value="${e.horas_extras}" style="width:50px;text-align:right" onchange="updateEditHist(${idx},'horas_extras',this.value)"></td>
-      <td class="num"><input type="number" min="0" value="${e.gasolina}" style="width:60px;text-align:right" onchange="updateEditHist(${idx},'gasolina',this.value)"></td>
-      <td class="num"><input type="number" min="0" value="${e.prest_desc}" style="width:60px;text-align:right" onchange="updateEditHist(${idx},'prest_desc',this.value)"></td>
-      <td class="num"><input type="number" min="0" value="${e.descuentos}" style="width:60px;text-align:right" onchange="updateEditHist(${idx},'descuentos',this.value)"></td>
-      <td class="num"><input type="number" min="0" value="${e.se_le_debe}" style="width:60px;text-align:right" onchange="updateEditHist(${idx},'se_le_debe',this.value)"></td>
-      <td class="num" id="edit-total-${idx}" style="font-weight:500">${fmt(e.total)}</td>
-    </tr>`;
-  }).join('');
+$('edit-hist-tbody').innerHTML = editHistEntradas.map((e, idx) => {
+const emp = empleados.find(x => x.id===e.empleado_id)||{nombre:'?',obra:''};
+const dF = e.faltas*(e.salario_base/6), hE = e.horas_extras*(e.salario_base/6/8)*1.5;
+return `<tr>
+     <td style="font-weight:500">${emp.nombre}</td>
+     <td><span class="badge ${obc(emp.obra)}">${emp.obra}</span></td>
+     <td class="num">${fmt(e.salario_base)}</td>
+     <td class="num"><input type="number" min="0" value="${e.faltas}" style="width:50px;text-align:right" onchange="updateEditHist(${idx},'faltas',this.value)"></td>
+     <td class="num"><input type="number" min="0" value="${e.horas_extras}" style="width:50px;text-align:right" onchange="updateEditHist(${idx},'horas_extras',this.value)"></td>
+     <td class="num"><input type="number" min="0" value="${e.gasolina}" style="width:60px;text-align:right" onchange="updateEditHist(${idx},'gasolina',this.value)"></td>
+     <td class="num"><input type="number" min="0" value="${e.prest_desc}" style="width:60px;text-align:right" onchange="updateEditHist(${idx},'prest_desc',this.value)"></td>
+     <td class="num"><input type="number" min="0" value="${e.descuentos}" style="width:60px;text-align:right" onchange="updateEditHist(${idx},'descuentos',this.value)"></td>
+     <td class="num"><input type="number" min="0" value="${e.se_le_debe}" style="width:60px;text-align:right" onchange="updateEditHist(${idx},'se_le_debe',this.value)"></td>
+     <td class="num" id="edit-total-${idx}" style="font-weight:500">${fmt(e.total)}</td>
+   </tr>`;
+}).join('');
 }
 
 function updateEditHist(idx, campo, val) {
-  editHistEntradas[idx][campo] = parseFloat(val)||0;
-  const e = editHistEntradas[idx];
-  const d = e.salario_base/6;
-  const dF = e.faltas*d, hE = e.horas_extras*(d/8)*1.5;
-  const tot = e.salario_base - dF + hE + e.gasolina + e.se_le_debe - e.descuentos - e.prest_desc;
-  editHistEntradas[idx].total = Math.max(0, tot);
-  const cel = $('edit-total-'+idx);
-  if (cel) cel.textContent = fmt(editHistEntradas[idx].total);
+editHistEntradas[idx][campo] = parseFloat(val)||0;
+const e = editHistEntradas[idx];
+const d = e.salario_base/6;
+const dF = e.faltas*d, hE = e.horas_extras*(d/8)*1.5;
+const tot = e.salario_base - dF + hE + e.gasolina + e.se_le_debe - e.descuentos - e.prest_desc;
+editHistEntradas[idx].total = Math.max(0, tot);
+const cel = $('edit-total-'+idx);
+if (cel) cel.textContent = fmt(editHistEntradas[idx].total);
 }
 
 async function guardarEdicionNomina() {
-  if (!detalleSemanaActual) return;
-  const btn = document.querySelector('#overlay-edit-hist .btn-primary');
-  btn.textContent = 'Guardando...'; btn.disabled = true;
-  for (const e of editHistEntradas) {
-    await db.from('entradas_nomina').update({
-      faltas: e.faltas, horas_extras: e.horas_extras,
-      gasolina: e.gasolina, descuentos: e.descuentos,
-      se_le_debe: e.se_le_debe, prest_desc: e.prest_desc,
-      total: e.total
-    }).eq('id', e.id);
-  }
-  const nuevoTotal = editHistEntradas.reduce((s,e)=>s+e.total, 0);
-  await db.from('semanas_nomina').update({ total_pagado: nuevoTotal }).eq('id', detalleSemanaActual.id);
-  detalleSemanaActual.total_pagado = nuevoTotal;
-  detalleEntradasActual = editHistEntradas.map(e=>({...e}));
-  // Refrescar semanas en memoria
-  const idx = semanas.findIndex(s=>s.id===detalleSemanaActual.id);
-  if (idx>=0) semanas[idx].total_pagado = nuevoTotal;
-  btn.textContent = 'Guardar cambios'; btn.disabled = false;
-  closeOv('overlay-edit-hist');
-  await openDetail(detalleSemanaActual.id);
-  showToast('Nómina actualizada ✓');
+if (!detalleSemanaActual) return;
+const btn = document.querySelector('#overlay-edit-hist .btn-primary');
+btn.textContent = 'Guardando...'; btn.disabled = true;
+for (const e of editHistEntradas) {
+await db.from('entradas_nomina').update({
+faltas: e.faltas, horas_extras: e.horas_extras,
+gasolina: e.gasolina, descuentos: e.descuentos,
+se_le_debe: e.se_le_debe, prest_desc: e.prest_desc,
+total: e.total
+}).eq('id', e.id);
+}
+const nuevoTotal = editHistEntradas.reduce((s,e)=>s+e.total, 0);
+await db.from('semanas_nomina').update({ total_pagado: nuevoTotal }).eq('id', detalleSemanaActual.id);
+detalleSemanaActual.total_pagado = nuevoTotal;
+detalleEntradasActual = editHistEntradas.map(e=>({...e}));
+// Refrescar semanas en memoria
+const idx = semanas.findIndex(s=>s.id===detalleSemanaActual.id);
+if (idx>=0) semanas[idx].total_pagado = nuevoTotal;
+btn.textContent = 'Guardar cambios'; btn.disabled = false;
+closeOv('overlay-edit-hist');
+await openDetail(detalleSemanaActual.id);
+showToast('Nómina actualizada ✓');
 }
 
 // =============================================
 // EXPORT EXCEL
 // =============================================
 async function exportExcel(semanaId) {
-  const sem = semanas.find(s => s.id===semanaId); if (!sem) return;
-  const { data: entradas } = await db.from('entradas_nomina').select('*').eq('semana_id', semanaId);
-  generarExcel(sem, entradas || []);
+const sem = semanas.find(s => s.id===semanaId); if (!sem) return;
+const { data: entradas } = await db.from('entradas_nomina').select('*').eq('semana_id', semanaId);
+generarExcel(sem, entradas || []);
 }
 
 function exportExcelActual() {
-  if (!detalleSemanaActual) return;
-  generarExcel(detalleSemanaActual, detalleEntradasActual);
+if (!detalleSemanaActual) return;
+generarExcel(detalleSemanaActual, detalleEntradasActual);
 }
 
 function generarExcel(sem, entradas) {
-  const desde = fmtD(fromISO(sem.desde));
-  const hasta = fmtD(fromISO(sem.hasta));
-  const nombreArchivo = `Nomina_${sem.desde}_${sem.hasta}.xlsx`;
+const desde = fmtD(fromISO(sem.desde));
+const hasta = fmtD(fromISO(sem.hasta));
+const nombreArchivo = `Nomina_${sem.desde}_${sem.hasta}.xlsx`;
 
-  // Construir filas
-  const rows = [];
+// Construir filas
+const rows = [];
 
-  // Encabezado principal
-  rows.push(['HOPE ELECTRIC — NÓMINA SEMANAL', '', '', '', '', '', '', '', '', '', '']);
-  rows.push([`Período: ${desde} — ${hasta}`, '', '', '', '', '', '', '', '', '', '']);
-  rows.push([]);
+// Encabezado principal
+rows.push(['HOPE ELECTRIC — NÓMINA SEMANAL', '', '', '', '', '', '', '', '', '', '']);
+rows.push([`Período: ${desde} — ${hasta}`, '', '', '', '', '', '', '', '', '', '']);
+rows.push([]);
 
-  // Encabezados de columna
-  rows.push([
-    'Empleado', 'Puesto', 'Obra',
-    'Salario base', 'Desc. faltas', 'H. extras',
-    'Gasolina', 'Desc. préstamo', 'Descuentos', 'Se le debe', 'TOTAL A PERCIBIR'
-  ]);
+// Encabezados de columna
+rows.push([
+'Empleado', 'Puesto', 'Obra',
+'Salario base', 'Desc. faltas', 'H. extras',
+'Gasolina', 'Desc. préstamo', 'Descuentos', 'Se le debe', 'TOTAL A PERCIBIR'
+]);
 
-  let totalBase=0, totalPrest=0, totalGas=0, totalNeto=0;
+let totalBase=0, totalPrest=0, totalGas=0, totalNeto=0;
 
-  // Agrupar por obra
-  const obras = [...new Set(entradas.map(e => {
-    const emp = empleados.find(x=>x.id===e.empleado_id);
-    return emp ? emp.obra : 'OTRO';
-  }))].sort();
+// Agrupar por obra
+const obras = [...new Set(entradas.map(e => {
+const emp = empleados.find(x=>x.id===e.empleado_id);
+return emp ? emp.obra : 'OTRO';
+}))].sort();
 
-  obras.forEach(obra => {
-    const eObra = entradas.filter(e => {
-      const emp = empleados.find(x=>x.id===e.empleado_id);
-      return (emp?emp.obra:'OTRO') === obra;
-    });
-    // Separador de obra
-    rows.push([obra, '', '', '', '', '', '', '', '', '', '']);
+obras.forEach(obra => {
+const eObra = entradas.filter(e => {
+const emp = empleados.find(x=>x.id===e.empleado_id);
+return (emp?emp.obra:'OTRO') === obra;
+});
+// Separador de obra
+rows.push([obra, '', '', '', '', '', '', '', '', '', '']);
 
-    let subtotalBase=0, subtotalNeto=0, subtotalGas=0;
-    eObra.forEach(e => {
-      const emp = empleados.find(x=>x.id===e.empleado_id)||{nombre:'?',puesto:''};
-      const dF = e.faltas*(e.salario_base/6);
-      const hE = e.horas_extras*(e.salario_base/6/8)*1.5;
-      rows.push([
-        emp.nombre, emp.puesto, obra,
-        e.salario_base,
-        dF > 0 ? -dF : 0,
-        hE > 0 ? hE : 0,
-        e.gasolina || 0,
-        e.prest_desc > 0 ? -e.prest_desc : 0,
-        e.descuentos > 0 ? -e.descuentos : 0,
-        e.se_le_debe || 0,
-        e.total
-      ]);
-      subtotalBase += e.salario_base;
-      subtotalNeto += e.total;
-      subtotalGas += e.gasolina||0;
-    });
-    rows.push(['Subtotal ' + obra, '', '', subtotalBase, '', '', subtotalGas, '', '', '', subtotalNeto]);
-    rows.push([]);
-    totalBase += subtotalBase;
-    totalGas += subtotalGas;
-    totalNeto += subtotalNeto;
-    totalPrest += eObra.reduce((s,e)=>s+(e.prest_desc||0),0);
-  });
+let subtotalBase=0, subtotalNeto=0, subtotalGas=0;
+eObra.forEach(e => {
+const emp = empleados.find(x=>x.id===e.empleado_id)||{nombre:'?',puesto:''};
+const dF = e.faltas*(e.salario_base/6);
+const hE = e.horas_extras*(e.salario_base/6/8)*1.5;
+rows.push([
+emp.nombre, emp.puesto, obra,
+e.salario_base,
+dF > 0 ? -dF : 0,
+hE > 0 ? hE : 0,
+e.gasolina || 0,
+e.prest_desc > 0 ? -e.prest_desc : 0,
+e.descuentos > 0 ? -e.descuentos : 0,
+e.se_le_debe || 0,
+e.total
+]);
+subtotalBase += e.salario_base;
+subtotalNeto += e.total;
+subtotalGas += e.gasolina||0;
+});
+rows.push(['Subtotal ' + obra, '', '', subtotalBase, '', '', subtotalGas, '', '', '', subtotalNeto]);
+rows.push([]);
+totalBase += subtotalBase;
+totalGas += subtotalGas;
+totalNeto += subtotalNeto;
+totalPrest += eObra.reduce((s,e)=>s+(e.prest_desc||0),0);
+});
 
-  // Total global
-  rows.push(['TOTAL GENERAL', '', '', totalBase, '', '', totalGas, -totalPrest, '', '', totalNeto]);
+// Total global
+rows.push(['TOTAL GENERAL', '', '', totalBase, '', '', totalGas, -totalPrest, '', '', totalNeto]);
 
-  // Crear workbook
-  const wb = XLSX.utils.book_new();
-  const ws = XLSX.utils.aoa_to_sheet(rows);
+// Crear workbook
+const wb = XLSX.utils.book_new();
+const ws = XLSX.utils.aoa_to_sheet(rows);
 
-  // Anchos de columna
-  ws['!cols'] = [
-    {wch:22},{wch:18},{wch:8},
-    {wch:13},{wch:13},{wch:10},
-    {wch:11},{wch:14},{wch:11},{wch:10},{wch:15}
-  ];
+// Anchos de columna
+ws['!cols'] = [
+{wch:22},{wch:18},{wch:8},
+{wch:13},{wch:13},{wch:10},
+{wch:11},{wch:14},{wch:11},{wch:10},{wch:15}
+];
 
-  XLSX.utils.book_append_sheet(wb, ws, 'Nómina');
-  XLSX.writeFile(wb, nombreArchivo);
-  showToast('Descargando ' + nombreArchivo);
+XLSX.utils.book_append_sheet(wb, ws, 'Nómina');
+XLSX.writeFile(wb, nombreArchivo);
+showToast('Descargando ' + nombreArchivo);
 }
 
 // =============================================
 // PRÉSTAMOS
 // =============================================
 function renderPrestamos() {
-  const act = prestamos.filter(p => p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado);
-  const pend = prestamos.filter(p => p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')>currentSabado);
-  const liq = prestamos.filter(p => p.saldo<=0);
-  $('prest-cards').innerHTML = `
-    <div class="mcard"><div class="lbl">Cobrando ahora</div><div class="val">${act.length}</div><div class="sub">${fmt(act.reduce((s,p)=>s+p.saldo,0))} pendiente</div></div>
-    <div class="mcard"><div class="lbl">Próximos</div><div class="val">${pend.length}</div><div class="sub">${fmt(pend.reduce((s,p)=>s+p.saldo,0))} pendiente</div></div>
-    <div class="mcard"><div class="lbl">Liquidados</div><div class="val">${liq.length}</div></div>
-    <div class="mcard"><div class="lbl">Total recuperado</div><div class="val" style="font-size:16px">${fmt(prestamos.reduce((s,p)=>s+(p.pagado||0),0))}</div></div>`;
-  const f = $('prest-filtro').value;
-  const lista = prestamos.filter(p => {
-    if (f==='activo') return p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado;
-    if (f==='pendiente') return p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')>currentSabado;
-    if (f==='pagado') return p.saldo<=0;
-    return true;
-  });
-  $('prest-tbody').innerHTML = lista.length ? lista.map(p => {
-    const emp = empleados.find(e => e.id===p.empleado_id);
-    const pct = Math.round((p.pagado||0)/p.monto*100);
-    const esAct = p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado;
-    const esPend = p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')>currentSabado;
-    return `<tr>
-      <td style="font-weight:500">${emp?emp.nombre:'?'}</td>
-      <td>${emp?`<span class="badge ${obc(emp.obra)}">${emp.obra}</span>`:''}</td>
-      <td class="num">${fmt(p.monto)}</td>
-      <td class="num">${fmt(p.cuota)}/sem</td>
-      <td style="font-size:12px">${fmtDS(fromISO(p.inicia_cobro))}${esAct?`<br><span style="color:var(--green);font-size:11px">cobrando</span>`:esPend?`<br><span style="color:var(--blue);font-size:11px">pendiente</span>`:''}</td>
-      <td class="num" style="color:var(--green)">${fmt(p.pagado||0)}</td>
-      <td class="num" style="font-weight:500;color:${p.saldo>0?'var(--red)':'var(--text2)'}">${fmt(p.saldo)}</td>
-      <td class="num">${p.saldo>0?`<strong>${p.letras_restantes}</strong> sem.`:'—'}</td>
-      <td style="min-width:80px"><div class="prog-bar-bg"><div class="prog-bar" style="width:${pct}%;${pct>=100?'background:var(--gray-text)':esPend?'background:var(--blue)':''}"></div></div><div style="font-size:10px;color:var(--text2);margin-top:2px">${pct}%</div></td>
-      <td><span class="badge ${esAct?'b-activo':esPend?'b-pendiente':'b-pagado'}">${esAct?'Cobrando':esPend?'Pendiente':'Liquidado'}</span></td>
-      <td><div style="display:flex;gap:4px">
-        ${p.saldo>0?`<button class="btn btn-sm" onclick="abonoManual(${p.id})">Abono</button>`:''}
-        <button class="btn btn-delete" onclick="openEliminarPrestamo(${p.id})">Eliminar</button>
-      </div></td>
-    </tr>`;
-  }).join('') : `<tr><td colspan="11" class="empty">No hay préstamos</td></tr>`;
+const act = prestamos.filter(p => p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado);
+const pend = prestamos.filter(p => p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')>currentSabado);
+const liq = prestamos.filter(p => p.saldo<=0);
+$('prest-cards').innerHTML = `
+   <div class="mcard"><div class="lbl">Cobrando ahora</div><div class="val">${act.length}</div><div class="sub">${fmt(act.reduce((s,p)=>s+p.saldo,0))} pendiente</div></div>
+   <div class="mcard"><div class="lbl">Próximos</div><div class="val">${pend.length}</div><div class="sub">${fmt(pend.reduce((s,p)=>s+p.saldo,0))} pendiente</div></div>
+   <div class="mcard"><div class="lbl">Liquidados</div><div class="val">${liq.length}</div></div>
+   <div class="mcard"><div class="lbl">Total recuperado</div><div class="val" style="font-size:16px">${fmt(prestamos.reduce((s,p)=>s+(p.pagado||0),0))}</div></div>`;
+const f = $('prest-filtro').value;
+const lista = prestamos.filter(p => {
+if (f==='activo') return p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado;
+if (f==='pendiente') return p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')>currentSabado;
+if (f==='pagado') return p.saldo<=0;
+return true;
+});
+$('prest-tbody').innerHTML = lista.length ? lista.map(p => {
+const emp = empleados.find(e => e.id===p.empleado_id);
+const pct = Math.round((p.pagado||0)/p.monto*100);
+const esAct = p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado;
+const esPend = p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')>currentSabado;
+return `<tr>
+     <td style="font-weight:500">${emp?emp.nombre:'?'}</td>
+     <td>${emp?`<span class="badge ${obc(emp.obra)}">${emp.obra}</span>`:''}</td>
+     <td class="num">${fmt(p.monto)}</td>
+     <td class="num">${fmt(p.cuota)}/sem</td>
+     <td style="font-size:12px">${fmtDS(fromISO(p.inicia_cobro))}${esAct?`<br><span style="color:var(--green);font-size:11px">cobrando</span>`:esPend?`<br><span style="color:var(--blue);font-size:11px">pendiente</span>`:''}</td>
+     <td class="num" style="color:var(--green)">${fmt(p.pagado||0)}</td>
+     <td class="num" style="font-weight:500;color:${p.saldo>0?'var(--red)':'var(--text2)'}">${fmt(p.saldo)}</td>
+     <td class="num">${p.saldo>0?`<strong>${p.letras_restantes}</strong> sem.`:'—'}</td>
+     <td style="min-width:80px"><div class="prog-bar-bg"><div class="prog-bar" style="width:${pct}%;${pct>=100?'background:var(--gray-text)':esPend?'background:var(--blue)':''}"></div></div><div style="font-size:10px;color:var(--text2);margin-top:2px">${pct}%</div></td>
+     <td><span class="badge ${esAct?'b-activo':esPend?'b-pendiente':'b-pagado'}">${esAct?'Cobrando':esPend?'Pendiente':'Liquidado'}</span></td>
+     <td><div style="display:flex;gap:4px">
+       ${p.saldo>0?`<button class="btn btn-sm" onclick="abonoManual(${p.id})">Abono</button>`:''}
+       <button class="btn btn-delete" onclick="openEliminarPrestamo(${p.id})">Eliminar</button>
+     </div></td>
+   </tr>`;
+}).join('') : `<tr><td colspan="11" class="empty">No hay préstamos</td></tr>`;
 }
 
 function selectInicio(val) {
-  inicioSel = val;
-  document.querySelectorAll('.inicio-opt').forEach(el => el.classList.toggle('selected', el.dataset.val===val));
-  $('fecha-custom-wrap').style.display = val==='otra' ? 'block' : 'none';
-  calcPrestPrev();
+inicioSel = val;
+document.querySelectorAll('.inicio-opt').forEach(el => el.classList.toggle('selected', el.dataset.val===val));
+$('fecha-custom-wrap').style.display = val==='otra' ? 'block' : 'none';
+calcPrestPrev();
 }
 
 function getInicioDate() {
-  if (inicioSel==='esta') return new Date(currentSabado);
-  if (inicioSel==='siguiente') { const s=new Date(currentSabado); s.setDate(s.getDate()+7); return s; }
-  const v = $('pf-fecha-custom').value; return v ? fromISO(v) : null;
+if (inicioSel==='esta') return new Date(currentSabado);
+if (inicioSel==='siguiente') { const s=new Date(currentSabado); s.setDate(s.getDate()+7); return s; }
+const v = $('pf-fecha-custom').value; return v ? fromISO(v) : null;
 }
 
 function openPrestModal() {
-  $('pf-emp').innerHTML = empleados.map(e => `<option value="${e.id}">${e.nombre} (${e.obra})</option>`).join('');
-  $('pf-monto').value=''; $('pf-cuota').value=''; $('pf-nota').value='';
-  selectInicio('esta');
-  const sigSab = new Date(currentSabado); sigSab.setDate(sigSab.getDate()+7);
-  $('lbl-esta').textContent=fmtDS(currentSabado); $('lbl-sig').textContent=fmtDS(sigSab);
-  $('pf-fecha-custom').value=toISO(sigSab);
-  $('prest-preview').innerHTML='<div style="color:var(--text2);font-size:12px">Completa los campos para ver el resumen</div>';
-  $('overlay-prest').classList.add('open');
+$('pf-emp').innerHTML = empleados.map(e => `<option value="${e.id}">${e.nombre} (${e.obra})</option>`).join('');
+$('pf-monto').value=''; $('pf-cuota').value=''; $('pf-nota').value='';
+selectInicio('esta');
+const sigSab = new Date(currentSabado); sigSab.setDate(sigSab.getDate()+7);
+$('lbl-esta').textContent=fmtDS(currentSabado); $('lbl-sig').textContent=fmtDS(sigSab);
+$('pf-fecha-custom').value=toISO(sigSab);
+$('prest-preview').innerHTML='<div style="color:var(--text2);font-size:12px">Completa los campos para ver el resumen</div>';
+$('overlay-prest').classList.add('open');
 }
 
 function calcPrestPrev() {
-  const m=+$('pf-monto').value||0, c=+$('pf-cuota').value||0, inicio=getInicioDate();
-  if (m>0 && c>0 && inicio) {
-    const letras=Math.ceil(m/c); const fin=new Date(inicio); fin.setDate(fin.getDate()+(letras-1)*7);
-    const esSemAct = inicio<=currentSabado;
-    $('prest-preview').innerHTML=`
-      <div class="preview-row"><span>Primer descuento</span><span style="font-weight:500;color:${esSemAct?'var(--green)':'var(--blue)'}">${fmtD(inicio)} ${esSemAct?'(esta semana)':'(próxima nómina)'}</span></div>
-      <div class="preview-row"><span>Descuento semanal</span><span>${fmt(c)}/semana</span></div>
-      <div class="preview-row"><span>Número de semanas</span><span style="font-weight:500">${letras} semanas</span></div>
-      <div class="preview-row"><span>Último descuento aprox.</span><span>${fmtD(fin)}</span></div>
-      <div class="preview-row" style="border-top:0.5px solid var(--border);margin-top:4px;padding-top:6px"><span>Total a recuperar</span><span style="font-weight:500">${fmt(m)}</span></div>`;
-  } else {
-    $('prest-preview').innerHTML='<div style="color:var(--text2);font-size:12px">Completa los campos para ver el resumen</div>';
-  }
+const m=+$('pf-monto').value||0, c=+$('pf-cuota').value||0, inicio=getInicioDate();
+if (m>0 && c>0 && inicio) {
+const letras=Math.ceil(m/c); const fin=new Date(inicio); fin.setDate(fin.getDate()+(letras-1)*7);
+const esSemAct = inicio<=currentSabado;
+$('prest-preview').innerHTML=`
+     <div class="preview-row"><span>Primer descuento</span><span style="font-weight:500;color:${esSemAct?'var(--green)':'var(--blue)'}">${fmtD(inicio)} ${esSemAct?'(esta semana)':'(próxima nómina)'}</span></div>
+     <div class="preview-row"><span>Descuento semanal</span><span>${fmt(c)}/semana</span></div>
+     <div class="preview-row"><span>Número de semanas</span><span style="font-weight:500">${letras} semanas</span></div>
+     <div class="preview-row"><span>Último descuento aprox.</span><span>${fmtD(fin)}</span></div>
+     <div class="preview-row" style="border-top:0.5px solid var(--border);margin-top:4px;padding-top:6px"><span>Total a recuperar</span><span style="font-weight:500">${fmt(m)}</span></div>`;
+} else {
+$('prest-preview').innerHTML='<div style="color:var(--text2);font-size:12px">Completa los campos para ver el resumen</div>';
+}
 }
 
 async function savePrestamo() {
-  const empId=+$('pf-emp').value, monto=+$('pf-monto').value||0, cuota=+$('pf-cuota').value||0, inicio=getInicioDate();
-  if (!empId||!monto||!cuota||!inicio) { alert('Completa todos los campos.'); return; }
-  const letras = Math.ceil(monto/cuota);
-  const { data } = await db.from('prestamos_nomina').insert([{ empleado_id:empId, monto, cuota, saldo:monto, pagado:0, letras_restantes:letras, inicia_cobro:toISO(inicio), nota:$('pf-nota').value }]).select().single();
-  if (data) prestamos.unshift(data);
-  closeOv('overlay-prest'); renderPrestamos(); showToast('Préstamo registrado');
+const empId=+$('pf-emp').value, monto=+$('pf-monto').value||0, cuota=+$('pf-cuota').value||0, inicio=getInicioDate();
+if (!empId||!monto||!cuota||!inicio) { alert('Completa todos los campos.'); return; }
+const letras = Math.ceil(monto/cuota);
+const { data } = await db.from('prestamos_nomina').insert([{ empleado_id:empId, monto, cuota, saldo:monto, pagado:0, letras_restantes:letras, inicia_cobro:toISO(inicio), nota:$('pf-nota').value }]).select().single();
+if (data) prestamos.unshift(data);
+closeOv('overlay-prest'); renderPrestamos(); showToast('Préstamo registrado');
 }
 
 function openEliminarPrestamo(prestId) {
-  const p = prestamos.find(x => x.id===prestId); if (!p) return;
-  const emp = empleados.find(e => e.id===p.empleado_id);
-  prestToDelete = prestId;
-  const esAct = p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado;
-  const esPend = p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')>currentSabado;
-  $('delete-prest-info').innerHTML=`
-    <div class="name">${emp?emp.nombre:'?'}</div>
-    <div class="line">Monto original: ${fmt(p.monto)}</div>
-    <div class="line">Descuento semanal: ${fmt(p.cuota)}/semana</div>
-    <div class="line">Ya pagado: ${fmt(p.pagado||0)}</div>
-    <div class="line">Saldo pendiente: ${fmt(p.saldo)}</div>
-    <div class="line">Inicia cobro: ${fmtD(fromISO(p.inicia_cobro))}</div>
-    ${p.nota?`<div class="line">Nota: ${p.nota}</div>`:''}
-    <div class="line" style="margin-top:6px;font-weight:500">Estado: ${p.saldo<=0?'Liquidado':esAct?'Activo — cobrando':esPend?'Pendiente — aún no inicia':''}</div>`;
-  $('overlay-delete-prest').classList.add('open');
+const p = prestamos.find(x => x.id===prestId); if (!p) return;
+const emp = empleados.find(e => e.id===p.empleado_id);
+prestToDelete = prestId;
+const esAct = p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado;
+const esPend = p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')>currentSabado;
+$('delete-prest-info').innerHTML=`
+   <div class="name">${emp?emp.nombre:'?'}</div>
+   <div class="line">Monto original: ${fmt(p.monto)}</div>
+   <div class="line">Descuento semanal: ${fmt(p.cuota)}/semana</div>
+   <div class="line">Ya pagado: ${fmt(p.pagado||0)}</div>
+   <div class="line">Saldo pendiente: ${fmt(p.saldo)}</div>
+   <div class="line">Inicia cobro: ${fmtD(fromISO(p.inicia_cobro))}</div>
+   ${p.nota?`<div class="line">Nota: ${p.nota}</div>`:''}
+   <div class="line" style="margin-top:6px;font-weight:500">Estado: ${p.saldo<=0?'Liquidado':esAct?'Activo — cobrando':esPend?'Pendiente — aún no inicia':''}</div>`;
+$('overlay-delete-prest').classList.add('open');
 }
 
 async function confirmarEliminarPrestamo() {
-  if (prestToDelete===null) return;
-  await db.from('prestamos_nomina').delete().eq('id', prestToDelete);
-  prestamos = prestamos.filter(p => p.id!==prestToDelete);
-  prestToDelete = null;
-  closeOv('overlay-delete-prest'); renderPrestamos(); showToast('Préstamo eliminado');
+if (prestToDelete===null) return;
+await db.from('prestamos_nomina').delete().eq('id', prestToDelete);
+prestamos = prestamos.filter(p => p.id!==prestToDelete);
+prestToDelete = null;
+closeOv('overlay-delete-prest'); renderPrestamos(); showToast('Préstamo eliminado');
 }
 
 async function abonoManual(prestId) {
-  const p = prestamos.find(x => x.id===prestId); if (!p) return;
-  const m = parseFloat(prompt('Abono manual (saldo: '+fmt(p.saldo)+')'));
-  if (!m||isNaN(m)) return;
-  const nuevoSaldo = Math.max(0, p.saldo-m);
-  const nuevoPagado = (p.pagado||0)+Math.min(m,p.saldo);
-  const nuevasLetras = p.cuota>0 ? Math.ceil(nuevoSaldo/p.cuota) : 0;
-  await db.from('prestamos_nomina').update({ saldo:nuevoSaldo, pagado:nuevoPagado, letras_restantes:nuevasLetras }).eq('id', p.id);
-  p.saldo=nuevoSaldo; p.pagado=nuevoPagado; p.letras_restantes=nuevasLetras;
-  renderPrestamos(); showToast('Abono registrado');
+const p = prestamos.find(x => x.id===prestId); if (!p) return;
+const m = parseFloat(prompt('Abono manual (saldo: '+fmt(p.saldo)+')'));
+if (!m||isNaN(m)) return;
+const nuevoSaldo = Math.max(0, p.saldo-m);
+const nuevoPagado = (p.pagado||0)+Math.min(m,p.saldo);
+const nuevasLetras = p.cuota>0 ? Math.ceil(nuevoSaldo/p.cuota) : 0;
+await db.from('prestamos_nomina').update({ saldo:nuevoSaldo, pagado:nuevoPagado, letras_restantes:nuevasLetras }).eq('id', p.id);
+p.saldo=nuevoSaldo; p.pagado=nuevoPagado; p.letras_restantes=nuevasLetras;
+renderPrestamos(); showToast('Abono registrado');
 }
 
 // =============================================
 // EMPLEADOS
 // =============================================
 function renderEmpleados() {
-  const q=($('emp-search').value||'').toLowerCase(), obra=$('emp-obra-f').value, estado=$('emp-estado-f').value;
-  $('emp-tbody').innerHTML = empleados.filter(e=>(!q||e.nombre.toLowerCase().includes(q))&&(!obra||e.obra===obra)&&(estado===''||(estado==='activo'?e.activo:!e.activo))).map(e => {
-    const pA = prestamos.find(p => p.empleado_id===e.id && p.saldo>0);
-    return `<tr>
-      <td style="color:var(--text2)">${e.id}</td>
-      <td style="font-weight:500">${e.nombre}</td>
-      <td style="color:var(--text2)">${e.puesto}</td>
-      <td><span class="badge ${obc(e.obra)}">${e.obra}</span></td>
-      <td class="num">${fmt(e.salario)}</td>
-      <td class="num" style="color:var(--text2)">${fmt(e.salario/6)}</td>
-      <td class="num" style="color:var(--green)">${e.gasolina>0?fmt(e.gasolina):'—'}</td>
-      <td>${e.pagador?`<span class="badge" style="background:var(--blue-bg);color:var(--blue)">${e.pagador}</span>`:'<span style="font-size:12px;color:var(--text3)">—</span>'}</td>
-      <td>${pA?`<span class="${new Date(pA.inicia_cobro+'T00:00:00')<=currentSabado?'prestamo-badge':'pending-badge'}">-${fmt(pA.cuota)}/sem · ${new Date(pA.inicia_cobro+'T00:00:00')<=currentSabado?'cobrando':'inicia '+fmtDS(fromISO(pA.inicia_cobro))}</span>`:'<span style="font-size:12px;color:var(--text2)">sin préstamo</span>'}</td>
-      <td><span class="badge ${e.activo?'b-activo':'b-pagado'}">${e.activo?'Activo':'Baja'}</span></td>
-      <td><div style="display:flex;gap:4px">
-        <button class="btn btn-sm" onclick="editEmp(${e.id})">Editar</button>
-        <button class="btn btn-sm" style="color:${e.activo?'var(--red)':'var(--green)'};border-color:var(--border)" onclick="toggleBajaEmp(${e.id})">${e.activo?'Dar baja':'Reactivar'}</button>
-      </div></td>
-    </tr>`;
-  }).join('');
+const q=($('emp-search').value||'').toLowerCase(), obra=$('emp-obra-f').value, estado=$('emp-estado-f').value;
+$('emp-tbody').innerHTML = empleados.filter(e=>(!q||e.nombre.toLowerCase().includes(q))&&(!obra||e.obra===obra)&&(estado===''||(estado==='activo'?e.activo:!e.activo))).map(e => {
+const pA = prestamos.find(p => p.empleado_id===e.id && p.saldo>0);
+return `<tr>
+     <td style="color:var(--text2)">${e.id}</td>
+     <td style="font-weight:500">${e.nombre}</td>
+     <td style="color:var(--text2)">${e.puesto}</td>
+     <td><span class="badge ${obc(e.obra)}">${e.obra}</span></td>
+     <td class="num">${fmt(e.salario)}</td>
+     <td class="num" style="color:var(--text2)">${fmt(e.salario/6)}</td>
+     <td class="num" style="color:var(--green)">${e.gasolina>0?fmt(e.gasolina):'—'}</td>
+     <td>${e.pagador?`<span class="badge" style="background:var(--blue-bg);color:var(--blue)">${e.pagador}</span>`:'<span style="font-size:12px;color:var(--text3)">—</span>'}</td>
+     <td>${pA?`<span class="${new Date(pA.inicia_cobro+'T00:00:00')<=currentSabado?'prestamo-badge':'pending-badge'}">-${fmt(pA.cuota)}/sem · ${new Date(pA.inicia_cobro+'T00:00:00')<=currentSabado?'cobrando':'inicia '+fmtDS(fromISO(pA.inicia_cobro))}</span>`:'<span style="font-size:12px;color:var(--text2)">sin préstamo</span>'}</td>
+     <td><span class="badge ${e.activo?'b-activo':'b-pagado'}">${e.activo?'Activo':'Baja'}</span></td>
+     <td><div style="display:flex;gap:4px">
+       <button class="btn btn-sm" onclick="editEmp(${e.id})">Editar</button>
+       <button class="btn btn-sm" style="color:${e.activo?'var(--red)':'var(--green)'};border-color:var(--border)" onclick="toggleBajaEmp(${e.id})">${e.activo?'Dar baja':'Reactivar'}</button>
+     </div></td>
+   </tr>`;
+}).join('');
 }
 
 function openEmpModal() {
-  editEmpId=null; $('emp-modal-title').textContent='Nuevo empleado';
-  ['ef-nombre','ef-puesto','ef-salario','ef-diario','ef-gasolina'].forEach(id=>$(id).value='');
-  $('ef-gasolina').value=0;
-  $('ef-pagador').value='';
-  $('overlay-emp').classList.add('open');
+editEmpId=null; $('emp-modal-title').textContent='Nuevo empleado';
+['ef-nombre','ef-puesto','ef-salario','ef-diario','ef-gasolina'].forEach(id=>$(id).value='');
+$('ef-gasolina').value=0;
+$('ef-pagador').value='';
+$('overlay-emp').classList.add('open');
 }
 
 function editEmp(id) {
-  editEmpId=id; const e=empleados.find(x=>x.id===id); if(!e) return;
-  $('emp-modal-title').textContent='Editar empleado';
-  $('ef-nombre').value=e.nombre; $('ef-puesto').value=e.puesto; $('ef-obra').value=e.obra;
-  $('ef-salario').value=e.salario; $('ef-diario').value=Math.round(e.salario/6);
-  $('ef-gasolina').value=e.gasolina||0;
-  $('ef-pagador').value=e.pagador||'';
-  $('overlay-emp').classList.add('open');
+editEmpId=id; const e=empleados.find(x=>x.id===id); if(!e) return;
+$('emp-modal-title').textContent='Editar empleado';
+$('ef-nombre').value=e.nombre; $('ef-puesto').value=e.puesto; $('ef-obra').value=e.obra;
+$('ef-salario').value=e.salario; $('ef-diario').value=Math.round(e.salario/6);
+$('ef-gasolina').value=e.gasolina||0;
+$('ef-pagador').value=e.pagador||'';
+$('overlay-emp').classList.add('open');
 }
 
 async function saveEmp() {
-  const nombre=$('ef-nombre').value.trim().toUpperCase(), puesto=$('ef-puesto').value.trim();
-  const obra=$('ef-obra').value, salario=+$('ef-salario').value||0, gasolina=+$('ef-gasolina').value||0, pagador=$('ef-pagador').value||null;
-  if (!nombre||!salario) return;
-  if (editEmpId) {
-    await db.from('empleados_nomina').update({nombre,puesto,obra,salario,gasolina,pagador}).eq('id',editEmpId);
-    const idx=empleados.findIndex(e=>e.id===editEmpId);
-    if (idx>=0) empleados[idx]={...empleados[idx],nombre,puesto,obra,salario,gasolina,pagador};
-  } else {
-    const { data } = await db.from('empleados_nomina').insert([{nombre,puesto,obra,salario,gasolina,pagador}]).select().single();
-    if (data) empleados.push(data);
-  }
-  closeOv('overlay-emp'); renderEmpleados(); showToast('Empleado guardado');
+const nombre=$('ef-nombre').value.trim().toUpperCase(), puesto=$('ef-puesto').value.trim();
+const obra=$('ef-obra').value, salario=+$('ef-salario').value||0, gasolina=+$('ef-gasolina').value||0, pagador=$('ef-pagador').value||null;
+if (!nombre||!salario) return;
+if (editEmpId) {
+await db.from('empleados_nomina').update({nombre,puesto,obra,salario,gasolina,pagador}).eq('id',editEmpId);
+const idx=empleados.findIndex(e=>e.id===editEmpId);
+if (idx>=0) empleados[idx]={...empleados[idx],nombre,puesto,obra,salario,gasolina,pagador};
+} else {
+const { data } = await db.from('empleados_nomina').insert([{nombre,puesto,obra,salario,gasolina,pagador}]).select().single();
+if (data) empleados.push(data);
+}
+closeOv('overlay-emp'); renderEmpleados(); showToast('Empleado guardado');
 }
 
 // =============================================
 // ALERTAS DE ASISTENCIA
 // =============================================
 async function generarAlertasAsistencia() {
-  const alertas = [];
-  // Cargar últimas 4 semanas cerradas
-  const ultimas4 = semanas.filter(s => s.cerrada).slice(0, 4);
-  if (!ultimas4.length) return alertas;
+const alertas = [];
+// Cargar últimas 4 semanas cerradas
+const ultimas4 = semanas.filter(s => s.cerrada).slice(0, 4);
+if (!ultimas4.length) return alertas;
 
-  const semIds = ultimas4.map(s => s.id);
-  const { data: entradas } = await db.from('entradas_nomina')
-    .select('*').in('semana_id', semIds);
-  if (!entradas || !entradas.length) return alertas;
+const semIds = ultimas4.map(s => s.id);
+const { data: entradas } = await db.from('entradas_nomina')
+.select('*').in('semana_id', semIds);
+if (!entradas || !entradas.length) return alertas;
 
-  const { data: asistRows } = await db.from('asistencia_semanal')
-    .select('*').in('semana_id', semIds);
+const { data: asistRows } = await db.from('asistencia_semanal')
+.select('*').in('semana_id', semIds);
 
-  empleados.filter(e => e.activo).forEach(emp => {
-    const entradasEmp = entradas.filter(e => e.empleado_id === emp.id);
-    const asisEmp = (asistRows||[]).filter(a => a.empleado_id === emp.id);
+empleados.filter(e => e.activo).forEach(emp => {
+const entradasEmp = entradas.filter(e => e.empleado_id === emp.id);
+const asisEmp = (asistRows||[]).filter(a => a.empleado_id === emp.id);
 
-    // ── Alerta 1: más de 3 faltas en el mes (4 semanas) ──────────────────────
-    const totalFaltasMes = entradasEmp.reduce((s,e) => s+(e.faltas||0), 0);
-    if (totalFaltasMes > 3) {
-      alertas.push(`<strong>${emp.nombre}</strong> — ${totalFaltasMes} faltas en las últimas 4 semanas`);
-    }
+// ── Alerta 1: más de 3 faltas en el mes (4 semanas) ──────────────────────
+const totalFaltasMes = entradasEmp.reduce((s,e) => s+(e.faltas||0), 0);
+if (totalFaltasMes > 3) {
+alertas.push(`<strong>${emp.nombre}</strong> — ${totalFaltasMes} faltas en las últimas 4 semanas`);
+}
 
-    // ── Alerta 2: 2 retardos consecutivos ────────────────────────────────────
-    const DIAS = ['lunes','martes','miercoles','jueves','viernes','sabado'];
-    // Construir lista cronológica de días con retardo
-    const retardosCronologicos = [];
-    ultimas4.slice().reverse().forEach(sem => {
-      const asis = asisEmp.find(a => a.semana_id === sem.id);
-      if (!asis) return;
-      DIAS.forEach(dia => {
-        retardosCronologicos.push(asis[dia] === 'retardo');
-      });
-    });
-    // Detectar 2+ retardos consecutivos
-    let consecutivos = 0, maxConsecutivos = 0;
-    retardosCronologicos.forEach(esRetardo => {
-      consecutivos = esRetardo ? consecutivos + 1 : 0;
-      maxConsecutivos = Math.max(maxConsecutivos, consecutivos);
-    });
-    if (maxConsecutivos >= 2) {
-      alertas.push(`<strong>${emp.nombre}</strong> — ${maxConsecutivos} retardos consecutivos`);
-    }
+// ── Alerta 2: 2 retardos consecutivos ────────────────────────────────────
+const DIAS = ['lunes','martes','miercoles','jueves','viernes','sabado'];
+// Construir lista cronológica de días con retardo
+const retardosCronologicos = [];
+ultimas4.slice().reverse().forEach(sem => {
+const asis = asisEmp.find(a => a.semana_id === sem.id);
+if (!asis) return;
+DIAS.forEach(dia => {
+retardosCronologicos.push(asis[dia] === 'retardo');
+});
+});
+// Detectar 2+ retardos consecutivos
+let consecutivos = 0, maxConsecutivos = 0;
+retardosCronologicos.forEach(esRetardo => {
+consecutivos = esRetardo ? consecutivos + 1 : 0;
+maxConsecutivos = Math.max(maxConsecutivos, consecutivos);
+});
+if (maxConsecutivos >= 2) {
+alertas.push(`<strong>${emp.nombre}</strong> — ${maxConsecutivos} retardos consecutivos`);
+}
 
-    // ── Alerta 3: faltó en la misma semana que tuvo retardo ──────────────────
-    entradasEmp.forEach(entrada => {
-      if ((entrada.faltas||0) > 0 && (entrada.descuentos||0) > 0) {
-        const sem = ultimas4.find(s => s.id === entrada.semana_id);
-        if (sem) alertas.push(`<strong>${emp.nombre}</strong> — tuvo faltas Y retardos en semana del ${fmtD(fromISO(sem.desde))}`);
-      }
-    });
+// ── Alerta 3: faltó en la misma semana que tuvo retardo ──────────────────
+entradasEmp.forEach(entrada => {
+if ((entrada.faltas||0) > 0 && (entrada.descuentos||0) > 0) {
+const sem = ultimas4.find(s => s.id === entrada.semana_id);
+if (sem) alertas.push(`<strong>${emp.nombre}</strong> — tuvo faltas Y retardos en semana del ${fmtD(fromISO(sem.desde))}`);
+}
+});
 
-    // ── Alerta 4: faltó 2+ días en una misma semana ──────────────────────────
-    entradasEmp.forEach(entrada => {
-      if ((entrada.faltas||0) >= 2) {
-        const sem = ultimas4.find(s => s.id === entrada.semana_id);
-        if (sem) alertas.push(`<strong>${emp.nombre}</strong> — ${entrada.faltas} faltas en semana del ${fmtD(fromISO(sem.desde))}`);
-      }
-    });
-  });
+// ── Alerta 4: faltó 2+ días en una misma semana ──────────────────────────
+entradasEmp.forEach(entrada => {
+if ((entrada.faltas||0) >= 2) {
+const sem = ultimas4.find(s => s.id === entrada.semana_id);
+if (sem) alertas.push(`<strong>${emp.nombre}</strong> — ${entrada.faltas} faltas en semana del ${fmtD(fromISO(sem.desde))}`);
+}
+});
+});
 
-  // Eliminar duplicados
-  return [...new Set(alertas)];
+// Eliminar duplicados
+return [...new Set(alertas)];
 }
 
 // =============================================
@@ -1554,170 +1561,170 @@ async function generarAlertasAsistencia() {
 const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
 function renderAnual() {
-  const cerradas = semanas.filter(s => s.cerrada);
-  const years = [...new Set(cerradas.map(s => s.desde.slice(0,4)))].sort().reverse();
-  const yearSel = $('anual-year');
-  if (!yearSel.options.length || years.join() !== [...yearSel.options].map(o=>o.value).join()) {
-    yearSel.innerHTML = years.map(y => `<option value="${y}">${y}</option>`).join('');
-  }
-  const year = yearSel.value || (years[0]||new Date().getFullYear().toString());
+const cerradas = semanas.filter(s => s.cerrada);
+const years = [...new Set(cerradas.map(s => s.desde.slice(0,4)))].sort().reverse();
+const yearSel = $('anual-year');
+if (!yearSel.options.length || years.join() !== [...yearSel.options].map(o=>o.value).join()) {
+yearSel.innerHTML = years.map(y => `<option value="${y}">${y}</option>`).join('');
+}
+const year = yearSel.value || (years[0]||new Date().getFullYear().toString());
 
-  const semsYear = cerradas.filter(s => s.desde.startsWith(year));
-  const totalAnual = semsYear.reduce((s,h)=>s+(h.total_pagado||0),0);
-  const totalPrestAnual = semsYear.reduce((s,h)=>s+(h.total_prest_desc||0),0);
+const semsYear = cerradas.filter(s => s.desde.startsWith(year));
+const totalAnual = semsYear.reduce((s,h)=>s+(h.total_pagado||0),0);
+const totalPrestAnual = semsYear.reduce((s,h)=>s+(h.total_prest_desc||0),0);
 
-  $('anual-cards').innerHTML = `
-    <div class="mcard"><div class="lbl">Semanas en ${year}</div><div class="val">${semsYear.length}</div></div>
-    <div class="mcard"><div class="lbl">Total pagado ${year}</div><div class="val" style="font-size:15px">${fmt(totalAnual)}</div></div>
-    <div class="mcard"><div class="lbl">Promedio semanal</div><div class="val" style="font-size:15px">${semsYear.length?fmt(totalAnual/semsYear.length):'—'}</div></div>
-    <div class="mcard"><div class="lbl">Desc. préstamos año</div><div class="val" style="font-size:15px">${fmt(totalPrestAnual)}</div></div>`;
+$('anual-cards').innerHTML = `
+   <div class="mcard"><div class="lbl">Semanas en ${year}</div><div class="val">${semsYear.length}</div></div>
+   <div class="mcard"><div class="lbl">Total pagado ${year}</div><div class="val" style="font-size:15px">${fmt(totalAnual)}</div></div>
+   <div class="mcard"><div class="lbl">Promedio semanal</div><div class="val" style="font-size:15px">${semsYear.length?fmt(totalAnual/semsYear.length):'—'}</div></div>
+   <div class="mcard"><div class="lbl">Desc. préstamos año</div><div class="val" style="font-size:15px">${fmt(totalPrestAnual)}</div></div>`;
 
-  // Agrupar por mes
-  let tSems=0, tTotal=0, tPrest=0;
-  $('anual-tbody').innerHTML = Array.from({length:12},(_,i)=>i).map(mes => {
-    const mesStr = String(mes+1).padStart(2,'0');
-    const semsM = semsYear.filter(s => s.desde.slice(5,7)===mesStr);
-    if (!semsM.length) return '';
-    const totM = semsM.reduce((s,h)=>s+(h.total_pagado||0),0);
-    const prestM = semsM.reduce((s,h)=>s+(h.total_prest_desc||0),0);
-    tSems+=semsM.length; tTotal+=totM; tPrest+=prestM;
-    return `<tr>
-      <td style="font-weight:500">${MESES[mes]}</td>
-      <td class="num">${semsM.length}</td>
-      <td class="num" style="font-weight:500">${fmt(totM)}</td>
-      <td class="num">${prestM>0?`<span class="prestamo-badge">-${fmt(prestM)}</span>`:'—'}</td>
-      <td class="num" style="color:var(--text2)">${fmt(totM/semsM.length)}</td>
-    </tr>`;
-  }).join('');
-  $('anual-ft-sems').textContent = tSems;
-  $('anual-ft-total').textContent = fmt(tTotal);
-  $('anual-ft-prest').textContent = tPrest>0?'-'+fmt(tPrest):'—';
+// Agrupar por mes
+let tSems=0, tTotal=0, tPrest=0;
+$('anual-tbody').innerHTML = Array.from({length:12},(_,i)=>i).map(mes => {
+const mesStr = String(mes+1).padStart(2,'0');
+const semsM = semsYear.filter(s => s.desde.slice(5,7)===mesStr);
+if (!semsM.length) return '';
+const totM = semsM.reduce((s,h)=>s+(h.total_pagado||0),0);
+const prestM = semsM.reduce((s,h)=>s+(h.total_prest_desc||0),0);
+tSems+=semsM.length; tTotal+=totM; tPrest+=prestM;
+return `<tr>
+     <td style="font-weight:500">${MESES[mes]}</td>
+     <td class="num">${semsM.length}</td>
+     <td class="num" style="font-weight:500">${fmt(totM)}</td>
+     <td class="num">${prestM>0?`<span class="prestamo-badge">-${fmt(prestM)}</span>`:'—'}</td>
+     <td class="num" style="color:var(--text2)">${fmt(totM/semsM.length)}</td>
+   </tr>`;
+}).join('');
+$('anual-ft-sems').textContent = tSems;
+$('anual-ft-total').textContent = fmt(tTotal);
+$('anual-ft-prest').textContent = tPrest>0?'-'+fmt(tPrest):'—';
 
-  // Gráfica por semana
-  renderGrafica(semsYear);
+// Gráfica por semana
+renderGrafica(semsYear);
 
-  // Tabla de préstamos
-  $('anual-prest-tbody').innerHTML = prestamos.length ? prestamos.map(p => {
-    const emp = empleados.find(e=>e.id===p.empleado_id);
-    const pct = Math.round((p.pagado||0)/p.monto*100);
-    const esAct = p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado;
-    const esPend = p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')>currentSabado;
-    return `<tr>
-      <td style="font-weight:500">${emp?emp.nombre:'?'}</td>
-      <td>${emp?`<span class="badge ${obc(emp.obra)}">${emp.obra}</span>`:''}</td>
-      <td class="num">${fmt(p.monto)}</td>
-      <td class="num">${fmt(p.cuota)}/sem</td>
-      <td style="font-size:12px">${fmtDS(fromISO(p.inicia_cobro))}</td>
-      <td class="num" style="color:var(--green)">${fmt(p.pagado||0)}</td>
-      <td class="num" style="font-weight:500;color:${p.saldo>0?'var(--red)':'var(--text2)'}">${fmt(p.saldo)}</td>
-      <td class="num">${p.saldo>0?`<strong>${p.letras_restantes}</strong> sem.`:'—'}</td>
-      <td style="min-width:80px"><div class="prog-bar-bg"><div class="prog-bar" style="width:${pct}%"></div></div><div style="font-size:10px;color:var(--text2);margin-top:2px">${pct}%</div></td>
-      <td><span class="badge ${esAct?'b-activo':esPend?'b-pendiente':'b-pagado'}">${esAct?'Cobrando':esPend?'Pendiente':'Liquidado'}</span></td>
-    </tr>`;
-  }).join('') : `<tr><td colspan="10" class="empty">No hay préstamos</td></tr>`;
+// Tabla de préstamos
+$('anual-prest-tbody').innerHTML = prestamos.length ? prestamos.map(p => {
+const emp = empleados.find(e=>e.id===p.empleado_id);
+const pct = Math.round((p.pagado||0)/p.monto*100);
+const esAct = p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado;
+const esPend = p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')>currentSabado;
+return `<tr>
+     <td style="font-weight:500">${emp?emp.nombre:'?'}</td>
+     <td>${emp?`<span class="badge ${obc(emp.obra)}">${emp.obra}</span>`:''}</td>
+     <td class="num">${fmt(p.monto)}</td>
+     <td class="num">${fmt(p.cuota)}/sem</td>
+     <td style="font-size:12px">${fmtDS(fromISO(p.inicia_cobro))}</td>
+     <td class="num" style="color:var(--green)">${fmt(p.pagado||0)}</td>
+     <td class="num" style="font-weight:500;color:${p.saldo>0?'var(--red)':'var(--text2)'}">${fmt(p.saldo)}</td>
+     <td class="num">${p.saldo>0?`<strong>${p.letras_restantes}</strong> sem.`:'—'}</td>
+     <td style="min-width:80px"><div class="prog-bar-bg"><div class="prog-bar" style="width:${pct}%"></div></div><div style="font-size:10px;color:var(--text2);margin-top:2px">${pct}%</div></td>
+     <td><span class="badge ${esAct?'b-activo':esPend?'b-pendiente':'b-pagado'}">${esAct?'Cobrando':esPend?'Pendiente':'Liquidado'}</span></td>
+   </tr>`;
+}).join('') : `<tr><td colspan="10" class="empty">No hay préstamos</td></tr>`;
 }
 
 let graficaInstance = null;
 function renderGrafica(semsYear) {
-  const canvas = $('grafica-nomina');
-  if (!canvas) return;
-  if (graficaInstance) { graficaInstance.destroy(); graficaInstance = null; }
+const canvas = $('grafica-nomina');
+if (!canvas) return;
+if (graficaInstance) { graficaInstance.destroy(); graficaInstance = null; }
 
-  // Ordenar por fecha
-  const sems = [...semsYear].sort((a,b) => a.desde.localeCompare(b.desde));
-  const labels = sems.map(s => {
-    const d = fromISO(s.desde);
-    return d ? d.toLocaleDateString('es-MX',{day:'numeric',month:'short'}) : s.desde;
-  });
-  const pagos = sems.map(s => Math.round(s.total_pagado||0));
-  const prests = sems.map(s => Math.round(s.total_prest_desc||0));
+// Ordenar por fecha
+const sems = [...semsYear].sort((a,b) => a.desde.localeCompare(b.desde));
+const labels = sems.map(s => {
+const d = fromISO(s.desde);
+return d ? d.toLocaleDateString('es-MX',{day:'numeric',month:'short'}) : s.desde;
+});
+const pagos = sems.map(s => Math.round(s.total_pagado||0));
+const prests = sems.map(s => Math.round(s.total_prest_desc||0));
 
-  graficaInstance = new Chart(canvas, {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [
-        {
-          label: 'Total pagado',
-          data: pagos,
-          backgroundColor: '#1D9E75',
-          borderRadius: 4,
-          borderSkipped: false,
-        },
-        {
-          label: 'Desc. préstamos',
-          data: prests,
-          backgroundColor: '#EF9F27',
-          borderRadius: 4,
-          borderSkipped: false,
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      plugins: {
-        legend: { position: 'bottom', labels: { font: { size: 11 } } },
-        tooltip: {
-          callbacks: {
-            label: ctx => ' $' + ctx.parsed.y.toLocaleString('es-MX')
-          }
-        }
-      },
-      scales: {
-        y: {
-          ticks: {
-            callback: v => '$' + (v/1000).toFixed(0) + 'k',
-            font: { size: 10 }
-          },
-          grid: { color: 'rgba(0,0,0,0.05)' }
-        },
-        x: { ticks: { font: { size: 10 } }, grid: { display: false } }
-      }
-    }
-  });
+graficaInstance = new Chart(canvas, {
+type: 'bar',
+data: {
+labels,
+datasets: [
+{
+label: 'Total pagado',
+data: pagos,
+backgroundColor: '#1D9E75',
+borderRadius: 4,
+borderSkipped: false,
+},
+{
+label: 'Desc. préstamos',
+data: prests,
+backgroundColor: '#EF9F27',
+borderRadius: 4,
+borderSkipped: false,
+}
+]
+},
+options: {
+responsive: true,
+maintainAspectRatio: true,
+plugins: {
+legend: { position: 'bottom', labels: { font: { size: 11 } } },
+tooltip: {
+callbacks: {
+label: ctx => ' $' + ctx.parsed.y.toLocaleString('es-MX')
+}
+}
+},
+scales: {
+y: {
+ticks: {
+callback: v => '$' + (v/1000).toFixed(0) + 'k',
+font: { size: 10 }
+},
+grid: { color: 'rgba(0,0,0,0.05)' }
+},
+x: { ticks: { font: { size: 10 } }, grid: { display: false } }
+}
+}
+});
 }
 
 function exportExcelAnual() {
-  const year = $('anual-year').value;
-  const cerradas = semanas.filter(s=>s.cerrada&&s.desde.startsWith(year));
-  const rows = [['HOPE ELECTRIC — RESUMEN ANUAL '+year,'','','',''],[]];
-  rows.push(['Mes','Semanas','Total pagado','Desc. préstamos','Promedio/semana']);
-  let tT=0,tP=0,tS=0;
-  Array.from({length:12},(_,i)=>i).forEach(mes=>{
-    const mesStr=String(mes+1).padStart(2,'0');
-    const semsM=cerradas.filter(s=>s.desde.slice(5,7)===mesStr);
-    if(!semsM.length) return;
-    const totM=semsM.reduce((s,h)=>s+(h.total_pagado||0),0);
-    const prestM=semsM.reduce((s,h)=>s+(h.total_prest_desc||0),0);
-    rows.push([MESES[mes],semsM.length,totM,-prestM,Math.round(totM/semsM.length)]);
-    tT+=totM; tP+=prestM; tS+=semsM.length;
-  });
-  rows.push([]); rows.push(['TOTAL',tS,tT,-tP,'']);
-  const wb=XLSX.utils.book_new();
-  const ws=XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols']=[{wch:14},{wch:9},{wch:15},{wch:16},{wch:16}];
-  XLSX.utils.book_append_sheet(wb,ws,'Resumen anual');
-  XLSX.writeFile(wb,`Nominas_Anual_${year}.xlsx`);
-  showToast('Descargando resumen '+year);
+const year = $('anual-year').value;
+const cerradas = semanas.filter(s=>s.cerrada&&s.desde.startsWith(year));
+const rows = [['HOPE ELECTRIC — RESUMEN ANUAL '+year,'','','',''],[]];
+rows.push(['Mes','Semanas','Total pagado','Desc. préstamos','Promedio/semana']);
+let tT=0,tP=0,tS=0;
+Array.from({length:12},(_,i)=>i).forEach(mes=>{
+const mesStr=String(mes+1).padStart(2,'0');
+const semsM=cerradas.filter(s=>s.desde.slice(5,7)===mesStr);
+if(!semsM.length) return;
+const totM=semsM.reduce((s,h)=>s+(h.total_pagado||0),0);
+const prestM=semsM.reduce((s,h)=>s+(h.total_prest_desc||0),0);
+rows.push([MESES[mes],semsM.length,totM,-prestM,Math.round(totM/semsM.length)]);
+tT+=totM; tP+=prestM; tS+=semsM.length;
+});
+rows.push([]); rows.push(['TOTAL',tS,tT,-tP,'']);
+const wb=XLSX.utils.book_new();
+const ws=XLSX.utils.aoa_to_sheet(rows);
+ws['!cols']=[{wch:14},{wch:9},{wch:15},{wch:16},{wch:16}];
+XLSX.utils.book_append_sheet(wb,ws,'Resumen anual');
+XLSX.writeFile(wb,`Nominas_Anual_${year}.xlsx`);
+showToast('Descargando resumen '+year);
 }
 
 function exportExcelPrestamos() {
-  const rows=[['HOPE ELECTRIC — REPORTE DE PRÉSTAMOS','','','','','','','',''],[]];
-  rows.push(['Empleado','Obra','Monto original','Desc. semanal','Inicia cobro','Pagado','Saldo','Letras rest.','Estado']);
-  prestamos.forEach(p=>{
-    const emp=empleados.find(e=>e.id===p.empleado_id);
-    const esAct=p.saldo>0&&new Date(p.inicia_cobro+'T00:00:00')<=currentSabado;
-    const esPend=p.saldo>0&&new Date(p.inicia_cobro+'T00:00:00')>currentSabado;
-    rows.push([emp?emp.nombre:'?',emp?emp.obra:'',p.monto,p.cuota,p.inicia_cobro,p.pagado||0,p.saldo,p.letras_restantes,p.saldo<=0?'Liquidado':esAct?'Cobrando':esPend?'Pendiente':'']);
-  });
-  rows.push([]); rows.push(['TOTALES','',prestamos.reduce((s,p)=>s+p.monto,0),'','',prestamos.reduce((s,p)=>s+(p.pagado||0),0),prestamos.reduce((s,p)=>s+p.saldo,0),'','']);
-  const wb=XLSX.utils.book_new();
-  const ws=XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols']=[{wch:22},{wch:8},{wch:14},{wch:13},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12}];
-  XLSX.utils.book_append_sheet(wb,ws,'Préstamos');
-  XLSX.writeFile(wb,'Reporte_Prestamos.xlsx');
-  showToast('Descargando reporte préstamos');
+const rows=[['HOPE ELECTRIC — REPORTE DE PRÉSTAMOS','','','','','','','',''],[]];
+rows.push(['Empleado','Obra','Monto original','Desc. semanal','Inicia cobro','Pagado','Saldo','Letras rest.','Estado']);
+prestamos.forEach(p=>{
+const emp=empleados.find(e=>e.id===p.empleado_id);
+const esAct=p.saldo>0&&new Date(p.inicia_cobro+'T00:00:00')<=currentSabado;
+const esPend=p.saldo>0&&new Date(p.inicia_cobro+'T00:00:00')>currentSabado;
+rows.push([emp?emp.nombre:'?',emp?emp.obra:'',p.monto,p.cuota,p.inicia_cobro,p.pagado||0,p.saldo,p.letras_restantes,p.saldo<=0?'Liquidado':esAct?'Cobrando':esPend?'Pendiente':'']);
+});
+rows.push([]); rows.push(['TOTALES','',prestamos.reduce((s,p)=>s+p.monto,0),'','',prestamos.reduce((s,p)=>s+(p.pagado||0),0),prestamos.reduce((s,p)=>s+p.saldo,0),'','']);
+const wb=XLSX.utils.book_new();
+const ws=XLSX.utils.aoa_to_sheet(rows);
+ws['!cols']=[{wch:22},{wch:8},{wch:14},{wch:13},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12}];
+XLSX.utils.book_append_sheet(wb,ws,'Préstamos');
+XLSX.writeFile(wb,'Reporte_Prestamos.xlsx');
+showToast('Descargando reporte préstamos');
 }
 
 function closeOv(id) { $(id).classList.remove('open'); }
@@ -1728,170 +1735,170 @@ function closeOv(id) { $(id).classList.remove('open'); }
 let editEncId = null;
 
 function renderConfig() {
-  $('enc-tbody').innerHTML = encargados.length ? encargados.map(e => `<tr>
-    <td style="font-weight:500">${e.nombre}</td>
-    <td style="color:var(--text2)">${e.email}</td>
-    <td><span class="badge ${e.obra==='OMANA'?'b-omana':e.obra==='SANTA'?'b-santa':e.obra==='CASA'?'b-casa':'b-otro'}">${e.obra}</span></td>
-    <td><span class="badge ${e.activo?'b-activo':'b-pagado'}">${e.activo?'Activo':'Inactivo'}</span></td>
-    <td><div style="display:flex;gap:4px">
-      <button class="btn btn-sm" onclick="toggleEncargado(${e.id},${e.activo})">${e.activo?'Desactivar':'Activar'}</button>
-    </div></td>
-  </tr>`).join('') : `<tr><td colspan="5" class="empty">No hay encargados registrados</td></tr>`;
+$('enc-tbody').innerHTML = encargados.length ? encargados.map(e => `<tr>
+   <td style="font-weight:500">${e.nombre}</td>
+   <td style="color:var(--text2)">${e.email}</td>
+   <td><span class="badge ${e.obra==='OMANA'?'b-omana':e.obra==='SANTA'?'b-santa':e.obra==='CASA'?'b-casa':'b-otro'}">${e.obra}</span></td>
+   <td><span class="badge ${e.activo?'b-activo':'b-pagado'}">${e.activo?'Activo':'Inactivo'}</span></td>
+   <td><div style="display:flex;gap:4px">
+     <button class="btn btn-sm" onclick="toggleEncargado(${e.id},${e.activo})">${e.activo?'Desactivar':'Activar'}</button>
+   </div></td>
+ </tr>`).join('') : `<tr><td colspan="5" class="empty">No hay encargados registrados</td></tr>`;
 }
 
 function openEncModal() {
-  $('enc-modal-title').textContent = 'Nuevo encargado';
-  ['enc-nombre','enc-email'].forEach(id=>$(id).value='');
-  $('overlay-enc').classList.add('open');
+$('enc-modal-title').textContent = 'Nuevo encargado';
+['enc-nombre','enc-email'].forEach(id=>$(id).value='');
+$('overlay-enc').classList.add('open');
 }
 
 async function guardarEncargado() {
-  const nombre = $('enc-nombre').value.trim().toUpperCase();
-  const email  = $('enc-email').value.trim().toLowerCase();
-  const obra   = $('enc-obra').value;
-  if (!nombre || !email) { alert('Nombre y correo son obligatorios.'); return; }
-  const { data } = await db.from('encargados_obra').insert([{nombre, email, obra}]).select().single();
-  if (data) { encargados.push(data); closeOv('overlay-enc'); renderConfig(); showToast('Encargado registrado'); }
+const nombre = $('enc-nombre').value.trim().toUpperCase();
+const email  = $('enc-email').value.trim().toLowerCase();
+const obra   = $('enc-obra').value;
+if (!nombre || !email) { alert('Nombre y correo son obligatorios.'); return; }
+const { data } = await db.from('encargados_obra').insert([{nombre, email, obra}]).select().single();
+if (data) { encargados.push(data); closeOv('overlay-enc'); renderConfig(); showToast('Encargado registrado'); }
 }
 
 async function toggleEncargado(id, activo) {
-  await db.from('encargados_obra').update({ activo: !activo }).eq('id', id);
-  const enc = encargados.find(e => e.id===id);
-  if (enc) enc.activo = !activo;
-  renderConfig(); showToast(activo ? 'Encargado desactivado' : 'Encargado activado');
+await db.from('encargados_obra').update({ activo: !activo }).eq('id', id);
+const enc = encargados.find(e => e.id===id);
+if (enc) enc.activo = !activo;
+renderConfig(); showToast(activo ? 'Encargado desactivado' : 'Encargado activado');
 }
 
 // =============================================
 // EXPORTAR HISTORIAL COMPLETO DE EMPLEADO
 // =============================================
 async function exportarHistorialEmpleado(empId) {
-  const emp = empleados.find(e => e.id===empId); if (!emp) return;
-  showToast('Generando reporte...');
+const emp = empleados.find(e => e.id===empId); if (!emp) return;
+showToast('Generando reporte...');
 
-  const { data: entradasEmp } = await db.from('entradas_nomina')
-    .select('*, semanas_nomina(desde, hasta)')
-    .eq('empleado_id', empId)
-    .order('created_at', {ascending: false});
+const { data: entradasEmp } = await db.from('entradas_nomina')
+.select('*, semanas_nomina(desde, hasta)')
+.eq('empleado_id', empId)
+.order('created_at', {ascending: false});
 
-  const { data: prestamosEmp } = await db.from('prestamos_nomina')
-    .select('*').eq('empleado_id', empId);
+const { data: prestamosEmp } = await db.from('prestamos_nomina')
+.select('*').eq('empleado_id', empId);
 
-  const wb = XLSX.utils.book_new();
+const wb = XLSX.utils.book_new();
 
-  // Hoja 1 — Historial de pagos
-  const rowsPagos = [
-    [`HISTORIAL DE PAGOS — ${emp.nombre}`,'','','','','','','','',''],
-    [`Puesto: ${emp.puesto} | Obra: ${emp.obra} | Salario: ${fmt(emp.salario)}/sem`,'','','','','','','','',''],
-    [],
-    ['Semana (del)','Semana (al)','Salario base','Faltas','Desc. faltas','H. extras','Gasolina','Desc. préstamo','Descuentos','Total cobrado']
-  ];
+// Hoja 1 — Historial de pagos
+const rowsPagos = [
+[`HISTORIAL DE PAGOS — ${emp.nombre}`,'','','','','','','','',''],
+[`Puesto: ${emp.puesto} | Obra: ${emp.obra} | Salario: ${fmt(emp.salario)}/sem`,'','','','','','','','',''],
+[],
+['Semana (del)','Semana (al)','Salario base','Faltas','Desc. faltas','H. extras','Gasolina','Desc. préstamo','Descuentos','Total cobrado']
+];
 
-  let totalAcum = 0;
-  (entradasEmp||[]).forEach(e => {
-    const d = e.salario_base/6;
-    const dF = (e.faltas||0)*d;
-    const hE = (e.horas_extras||0)*(d/8)*1.5;
-    const desde = e.semanas_nomina?.desde || '';
-    const hasta = e.semanas_nomina?.hasta || '';
-    rowsPagos.push([desde, hasta, e.salario_base, e.faltas||0, dF>0?-dF:0, hE>0?hE:0, e.gasolina||0, e.prest_desc>0?-e.prest_desc:0, e.descuentos>0?-e.descuentos:0, e.total]);
-    totalAcum += e.total||0;
-  });
-  rowsPagos.push([]); rowsPagos.push(['TOTAL ACUMULADO','','','','','','','','',totalAcum]);
+let totalAcum = 0;
+(entradasEmp||[]).forEach(e => {
+const d = e.salario_base/6;
+const dF = (e.faltas||0)*d;
+const hE = (e.horas_extras||0)*(d/8)*1.5;
+const desde = e.semanas_nomina?.desde || '';
+const hasta = e.semanas_nomina?.hasta || '';
+rowsPagos.push([desde, hasta, e.salario_base, e.faltas||0, dF>0?-dF:0, hE>0?hE:0, e.gasolina||0, e.prest_desc>0?-e.prest_desc:0, e.descuentos>0?-e.descuentos:0, e.total]);
+totalAcum += e.total||0;
+});
+rowsPagos.push([]); rowsPagos.push(['TOTAL ACUMULADO','','','','','','','','',totalAcum]);
 
-  const wsPagos = XLSX.utils.aoa_to_sheet(rowsPagos);
-  wsPagos['!cols'] = [{wch:12},{wch:12},{wch:13},{wch:7},{wch:12},{wch:10},{wch:10},{wch:14},{wch:11},{wch:14}];
-  XLSX.utils.book_append_sheet(wb, wsPagos, 'Historial pagos');
+const wsPagos = XLSX.utils.aoa_to_sheet(rowsPagos);
+wsPagos['!cols'] = [{wch:12},{wch:12},{wch:13},{wch:7},{wch:12},{wch:10},{wch:10},{wch:14},{wch:11},{wch:14}];
+XLSX.utils.book_append_sheet(wb, wsPagos, 'Historial pagos');
 
-  // Hoja 2 — Préstamos
-  if (prestamosEmp && prestamosEmp.length) {
-    const rowsPrest = [
-      [`PRÉSTAMOS — ${emp.nombre}`,'','','','','',''],
-      [],
-      ['Monto','Desc./sem','Inicia cobro','Pagado','Saldo','Letras rest.','Estado']
-    ];
-    prestamosEmp.forEach(p => {
-      const esAct = p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado;
-      rowsPrest.push([p.monto, p.cuota, p.inicia_cobro, p.pagado||0, p.saldo, p.letras_restantes||0, p.saldo<=0?'Liquidado':esAct?'Cobrando':'Pendiente']);
-    });
-    const wsPrest = XLSX.utils.aoa_to_sheet(rowsPrest);
-    wsPrest['!cols'] = [{wch:12},{wch:10},{wch:13},{wch:12},{wch:12},{wch:13},{wch:12}];
-    XLSX.utils.book_append_sheet(wb, wsPrest, 'Préstamos');
-  }
+// Hoja 2 — Préstamos
+if (prestamosEmp && prestamosEmp.length) {
+const rowsPrest = [
+[`PRÉSTAMOS — ${emp.nombre}`,'','','','','',''],
+[],
+['Monto','Desc./sem','Inicia cobro','Pagado','Saldo','Letras rest.','Estado']
+];
+prestamosEmp.forEach(p => {
+const esAct = p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado;
+rowsPrest.push([p.monto, p.cuota, p.inicia_cobro, p.pagado||0, p.saldo, p.letras_restantes||0, p.saldo<=0?'Liquidado':esAct?'Cobrando':'Pendiente']);
+});
+const wsPrest = XLSX.utils.aoa_to_sheet(rowsPrest);
+wsPrest['!cols'] = [{wch:12},{wch:10},{wch:13},{wch:12},{wch:12},{wch:13},{wch:12}];
+XLSX.utils.book_append_sheet(wb, wsPrest, 'Préstamos');
+}
 
-  XLSX.writeFile(wb, `Historial_${emp.nombre.replace(/ /g,'_')}.xlsx`);
-  showToast(`Historial de ${emp.nombre} descargado`);
+XLSX.writeFile(wb, `Historial_${emp.nombre.replace(/ /g,'_')}.xlsx`);
+showToast(`Historial de ${emp.nombre} descargado`);
 }
 
 function imprimirNomina() {
-  if (!detalleSemanaActual) return;
-  const sem = detalleSemanaActual;
-  const entradas = detalleEntradasActual;
-  const filas = entradas.map(e => {
-    const emp = empleados.find(x=>x.id===e.empleado_id)||{nombre:'?',puesto:'',obra:''};
-    const dF = e.faltas*(e.salario_base/6), hE = e.horas_extras*(e.salario_base/6/8)*1.5;
-    return `<tr>
-      <td>${emp.nombre}</td><td>${emp.puesto}</td><td>${emp.obra}</td>
-      <td align="right">$${Math.round(e.salario_base).toLocaleString('es-MX')}</td>
-      <td align="right">${e.faltas>0?'-$'+Math.round(dF).toLocaleString('es-MX'):'—'}</td>
-      <td align="right">${e.horas_extras>0?'+$'+Math.round(hE).toLocaleString('es-MX'):'—'}</td>
-      <td align="right">${e.gasolina>0?'$'+Math.round(e.gasolina).toLocaleString('es-MX'):'—'}</td>
-      <td align="right">${e.prest_desc>0?'-$'+Math.round(e.prest_desc).toLocaleString('es-MX'):'—'}</td>
-      <td align="right">${e.descuentos>0?'-$'+Math.round(e.descuentos).toLocaleString('es-MX'):'—'}</td>
-      <td align="right"><strong>$${Math.round(e.total).toLocaleString('es-MX')}</strong></td>
-      <td style="width:80px;border-bottom:1px solid #ccc"></td>
-    </tr>`;
-  }).join('');
-  const totalNom = entradas.reduce((s,e)=>s+e.total,0);
-  const win = window.open('','_blank');
-  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
-    <title>Nómina Hope Electric</title>
-    <style>
-      body{font-family:Arial,sans-serif;font-size:11px;margin:20px;color:#111}
-      h2{font-size:15px;margin:0 0 2px}
-      .sub{font-size:11px;color:#666;margin-bottom:16px}
-      table{width:100%;border-collapse:collapse;margin-bottom:16px}
-      th{background:#f0f0f0;padding:5px 7px;text-align:left;border:0.5px solid #ccc;font-size:10px}
-      td{padding:5px 7px;border:0.5px solid #e5e5e5;vertical-align:middle}
-      .total-row td{font-weight:bold;background:#f8f8f8}
-      .firma{font-size:10px;color:#666;text-align:center}
-      @media print{body{margin:10px}}
-    </style></head><body>
-    <h2>Hope Electric — Nómina Semanal</h2>
-    <div class="sub">Período: ${fmtD(fromISO(sem.desde))} — ${fmtD(fromISO(sem.hasta))} &nbsp;|&nbsp; Generado: ${new Date().toLocaleDateString('es-MX')}</div>
-    <table>
-      <thead><tr><th>Empleado</th><th>Puesto</th><th>Obra</th><th>Base</th><th>Faltas</th><th>H.ext</th><th>Gasolina</th><th>Préstamo</th><th>Desc.</th><th>Total</th><th>Firma</th></tr></thead>
-      <tbody>${filas}</tbody>
-      <tfoot><tr class="total-row"><td colspan="9">TOTAL</td><td align="right">$${Math.round(totalNom).toLocaleString('es-MX')}</td><td></td></tr></tfoot>
-    </table>
-    <script>window.onload=()=>{window.print();}<\/script>
-    </body></html>`);
-  win.document.close();
+if (!detalleSemanaActual) return;
+const sem = detalleSemanaActual;
+const entradas = detalleEntradasActual;
+const filas = entradas.map(e => {
+const emp = empleados.find(x=>x.id===e.empleado_id)||{nombre:'?',puesto:'',obra:''};
+const dF = e.faltas*(e.salario_base/6), hE = e.horas_extras*(e.salario_base/6/8)*1.5;
+return `<tr>
+     <td>${emp.nombre}</td><td>${emp.puesto}</td><td>${emp.obra}</td>
+     <td align="right">$${Math.round(e.salario_base).toLocaleString('es-MX')}</td>
+     <td align="right">${e.faltas>0?'-$'+Math.round(dF).toLocaleString('es-MX'):'—'}</td>
+     <td align="right">${e.horas_extras>0?'+$'+Math.round(hE).toLocaleString('es-MX'):'—'}</td>
+     <td align="right">${e.gasolina>0?'$'+Math.round(e.gasolina).toLocaleString('es-MX'):'—'}</td>
+     <td align="right">${e.prest_desc>0?'-$'+Math.round(e.prest_desc).toLocaleString('es-MX'):'—'}</td>
+     <td align="right">${e.descuentos>0?'-$'+Math.round(e.descuentos).toLocaleString('es-MX'):'—'}</td>
+     <td align="right"><strong>$${Math.round(e.total).toLocaleString('es-MX')}</strong></td>
+     <td style="width:80px;border-bottom:1px solid #ccc"></td>
+   </tr>`;
+}).join('');
+const totalNom = entradas.reduce((s,e)=>s+e.total,0);
+const win = window.open('','_blank');
+win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+   <title>Nómina Hope Electric</title>
+   <style>
+     body{font-family:Arial,sans-serif;font-size:11px;margin:20px;color:#111}
+     h2{font-size:15px;margin:0 0 2px}
+     .sub{font-size:11px;color:#666;margin-bottom:16px}
+     table{width:100%;border-collapse:collapse;margin-bottom:16px}
+     th{background:#f0f0f0;padding:5px 7px;text-align:left;border:0.5px solid #ccc;font-size:10px}
+     td{padding:5px 7px;border:0.5px solid #e5e5e5;vertical-align:middle}
+     .total-row td{font-weight:bold;background:#f8f8f8}
+     .firma{font-size:10px;color:#666;text-align:center}
+     @media print{body{margin:10px}}
+   </style></head><body>
+   <h2>Hope Electric — Nómina Semanal</h2>
+   <div class="sub">Período: ${fmtD(fromISO(sem.desde))} — ${fmtD(fromISO(sem.hasta))} &nbsp;|&nbsp; Generado: ${new Date().toLocaleDateString('es-MX')}</div>
+   <table>
+     <thead><tr><th>Empleado</th><th>Puesto</th><th>Obra</th><th>Base</th><th>Faltas</th><th>H.ext</th><th>Gasolina</th><th>Préstamo</th><th>Desc.</th><th>Total</th><th>Firma</th></tr></thead>
+     <tbody>${filas}</tbody>
+     <tfoot><tr class="total-row"><td colspan="9">TOTAL</td><td align="right">$${Math.round(totalNom).toLocaleString('es-MX')}</td><td></td></tr></tfoot>
+   </table>
+   <script>window.onload=()=>{window.print();}<\/script>
+   </body></html>`);
+win.document.close();
 }
 
 async function toggleBajaEmp(id) {
-  const emp = empleados.find(e => e.id===id); if (!emp) return;
-  const accion = emp.activo ? 'dar de baja' : 'reactivar';
-  if (!confirm(`¿Confirmas ${accion} a ${emp.nombre}?`)) return;
-  const nuevoEstado = !emp.activo;
-  await db.from('empleados_nomina').update({ activo: nuevoEstado }).eq('id', id);
-  emp.activo = nuevoEstado;
-  renderEmpleados();
-  showToast(emp.nombre + (nuevoEstado ? ' reactivado' : ' dado de baja'));
+const emp = empleados.find(e => e.id===id); if (!emp) return;
+const accion = emp.activo ? 'dar de baja' : 'reactivar';
+if (!confirm(`¿Confirmas ${accion} a ${emp.nombre}?`)) return;
+const nuevoEstado = !emp.activo;
+await db.from('empleados_nomina').update({ activo: nuevoEstado }).eq('id', id);
+emp.activo = nuevoEstado;
+renderEmpleados();
+showToast(emp.nombre + (nuevoEstado ? ' reactivado' : ' dado de baja'));
 }
 
 // =============================================
 // ARRANQUE
 // =============================================
 (async () => {
-  const { data: { session } } = await db.auth.getSession();
-  if (session) {
-    loggedIn = true;
-    mostrarApp();
-  }
-  // Escuchar cambios de sesión (token refresh, etc.)
-  db.auth.onAuthStateChange((event, session) => {
-    if (event === 'SIGNED_OUT') location.reload();
-  });
+const { data: { session } } = await db.auth.getSession();
+if (session) {
+loggedIn = true;
+mostrarApp();
+}
+// Escuchar cambios de sesión (token refresh, etc.)
+db.auth.onAuthStateChange((event, session) => {
+if (event === 'SIGNED_OUT') location.reload();
+});
 })();
 </script>
 </body>
