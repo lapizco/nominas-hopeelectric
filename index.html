@@ -1062,21 +1062,53 @@ function openCierre() {
 
 async function confirmarCierre() {
   const semAbierta = semanas.find(s => !s.cerrada); if (!semAbierta) return;
-  const totalPagado = empleados.reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))), 0);
-  const totalPrest = empleados.reduce((s,e) => s+getPrestDesc(e.id), 0);
-  // Asegurar entradas para todos los empleados
-  for (const emp of empleados) {
+
+  // Deshabilitar botón para evitar doble clic
+  const btnCierre = document.querySelector('#cierre-btns .btn-primary');
+  if (btnCierre) { btnCierre.disabled = true; btnCierre.textContent = 'Guardando...'; }
+
+  const totalPagado = empleados.filter(e=>e.activo).reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))), 0);
+  const totalPrest = empleados.filter(e=>e.activo).reduce((s,e) => s+getPrestDesc(e.id), 0);
+
+  // Guardar entrada para TODOS los empleados activos (upsert)
+  for (const emp of empleados.filter(e=>e.activo)) {
     const en = getNom(emp.id);
-    if (!en.id) {
-      const pD = getPrestDesc(emp.id);
-      const tot = Math.max(0, calcTotal(emp.id, en));
-      const gasNeto = emp.gasolina||0;
-      const row = { semana_id:semAbierta.id, empleado_id:emp.id, salario_base:emp.salario, faltas:0, horas_extras:0, gasolina:gasNeto, descuentos:0, se_le_debe:0, prest_desc:pD, total:tot, pagador:getNom(emp.id).pagador||'' };
+    const pD = getPrestDesc(emp.id);
+    const diasTrab = 6 - (en.faltas||0);
+    const gasNeto = (emp.gasolina||0) * diasTrab / 6;
+    const tot = Math.max(0, calcTotal(emp.id, en));
+    const row = {
+      semana_id: semAbierta.id,
+      empleado_id: emp.id,
+      salario_base: emp.salario,
+      faltas: en.faltas||0,
+      horas_extras: en.hext||0,
+      tarifa_hext: en.tarifa||1.5,
+      gasolina: gasNeto,
+      descuentos: (en.desc||0) + (en.retardo||0),
+      se_le_debe: en.debe||0,
+      prest_desc: pD,
+      total: tot,
+      nota: en.nota||'',
+      pagador: en.pagador||''
+    };
+    if (en.id) {
+      // Ya existe — actualizar
+      await db.from('entradas_nomina').update(row).eq('id', en.id);
+    } else {
+      // No existe — insertar
       await db.from('entradas_nomina').insert([row]);
     }
   }
+
   // Cerrar semana
-  await db.from('semanas_nomina').update({ cerrada:true, total_pagado:totalPagado, total_prest_desc:totalPrest, cerrada_en:new Date().toISOString() }).eq('id', semAbierta.id);
+  await db.from('semanas_nomina').update({
+    cerrada: true,
+    total_pagado: totalPagado,
+    total_prest_desc: totalPrest,
+    cerrada_en: new Date().toISOString()
+  }).eq('id', semAbierta.id);
+
   // Aplicar descuentos de préstamos
   for (const p of prestamos) {
     if (p.saldo > 0 && new Date(p.inicia_cobro+'T00:00:00') <= currentSabado) {
@@ -1087,6 +1119,7 @@ async function confirmarCierre() {
       await db.from('prestamos_nomina').update({ saldo:nuevoSaldo, pagado:nuevoPagado, letras_restantes:nuevasLetras }).eq('id', p.id);
     }
   }
+
   // Crear nueva semana
   const nuevoLunes = new Date(currentLunes); nuevoLunes.setDate(nuevoLunes.getDate()+7);
   const nuevoSabado = getSabado(nuevoLunes);
