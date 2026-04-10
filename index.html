@@ -1018,6 +1018,12 @@ async function saveNomEntry() {
     if (data) newEn.id = data.id;
   }
   nomina[editNomEmpId] = newEn;
+  // Sincronizar pagador con empleados_nomina
+  const pagadorNuevo = newEn.pagador || null;
+  if ((emp.pagador||'') !== (pagadorNuevo||'')) {
+    await db.from('empleados_nomina').update({ pagador: pagadorNuevo }).eq('id', editNomEmpId);
+    emp.pagador = pagadorNuevo;
+  }
   closeOv('overlay-nom'); renderNomina(); renderDash(); showToast('Guardado ✓');
 }
 
@@ -1481,6 +1487,8 @@ async function saveEmp() {
     await db.from('empleados_nomina').update({nombre,puesto,obra,salario,gasolina,pagador}).eq('id',editEmpId);
     const idx=empleados.findIndex(e=>e.id===editEmpId);
     if (idx>=0) empleados[idx]={...empleados[idx],nombre,puesto,obra,salario,gasolina,pagador};
+    // Sincronizar pagador en nomina activa en memoria
+    if (nomina[editEmpId]) nomina[editEmpId].pagador = pagador||'';
   } else {
     const { data } = await db.from('empleados_nomina').insert([{nombre,puesto,obra,salario,gasolina,pagador}]).select().single();
     if (data) empleados.push(data);
