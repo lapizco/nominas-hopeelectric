@@ -765,7 +765,7 @@ async function renderDash() {
   const pA = prestamos.filter(p => p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado && empActivos.find(e=>e.id===p.empleado_id)).length;
   const pP = prestamos.filter(p => p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')>currentSabado && empActivos.find(e=>e.id===p.empleado_id)).length;
   $('dash-cards').innerHTML = `
-    <div class="mcard"><div class="lbl">Empleados</div><div class="val">${empleados.length}</div></div>
+    <div class="mcard"><div class="lbl">Empleados activos</div><div class="val">${empActivos.length}</div></div>
     <div class="mcard"><div class="lbl">Nómina base/sem</div><div class="val" style="font-size:16px">${fmt(bT)}</div></div>
     <div class="mcard"><div class="lbl">Total neto esta sem</div><div class="val" style="font-size:16px">${fmt(nT)}</div></div>
     <div class="mcard"><div class="lbl">Préstamos cobrando</div><div class="val">${pA}${pP>0?`<span style="font-size:12px;color:var(--amber);margin-left:4px">+${pP} próx.</span>`:''}</div></div>
@@ -861,7 +861,7 @@ function renderNomina() {
       : '';
   }
 
-  let lista = empleados.filter(e => !f || e.obra === f);
+  let lista = empleados.filter(e => e.activo && (!f || e.obra === f));
 
   // Ordenar
   if (orden === 'alfa') {
@@ -1926,6 +1926,8 @@ async function toggleBajaEmp(id) {
   await db.from('empleados_nomina').update({ activo: nuevoEstado }).eq('id', id);
   emp.activo = nuevoEstado;
   renderEmpleados();
+  renderDash();
+  renderNomina();
   showToast(emp.nombre + (nuevoEstado ? ' reactivado' : ' dado de baja'));
 }
 
