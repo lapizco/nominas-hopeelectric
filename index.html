@@ -296,7 +296,8 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
       <div class="panel">
         <div class="phead"><h2>Préstamos</h2>
           <div class="phead-r">
-            <select id="prest-filtro" onchange="renderPrestamos()"><option value="">Todos</option><option value="activo">Activos</option><option value="pendiente">Pendientes</option><option value="pagado">Liquidados</option></select>
+            <input type="text" id="prest-buscar" placeholder="Buscar empleado..." oninput="renderPrestamos()" style="width:150px">
+            <select id="prest-filtro" onchange="renderPrestamos()"><option value="">Todos</option><option value="activo" selected>Activos</option><option value="pendiente">Pendientes</option><option value="pagado">Liquidados</option></select>
             <button class="btn btn-primary" onclick="openPrestModal()">+ Nuevo préstamo</button>
           </div>
         </div>
@@ -510,6 +511,25 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
     <table>
       <thead><tr><th>Empleado</th><th>Obra</th><th class="num">Base</th><th class="num">Desc. faltas</th><th class="num">H. extras</th><th class="num">Gasolina</th><th class="num">Préstamo</th><th class="num">Descuentos</th><th class="num">Se le debe</th><th class="num">Total</th></tr></thead>
       <tbody id="edit-hist-tbody"></tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- MODAL: HISTORIAL PRÉSTAMOS POR EMPLEADO -->
+<div class="overlay" id="overlay-hist-prest">
+<div class="modal" style="width:820px;max-width:98vw;padding:0;overflow:hidden">
+  <div class="detail-header">
+    <div>
+      <div style="font-size:14px;font-weight:500" id="hist-prest-title"></div>
+      <div style="font-size:12px;color:var(--text2)" id="hist-prest-subtitle"></div>
+    </div>
+    <button class="btn" onclick="closeOv('overlay-hist-prest')">Cerrar</button>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th class="num">Monto</th><th class="num">Cuota/sem</th><th>Inicio cobro</th><th class="num">Pagado</th><th class="num">Saldo</th><th>Letras rest.</th><th>Progreso</th><th>Estado</th><th>Nota</th></tr></thead>
+      <tbody id="hist-prest-tbody"></tbody>
     </table>
   </div>
 </div>
@@ -1093,7 +1113,7 @@ async function confirmarCierre() {
       prest_desc: pD,
       total: tot,
       nota: en.nota||'',
-      pagador: en.pagador||''
+      pagador: en.pagador || emp.pagador || ''
     };
     if (en.id) {
       // Ya existe — actualizar
@@ -1356,7 +1376,10 @@ function renderPrestamos() {
     <div class="mcard"><div class="lbl">Liquidados</div><div class="val">${liq.length}</div></div>
     <div class="mcard"><div class="lbl">Total recuperado</div><div class="val" style="font-size:16px">${fmt(prestamos.reduce((s,p)=>s+(p.pagado||0),0))}</div></div>`;
   const f = $('prest-filtro').value;
+  const buscar = ($('prest-buscar').value||'').trim().toLowerCase();
   const lista = prestamos.filter(p => {
+    const emp = empleados.find(e => e.id===p.empleado_id);
+    if (buscar && !(emp?.nombre||'').toLowerCase().includes(buscar)) return false;
     if (f==='activo') return p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado;
     if (f==='pendiente') return p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')>currentSabado;
     if (f==='pagado') return p.saldo<=0;
@@ -1367,8 +1390,9 @@ function renderPrestamos() {
     const pct = Math.round((p.pagado||0)/p.monto*100);
     const esAct = p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado;
     const esPend = p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')>currentSabado;
+    const totalPrest = prestamos.filter(x=>x.empleado_id===p.empleado_id).length;
     return `<tr>
-      <td style="font-weight:500">${emp?emp.nombre:'?'}</td>
+      <td style="font-weight:500">${emp?emp.nombre:'?'}${totalPrest>1?`<br><span style="font-size:10px;color:var(--blue);cursor:pointer" onclick="openHistorialPrest(${p.empleado_id})">${totalPrest} préstamos en total</span>`:''}</td>
       <td>${emp?`<span class="badge ${obc(emp.obra)}">${emp.obra}</span>`:''}</td>
       <td class="num">${fmt(p.monto)}</td>
       <td class="num">${fmt(p.cuota)}/sem</td>
@@ -1380,10 +1404,39 @@ function renderPrestamos() {
       <td><span class="badge ${esAct?'b-activo':esPend?'b-pendiente':'b-pagado'}">${esAct?'Cobrando':esPend?'Pendiente':'Liquidado'}</span></td>
       <td><div style="display:flex;gap:4px">
         ${p.saldo>0?`<button class="btn btn-sm" onclick="abonoManual(${p.id})">Abono</button>`:''}
+        <button class="btn btn-sm" onclick="openHistorialPrest(${p.empleado_id})">Historial</button>
         <button class="btn btn-delete" onclick="openEliminarPrestamo(${p.id})">Eliminar</button>
       </div></td>
     </tr>`;
   }).join('') : `<tr><td colspan="11" class="empty">No hay préstamos</td></tr>`;
+}
+
+function openHistorialPrest(empId) {
+  const emp = empleados.find(e => e.id===empId);
+  const lista = prestamos.filter(p => p.empleado_id===empId)
+    .sort((a,b) => new Date(b.inicia_cobro) - new Date(a.inicia_cobro));
+  $('hist-prest-title').textContent = emp ? emp.nombre + (emp.obra ? '  ·  ' + emp.obra : '') : '?';
+  const totalSolicitado = lista.reduce((s,p)=>s+p.monto, 0);
+  const totalPagado = lista.reduce((s,p)=>s+(p.pagado||0), 0);
+  const activos = lista.filter(p=>p.saldo>0).length;
+  $('hist-prest-subtitle').textContent = `${lista.length} préstamo(s) · Solicitado: ${fmt(totalSolicitado)} · Recuperado: ${fmt(totalPagado)}${activos?' · '+activos+' activo(s)':''}`;
+  $('hist-prest-tbody').innerHTML = lista.length ? lista.map(p => {
+    const pct = Math.round((p.pagado||0)/p.monto*100);
+    const esAct = p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')<=currentSabado;
+    const esPend = p.saldo>0 && new Date(p.inicia_cobro+'T00:00:00')>currentSabado;
+    return `<tr>
+      <td class="num" style="font-weight:500">${fmt(p.monto)}</td>
+      <td class="num">${fmt(p.cuota)}/sem</td>
+      <td style="font-size:12px">${fmtDS(fromISO(p.inicia_cobro))}</td>
+      <td class="num" style="color:var(--green)">${fmt(p.pagado||0)}</td>
+      <td class="num" style="font-weight:500;color:${p.saldo>0?'var(--red)':'var(--text2)'}">${fmt(p.saldo)}</td>
+      <td class="num">${p.saldo>0?`<strong>${p.letras_restantes}</strong> sem.`:'—'}</td>
+      <td style="min-width:80px"><div class="prog-bar-bg"><div class="prog-bar" style="width:${pct}%;${pct>=100?'background:var(--gray-text)':esPend?'background:var(--blue)':''}"></div></div><div style="font-size:10px;color:var(--text2);margin-top:2px">${pct}%</div></td>
+      <td><span class="badge ${esAct?'b-activo':esPend?'b-pendiente':'b-pagado'}">${esAct?'Cobrando':esPend?'Pendiente':'Liquidado'}</span></td>
+      <td style="font-size:12px;color:var(--text2)">${p.nota||'—'}</td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="9" class="empty">Sin préstamos registrados</td></tr>`;
+  $('overlay-hist-prest').classList.add('open');
 }
 
 function selectInicio(val) {
