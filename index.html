@@ -753,9 +753,10 @@ function calcTotal(empId, en) {
   const emp = empleados.find(e => e.id === empId); if (!emp) return 0;
   const d = emp.salario / 6;
   const diasTrab = 6 - (en.faltas||0);
-  const gasNeto = (emp.gasolina||0) * diasTrab / 6;
+  const gasNeto = Math.round((emp.gasolina||0) * diasTrab / 6);
   const tarifa = en.tarifa||1.5;
-  return emp.salario - (en.faltas||0)*d + (en.hext||0)*(d/8)*tarifa + gasNeto + (en.debe||0) - (en.desc||0) - (en.retardo||0) - getPrestDesc(empId);
+  const total = emp.salario - (en.faltas||0)*d + (en.hext||0)*(d/8)*tarifa + gasNeto + (en.debe||0) - (en.desc||0) - (en.retardo||0) - getPrestDesc(empId);
+  return Math.round(total);
 }
 
 function getNom(empId) {
@@ -813,11 +814,10 @@ async function renderDash() {
     alertasHtml += `<div style="background:var(--red-bg);border:0.5px solid #F09595;border-radius:var(--radius);padding:10px 14px;margin-bottom:10px;font-size:12px;color:var(--red)"><strong>Alertas de asistencia</strong>${items}</div>`;
   }
 
+  const existingAlertas = $('dash-alertas');
+  if (existingAlertas) existingAlertas.remove();
   if (alertasHtml) {
     $('dash-cards').insertAdjacentHTML('afterend', `<div id="dash-alertas">${alertasHtml}</div>`);
-  } else {
-    const existing = $('dash-alertas');
-    if (existing) existing.remove();
   }
   $('dash-nom-title').textContent = 'Nómina: ' + fmtD(currentLunes) + ' — ' + fmtD(currentSabado);
 
@@ -900,7 +900,7 @@ function renderNomina() {
   $('nom-tbody').innerHTML = lista.map(e => {
     const en=getNom(e.id); const d=e.salario/6;
     const diasTrab=6-(en.faltas||0);
-    const gasN=(e.gasolina||0)*diasTrab/6;
+    const gasN=Math.round((e.gasolina||0)*diasTrab/6);
     const pD=getPrestDesc(e.id), tot=calcTotal(e.id,en), hE=(en.hext||0)*(d/8)*1.5, dF=(en.faltas||0)*d;
     let separador = '';
     if (orden === 'obra' && e.obra !== prevObra) {
@@ -930,7 +930,7 @@ function renderNomina() {
     const totalGas = empsObra.reduce((s,e) => {
       const faltas = getNom(e.id).faltas||0;
       const diasTrab = 6 - faltas;
-      return s + (e.gasolina||0) * diasTrab / 6;
+      return s + Math.round((e.gasolina||0) * diasTrab / 6);
     }, 0);
     const totalPrest = empsObra.reduce((s,e) => s+getPrestDesc(e.id), 0);
     const totalNeto = empsObra.reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))), 0);
@@ -971,7 +971,7 @@ function renderNomina() {
   const totalGasGlobal = empleados.filter(e=>e.activo).reduce((s,e) => {
     const faltas = getNom(e.id).faltas||0;
     const diasTrab = 6 - faltas;
-    return s + (e.gasolina||0) * diasTrab / 6;
+    return s + Math.round((e.gasolina||0) * diasTrab / 6);
   }, 0);
   const totalNetoGlobal = empleados.filter(e=>e.activo).reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))), 0);
   const totalPrestGlobal = empleados.filter(e=>e.activo).reduce((s,e) => s+getPrestDesc(e.id), 0);
@@ -1007,7 +1007,7 @@ function recalcNom() {
   const retardo=+$('ne-retardo').value||0;
   const tarifa=parseFloat($('ne-tarifa').value)||1.5;
   const diasTrab=6-f;
-  const gasNeto=(emp.gasolina||0)*diasTrab/6;
+  const gasNeto=Math.round((emp.gasolina||0)*diasTrab/6);
   const p=getPrestDesc(editNomEmpId); $('ne-prest').value=p;
   const dF=f*d, iH=h*(d/8)*tarifa, tot=emp.salario-dF+iH+gasNeto+db-retardo-desc-p;
   $('nom-result').innerHTML = `
@@ -1030,7 +1030,7 @@ async function saveNomEntry() {
   const d = emp.salario/6;
   const newEn = { faltas:+$('ne-faltas').value||0, hext:+$('ne-hext').value||0, tarifa:parseFloat($('ne-tarifa').value)||1.5, retardo:+$('ne-retardo').value||0, desc:+$('ne-desc').value||0, debe:+$('ne-debe').value||0, nota:$('ne-nota').value.trim(), pagador:$('ne-pagador').value };
   const diasTrab = 6 - newEn.faltas;
-  const gasNeto = (emp.gasolina||0) * diasTrab / 6;
+  const gasNeto = Math.round((emp.gasolina||0) * diasTrab / 6);
   const pD = getPrestDesc(editNomEmpId);
   const tot = calcTotal(editNomEmpId, newEn);
   const row = { semana_id:semAbierta.id, empleado_id:editNomEmpId, salario_base:emp.salario, faltas:newEn.faltas, horas_extras:newEn.hext, tarifa_hext:newEn.tarifa, gasolina:gasNeto, descuentos:newEn.desc + newEn.retardo, se_le_debe:newEn.debe, prest_desc:pD, total:Math.max(0,tot), nota:newEn.nota, pagador:newEn.pagador };
@@ -1099,7 +1099,7 @@ async function confirmarCierre() {
     const en = getNom(emp.id);
     const pD = getPrestDesc(emp.id);
     const diasTrab = 6 - (en.faltas||0);
-    const gasNeto = (emp.gasolina||0) * diasTrab / 6;
+    const gasNeto = Math.round((emp.gasolina||0) * diasTrab / 6);
     const tot = Math.max(0, calcTotal(emp.id, en));
     const row = {
       semana_id: semAbierta.id,
@@ -1274,7 +1274,7 @@ function updateEditHist(idx, campo, val) {
   const d = e.salario_base/6;
   const dF = e.faltas*d, hE = e.horas_extras*(d/8)*(e.tarifa_hext||1.5);
   const tot = e.salario_base - dF + hE + e.gasolina + e.se_le_debe - e.descuentos - e.prest_desc;
-  editHistEntradas[idx].total = Math.max(0, tot);
+  editHistEntradas[idx].total = Math.max(0, Math.round(tot));
   const cel = $('edit-total-'+idx);
   if (cel) cel.textContent = fmt(editHistEntradas[idx].total);
 }
@@ -1486,7 +1486,7 @@ async function savePrestamo() {
   const empId=+$('pf-emp').value, monto=+$('pf-monto').value||0, cuota=+$('pf-cuota').value||0, inicio=getInicioDate();
   if (!empId||!monto||!cuota||!inicio) { alert('Completa todos los campos.'); return; }
   const letras = Math.ceil(monto/cuota);
-  const { data } = await db.from('prestamos_nomina').insert([{ empleado_id:empId, monto, cuota, saldo:monto, pagado:0, letras_restantes:letras, inicia_cobro:toISO(inicio), nota:$('pf-nota').value }]).select().single();
+  const { data } = await db.from('prestamos_nomina').insert([{ empleado_id:empId, monto, cuota, saldo:monto, pagado:0, letras_restantes:letras, inicia_cobro:toISO(inicio), nota:$('pf-nota').value, fecha_registro: new Date().toISOString() }]).select().single();
   if (data) prestamos.unshift(data);
   closeOv('overlay-prest'); renderPrestamos(); showToast('Préstamo registrado');
 }
@@ -1520,7 +1520,8 @@ async function confirmarEliminarPrestamo() {
 async function abonoManual(prestId) {
   const p = prestamos.find(x => x.id===prestId); if (!p) return;
   const m = parseFloat(prompt('Abono manual (saldo: '+fmt(p.saldo)+')'));
-  if (!m||isNaN(m)) return;
+  if (isNaN(m)) return;
+  if (m <= 0) { showToast('El abono debe ser mayor a 0'); return; }
   const nuevoSaldo = Math.max(0, p.saldo-m);
   const nuevoPagado = (p.pagado||0)+Math.min(m,p.saldo);
   const nuevasLetras = p.cuota>0 ? Math.ceil(nuevoSaldo/p.cuota) : 0;
@@ -1584,7 +1585,7 @@ async function saveEmp() {
     // Sincronizar pagador en nomina activa en memoria
     if (nomina[editEmpId]) nomina[editEmpId].pagador = pagador||'';
   } else {
-    const { data } = await db.from('empleados_nomina').insert([{nombre,puesto,obra,salario,gasolina,pagador}]).select().single();
+    const { data } = await db.from('empleados_nomina').insert([{nombre,puesto,obra,salario,gasolina,pagador,activo:true}]).select().single();
     if (data) empleados.push(data);
   }
   closeOv('overlay-emp'); renderEmpleados(); renderDash(); renderNomina(); showToast('Empleado guardado');
