@@ -1034,13 +1034,17 @@ async function saveNomEntry() {
   const pD = getPrestDesc(editNomEmpId);
   const tot = calcTotal(editNomEmpId, newEn);
   const row = { semana_id:semAbierta.id, empleado_id:editNomEmpId, salario_base:emp.salario, faltas:newEn.faltas, horas_extras:newEn.hext, tarifa_hext:newEn.tarifa, gasolina:gasNeto, descuentos:newEn.desc + newEn.retardo, se_le_debe:newEn.debe, prest_desc:pD, total:Math.max(0,tot), nota:newEn.nota, pagador:newEn.pagador };
-  if (en.id) {
-    await db.from('entradas_nomina').update(row).eq('id', en.id);
-    newEn.id = en.id;
-  } else {
-    const { data } = await db.from('entradas_nomina').insert([row]).select().single();
-    if (data) newEn.id = data.id;
+  // UPSERT por llave natural (semana_id, empleado_id): la BD decide insertar vs actualizar.
+  // Ya no dependemos de en.id en memoria, así que es imposible duplicar o perder la fila.
+  const { data, error } = await db.from('entradas_nomina')
+    .upsert(row, { onConflict: 'semana_id,empleado_id' })
+    .select().single();
+  if (error) {
+    console.error('[saveNomEntry] Error guardando a', emp?.nombre, error);
+    showToast('Error al guardar: ' + error.message, 4000);
+    return;
   }
+  if (data) newEn.id = data.id;
   nomina[editNomEmpId] = newEn;
   // Sincronizar pagador con empleados_nomina
   const pagadorNuevo = newEn.pagador || null;
@@ -1094,8 +1098,12 @@ async function confirmarCierre() {
   const totalPagado = empleados.filter(e=>e.activo).reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))), 0);
   const totalPrest = empleados.filter(e=>e.activo).reduce((s,e) => s+getPrestDesc(e.id), 0);
 
-  // Guardar entrada para TODOS los empleados activos (upsert)
-  for (const emp of empleados.filter(e=>e.activo)) {
+  // Guardar entrada para TODOS los empleados activos mediante UPSERT por llave
+  // natural (semana_id, empleado_id). Ya no dependemos de en.id: la BD garantiza
+  // exactamente UNA fila por trabajador por semana. Ninguno se duplica ni se pierde.
+  const activosCierre = empleados.filter(e=>e.activo);
+  const erroresCierre = [];
+  for (const emp of activosCierre) {
     const en = getNom(emp.id);
     const pD = getPrestDesc(emp.id);
     const diasTrab = 6 - (en.faltas||0);
@@ -1116,12 +1124,34 @@ async function confirmarCierre() {
       nota: en.nota||'',
       pagador: en.pagador || emp.pagador || ''
     };
-    if (en.id) {
-      // Ya existe — actualizar
-      await db.from('entradas_nomina').update(row).eq('id', en.id);
-    } else {
-      // No existe — insertar
-      await db.from('entradas_nomina').insert([row]);
+    const { data, error } = await db.from('entradas_nomina')
+      .upsert(row, { onConflict: 'semana_id,empleado_id' })
+      .select().single();
+    if (error) {
+      console.error('[cierre] NO se guardó a', emp.nombre, '·', error.message, error);
+      erroresCierre.push(emp.nombre);
+    } else if (data) {
+      en.id = data.id;
+    }
+  }
+
+  // Verificación: confirmar que TODOS los activos quedaron con su fila antes de cerrar.
+  const { data: filasGuardadas } = await db.from('entradas_nomina')
+    .select('empleado_id').eq('semana_id', semAbierta.id);
+  const idsGuardados = new Set((filasGuardadas||[]).map(r => r.empleado_id));
+  const faltantesCierre = activosCierre.filter(e => !idsGuardados.has(e.id)).map(e => e.nombre);
+  console.log(`[cierre] Activos: ${activosCierre.length} · Filas guardadas: ${idsGuardados.size}`);
+  if (faltantesCierre.length) console.warn('[cierre] Trabajadores SIN fila guardada:', faltantesCierre);
+  if (erroresCierre.length || faltantesCierre.length) {
+    const nombresProblema = [...new Set([...erroresCierre, ...faltantesCierre])].join(', ');
+    const seguir = confirm(
+      'ATENCIÓN: no se guardó la nómina de: ' + nombresProblema + '.\n\n' +
+      'Si cierras así, esos trabajadores NO quedarán en el historial de esta semana.\n\n' +
+      '¿Cerrar la semana de todos modos?'
+    );
+    if (!seguir) {
+      if (btnCierre) { btnCierre.disabled = false; btnCierre.textContent = 'Confirmar y cerrar semana'; }
+      return;
     }
   }
 
