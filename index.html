@@ -702,7 +702,7 @@ async function cargarAsistenciasEncargado(semanaId) {
         const [h, m] = row[dia + '_hora'].split(':').map(Number);
         const totalMin = h * 60 + m;
         if (totalMin > 7 * 60 + 10) {
-          const minRetraso = totalMin - 7 * 60;
+          const minRetraso = totalMin - (7 * 60 + 10);
           descRetardo += salHora * (minRetraso / 60);
         }
       }
@@ -847,7 +847,7 @@ async function renderDash() {
   let tB=0,tD=0,tE=0,tP=0,tT=0;
   $('dash-tbody').innerHTML = empActivos.map(e => {
     const en=getNom(e.id); const d=e.salario/6;
-    const ded=(en.faltas||0)*d, ext=(en.hext||0)*(d/8)*1.5, pD=getPrestDesc(e.id), tot=calcTotal(e.id,en);
+    const ded=(en.faltas||0)*d, ext=(en.hext||0)*(d/8)*(en.tarifa||1.5), pD=getPrestDesc(e.id), tot=calcTotal(e.id,en);
     tB+=e.salario; tD+=ded; tE+=ext; tP+=pD; tT+=tot;
     return `<tr onclick="openNomModal(${e.id})" style="cursor:pointer">
       <td style="font-weight:500">${e.nombre}</td>
@@ -901,7 +901,7 @@ function renderNomina() {
     const en=getNom(e.id); const d=e.salario/6;
     const diasTrab=6-(en.faltas||0);
     const gasN=Math.round((e.gasolina||0)*diasTrab/6);
-    const pD=getPrestDesc(e.id), tot=calcTotal(e.id,en), hE=(en.hext||0)*(d/8)*1.5, dF=(en.faltas||0)*d;
+    const pD=getPrestDesc(e.id), tot=calcTotal(e.id,en), hE=(en.hext||0)*(d/8)*(en.tarifa||1.5), dF=(en.faltas||0)*d;
     let separador = '';
     if (orden === 'obra' && e.obra !== prevObra) {
       prevObra = e.obra;
