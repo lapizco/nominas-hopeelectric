@@ -257,6 +257,13 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
         <div class="phead"><h2 id="nom-panel-title">Nómina en curso</h2>
           <div class="phead-r">
             <select id="nom-filtro-obra" onchange="renderNomina()"><option value="">Todas las obras</option><option>OMANA</option><option>SANTA</option><option>CASA</option></select>
+            <select id="nom-filtro-pagador" onchange="renderNomina()">
+              <option value="">Todos los pagadores</option>
+              <option value="Luis">Paga Luis</option>
+              <option value="Joan">Paga Joan</option>
+              <option value="Efectivo">Efectivo</option>
+              <option value="__none__">Sin asignar</option>
+            </select>
             <select id="nom-orden" onchange="renderNomina()">
               <option value="obra">Ordenar por obra</option>
               <option value="alfa">Ordenar A-Z</option>
@@ -601,7 +608,7 @@ function mostrarApp() {
 const $ = id => document.getElementById(id);
 const fmt = n => '$' + (Math.round(n || 0)).toLocaleString('es-MX');
 function getLunes(d) { const day = d.getDay(); const diff = day === 0 ? -6 : 1 - day; const l = new Date(d); l.setDate(d.getDate() + diff); l.setHours(0,0,0,0); return l; }
-function getSabado(l) { const s = new Date(l); s.setDate(l.getDate() + 5); return s; }
+function getSabado(l) { const s = new Date(l); s.setDate(l.getDate() + 5); return s; } // fin de semana laboral = sábado (lunes + 5); domingo se descansa
 function fmtD(d) { if (!d) return '—'; const dt = d instanceof Date ? d : new Date(d); return dt.toLocaleDateString('es-MX', {day:'numeric',month:'short',year:'numeric'}); }
 function fmtDS(d) { if (!d) return '—'; const dt = d instanceof Date ? d : new Date(d+'T00:00:00'); return dt.toLocaleDateString('es-MX', {day:'2-digit',month:'2-digit',year:'numeric'}); }
 function toISO(d) { const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),dd=String(d.getDate()).padStart(2,'0'); return `${y}-${m}-${dd}`; }
@@ -641,8 +648,17 @@ async function initApp() {
     }]).select().single();
     if (data) { semanas.unshift(data); semAbierta = data; }
   } else {
-    currentLunes = fromISO(semAbierta.desde) || currentLunes;
-    currentSabado = fromISO(semAbierta.hasta) || currentSabado;
+    // Anclar SIEMPRE al lunes real, aunque la fecha guardada haya quedado corrida un día.
+    // getLunes es idempotente: si 'desde' ya es lunes lo deja igual; si venía corrido, lo regresa al lunes.
+    currentLunes = getLunes(fromISO(semAbierta.desde) || currentLunes);
+    currentSabado = getSabado(currentLunes);
+    // Auto-corrección: si la fila guardada no cuadra con el lunes/sábado reales, la arregla en la BD.
+    const desdeReal = toISO(currentLunes), hastaReal = toISO(currentSabado);
+    if (semAbierta.desde !== desdeReal || semAbierta.hasta !== hastaReal) {
+      console.warn(`[fechas] Semana corrida: guardada ${semAbierta.desde} → ${semAbierta.hasta}; corrigiendo a ${desdeReal} → ${hastaReal}`);
+      await db.from('semanas_nomina').update({ desde: desdeReal, hasta: hastaReal }).eq('id', semAbierta.id);
+      semAbierta.desde = desdeReal; semAbierta.hasta = hastaReal;
+    }
     updatePeriod();
   }
   // Cargar entradas de la semana abierta
@@ -870,6 +886,7 @@ async function renderDash() {
 // =============================================
 function renderNomina() {
   const f = $('nom-filtro-obra').value;
+  const fp = $('nom-filtro-pagador') ? $('nom-filtro-pagador').value : '';
   const orden = $('nom-orden').value;
   $('nom-panel-title').textContent = 'Nómina: ' + fmtD(currentLunes) + ' — ' + fmtD(currentSabado);
 
@@ -883,6 +900,15 @@ function renderNomina() {
   }
 
   let lista = empleados.filter(e => e.activo && (!f || e.obra === f));
+
+  // Filtro por "¿Quién paga?": usa el pagador de la entrada de la semana y, si no,
+  // el pagador base del empleado (mismo criterio que el modal de edición).
+  if (fp) {
+    lista = lista.filter(e => {
+      const pag = (getNom(e.id).pagador || e.pagador || '');
+      return fp === '__none__' ? pag === '' : pag === fp;
+    });
+  }
 
   // Ordenar
   if (orden === 'alfa') {
@@ -1177,7 +1203,8 @@ async function confirmarCierre() {
   }
 
   // Crear nueva semana
-  const nuevoLunes = new Date(currentLunes); nuevoLunes.setDate(nuevoLunes.getDate()+7);
+  const nuevoLunesTmp = new Date(currentLunes); nuevoLunesTmp.setDate(nuevoLunesTmp.getDate()+7);
+  const nuevoLunes = getLunes(nuevoLunesTmp); // re-ancla al lunes real aunque currentLunes se hubiera corrido
   const nuevoSabado = getSabado(nuevoLunes);
   const { data:nuevaSem } = await db.from('semanas_nomina').insert([{ desde:toISO(nuevoLunes), hasta:toISO(nuevoSabado), cerrada:false }]).select().single();
   nomina = {};
