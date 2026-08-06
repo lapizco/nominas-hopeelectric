@@ -8,20 +8,29 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f5f5f4;--bg2:#ffffff;--bg3:#f0efea;
-  --border:#e5e5e3;--border2:#d1d0cc;
-  --text:#1a1a1a;--text2:#666662;--text3:#999996;
+  --bg:#f4f3f1;--bg2:#ffffff;--bg3:#f0efea;
+  --border:#e7e6e2;--border2:#d4d3ce;
+  --text:#191917;--text2:#68655f;--text3:#9a978f;
   --green:#0f6e56;--green-bg:#e1f5ee;
   --blue:#185fa5;--blue-bg:#e6f1fb;
   --amber:#854f0b;--amber-bg:#faeeda;
   --red:#a32d2d;--red-bg:#fcebeb;
   --gray-bg:#f1efe8;--gray-text:#5f5e5a;
+  --accent:#185fa5;--accent-ring:rgba(24,95,165,.22);
   --radius:8px;--radius-lg:12px;
+  --font-ui:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --font-num:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --shadow-sm:0 1px 2px rgba(20,18,14,.05);
+  --shadow-md:0 1px 3px rgba(20,18,14,.07),0 4px 12px rgba(20,18,14,.04);
+  --shadow-pop:0 8px 30px rgba(20,18,14,.14);
 }
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh}
+body{font-family:var(--font-ui);background:var(--bg);color:var(--text);font-size:14px;min-height:100vh;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 
 /* LOGIN */
 .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg)}
@@ -196,6 +205,75 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
   .tab{padding:7px 8px;font-size:11px}
   .topbar h1{font-size:12px}
 }
+/* ══════════════════════════════════════════════════
+   PULIDO VISUAL (capa de refinamiento, no cambia lógica)
+   ══════════════════════════════════════════════════ */
+/* Números en mono tabular: las cifras son las protagonistas */
+.num,.mcard .val,.calc-row,.confirm-box .row,.preview-row,.del-box .line,
+tfoot td,#det-ft-base,#det-ft-total{font-family:var(--font-num);font-variant-numeric:tabular-nums}
+.mcard .val{font-weight:600;letter-spacing:-.01em}
+
+/* Transiciones suaves en lo interactivo */
+.btn,.tab,.login-btn,.logout-btn,select,input,.inicio-opt,.mcard,tbody tr{transition:background .14s ease,border-color .14s ease,color .14s ease,box-shadow .14s ease,transform .14s ease,opacity .14s ease}
+
+/* Foco visible accesible (teclado) */
+.btn:focus-visible,.tab:focus-visible,select:focus-visible,input:focus-visible,.login-btn:focus-visible,.inicio-opt:focus-visible{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-ring)}
+select:focus,input:focus,.login-card input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-ring)}
+
+/* Profundidad y jerarquía */
+.panel{box-shadow:var(--shadow-sm)}
+.mcard{border:0.5px solid var(--border);box-shadow:var(--shadow-sm)}
+.mcard:hover{box-shadow:var(--shadow-md)}
+.phead h2{letter-spacing:.01em}
+.topbar{box-shadow:var(--shadow-sm)}
+
+/* Filas de tabla: más aire y hover con acento sutil */
+thead th{letter-spacing:.03em;text-transform:uppercase}
+tbody tr:hover{background:#faf9f6}
+@media(min-width:769px){
+  td{padding:9px 12px}
+  thead th{padding:8px 12px}
+}
+
+/* Botones */
+.btn{box-shadow:var(--shadow-sm)}
+.btn:hover{border-color:var(--border2)}
+.btn:active{transform:translateY(.5px)}
+.btn-primary{box-shadow:var(--shadow-sm)}
+.btn-primary:hover{opacity:1;background:#000}
+
+/* Pestaña activa con acento */
+.tab.active{border-bottom-color:var(--accent);color:var(--text)}
+.tab:hover{color:var(--text)}
+
+/* Modales: elevación real y entrada suave */
+.overlay{backdrop-filter:blur(2px)}
+.modal{box-shadow:var(--shadow-pop);animation:modalIn .18s ease}
+@keyframes modalIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* Login más terminado */
+.login-card{box-shadow:var(--shadow-md)}
+.login-logo{letter-spacing:-.01em}
+.login-btn:hover{opacity:1;background:#000}
+
+/* Píldora de periodo */
+.period-pill strong{font-family:var(--font-num)}
+
+/* Estado vacío con más presencia */
+.empty{padding:34px 20px;color:var(--text2)}
+.empty-hint{display:block;font-size:12px;color:var(--text3);margin-top:4px}
+
+/* Buscador de la tabla de nómina */
+.nom-search{position:relative;display:inline-flex;align-items:center}
+.nom-search input{padding-left:28px;min-width:150px}
+.nom-search svg{position:absolute;left:9px;width:13px;height:13px;color:var(--text3);pointer-events:none}
+
+/* Barra de proporción "quién paga" */
+.pay-bar{height:6px;border-radius:6px;background:var(--bg3);overflow:hidden;display:flex;margin-top:2px}
+.pay-bar span{height:100%}
+
+/* Respetar usuarios que prefieren menos movimiento */
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
@@ -256,6 +334,7 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
         <div id="nom-banner"></div>
         <div class="phead"><h2 id="nom-panel-title">Nómina en curso</h2>
           <div class="phead-r">
+            <span class="nom-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg><input id="nom-buscar" type="text" placeholder="Buscar trabajador…" oninput="renderNomina()"></span>
             <select id="nom-filtro-obra" onchange="renderNomina()"><option value="">Todas las obras</option><option>OMANA</option><option>SANTA</option><option>CASA</option></select>
             <select id="nom-filtro-pagador" onchange="renderNomina()"></select>
             <select id="nom-orden" onchange="renderNomina()">
@@ -873,6 +952,17 @@ async function renderDash() {
   // Panel quién paga qué
   const pagadores = [...PAGADORES, ''];
 
+  // Barra de proporción: cuánto pesa cada pagador sobre el total de la semana
+  const totalesPag = pagadores.map(pag => ({
+    pag,
+    total: empActivos.filter(e => (e.pagador||'') === pag)
+      .reduce((s,e) => s+Math.max(0,calcTotal(e.id,getNom(e.id))), 0)
+  })).filter(x => x.total > 0);
+  const granTotal = totalesPag.reduce((s,x) => s+x.total, 0);
+  const barraPag = granTotal > 0
+    ? `<div class="pay-bar" title="Proporción de la nómina por pagador">${totalesPag.map(x => `<span style="width:${(x.total/granTotal*100).toFixed(1)}%;background:${pagadorTextColor(x.pag)}" title="${pagadorLabel(x.pag)}: ${fmt(x.total)}"></span>`).join('')}</div>`
+    : '';
+
   const resumenPagadores = pagadores.map(pag => {
     const empsP = empActivos.filter(e => (e.pagador||'') === pag);
     if (!empsP.length) return '';
@@ -888,7 +978,7 @@ async function renderDash() {
   }).filter(Boolean).join('');
 
   const dashPagEl = $('dash-pagadores');
-  if (dashPagEl) dashPagEl.innerHTML = resumenPagadores || '<div style="font-size:12px;color:var(--text2);padding:8px 0">No hay trabajadores con pagador asignado aún.</div>';
+  if (dashPagEl) dashPagEl.innerHTML = (barraPag + resumenPagadores) || '<div style="font-size:12px;color:var(--text2);padding:8px 0">No hay trabajadores con pagador asignado aún.</div>';
 
 
   let tB=0,tD=0,tE=0,tP=0,tT=0;
@@ -918,6 +1008,7 @@ async function renderDash() {
 function renderNomina() {
   const f = $('nom-filtro-obra').value;
   const fp = $('nom-filtro-pagador') ? $('nom-filtro-pagador').value : '';
+  const q = $('nom-buscar') ? $('nom-buscar').value.trim().toLowerCase() : '';
   const orden = $('nom-orden').value;
   $('nom-panel-title').textContent = 'Nómina: ' + fmtD(currentLunes) + ' — ' + fmtD(currentSabado);
 
@@ -939,6 +1030,11 @@ function renderNomina() {
       const pag = (getNom(e.id).pagador || e.pagador || '');
       return fp === '__none__' ? pag === '' : pag === fp;
     });
+  }
+
+  // Búsqueda por nombre o puesto
+  if (q) {
+    lista = lista.filter(e => (e.nombre + ' ' + (e.puesto||'')).toLowerCase().includes(q));
   }
 
   // Ordenar
@@ -978,6 +1074,7 @@ function renderNomina() {
       <td><button class="btn btn-sm" onclick="openNomModal(${e.id})">Editar</button></td>
     </tr>`;
   }).join('');
+  if (!lista.length) $('nom-tbody').innerHTML = `<tr><td colspan="12" class="empty">No hay trabajadores con estos filtros<span class="empty-hint">Ajusta la búsqueda, la obra o el pagador</span></td></tr>`;
 
   // Resúmenes por obra
   const obras = [...new Set(empleados.filter(e=>e.activo).map(e => e.obra))].sort();
@@ -1109,7 +1206,7 @@ async function saveNomEntry() {
     await db.from('empleados_nomina').update({ pagador: pagadorNuevo }).eq('id', editNomEmpId);
     emp.pagador = pagadorNuevo;
   }
-  closeOv('overlay-nom'); renderNomina(); renderDash(); showToast('Guardado ✓');
+  closeOv('overlay-nom'); renderNomina(); renderDash(); showToast('Guardado: ' + (emp?.nombre || 'trabajador'));
 }
 
 // =============================================
@@ -1243,7 +1340,7 @@ async function confirmarCierre() {
   await loadAll();
   if (nuevaSem) semanas.unshift(nuevaSem);
   closeOv('overlay-cierre'); updatePeriod(); renderDash();
-  showToast('Semana cerrada y guardada');
+  showToast('Semana cerrada y pagada');
 }
 
 // =============================================
