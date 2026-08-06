@@ -257,13 +257,7 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
         <div class="phead"><h2 id="nom-panel-title">Nómina en curso</h2>
           <div class="phead-r">
             <select id="nom-filtro-obra" onchange="renderNomina()"><option value="">Todas las obras</option><option>OMANA</option><option>SANTA</option><option>CASA</option></select>
-            <select id="nom-filtro-pagador" onchange="renderNomina()">
-              <option value="">Todos los pagadores</option>
-              <option value="Luis">Paga Luis</option>
-              <option value="Joan">Paga Joan</option>
-              <option value="Efectivo">Efectivo</option>
-              <option value="__none__">Sin asignar</option>
-            </select>
+            <select id="nom-filtro-pagador" onchange="renderNomina()"></select>
             <select id="nom-orden" onchange="renderNomina()">
               <option value="obra">Ordenar por obra</option>
               <option value="alfa">Ordenar A-Z</option>
@@ -290,7 +284,7 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
         <div class="phead"><h2>Nóminas cerradas</h2></div>
         <div class="table-wrap">
         <table>
-          <thead><tr><th>Período</th><th>Del</th><th>Al (sábado)</th><th class="num">Empleados</th><th class="num">Total pagado</th><th class="num">Luis</th><th class="num">Joan</th><th class="num">Efectivo</th><th class="num">Desc. préstamos</th><th>Estado</th><th></th></tr></thead>
+          <thead><tr id="hist-head-row"></tr></thead>
           <tbody id="hist-tbody"></tbody>
         </table>
         </div>
@@ -413,7 +407,7 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
     <div class="nf"><label>Descuentos adicionales ($)</label><input type="number" id="ne-desc" min="0" value="0" oninput="recalcNom()"></div>
     <div class="nf"><label>Se le debe</label><input type="number" id="ne-debe" min="0" value="0" oninput="recalcNom()"></div>
     <div class="nf"><label>Desc. préstamo (auto)</label><input type="number" id="ne-prest" min="0" value="0" readonly style="opacity:.55"></div>
-    <div class="nf"><label>¿Quién paga?</label><select id="ne-pagador"><option value="">Sin asignar</option><option value="Luis">Luis</option><option value="Joan">Joan</option><option value="Efectivo">Efectivo</option></select></div>
+    <div class="nf"><label>¿Quién paga?</label><select id="ne-pagador"></select></div>
     <div class="nf" style="grid-column:1/-1"><label>Nota (permiso, incapacidad, etc.)</label><input type="text" id="ne-nota" placeholder="Opcional..." style="width:100%"></div>
   </div>
   <div class="nom-result" id="nom-result"></div>
@@ -472,7 +466,7 @@ tfoot td{padding:7px 11px;background:var(--bg3)}
     <div><label>Diario (auto)</label><input type="number" id="ef-diario" readonly style="opacity:.55"></div>
     <div><label>Gasolina / transporte semanal ($)</label><input type="number" id="ef-gasolina" placeholder="0" min="0" value="0"></div>
     <div style="display:flex;align-items:flex-end"><span style="font-size:11px;color:var(--text2)">Proporcional si hay faltas. 0 si no aplica.</span></div>
-    <div><label>¿Quién le paga?</label><select id="ef-pagador"><option value="">Sin asignar</option><option>Luis</option><option>Joan</option><option>Efectivo</option></select></div>
+    <div><label>¿Quién le paga?</label><select id="ef-pagador"></select></div>
   </div>
   <div class="btn-row"><button class="btn" onclick="closeOv('overlay-emp')">Cancelar</button><button class="btn btn-primary" onclick="saveEmp()">Guardar</button></div>
 </div>
@@ -615,6 +609,42 @@ function toISO(d) { const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,
 function fromISO(s) { if (!s) return null; const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
 function obc(o) { const m={OMANA:'b-omana',SANTA:'b-santa',CASA:'b-casa'}; return m[(o||'').toUpperCase()]||'b-otro'; }
 
+// =============================================
+// PAGADORES — LISTA CENTRAL
+// Para agregar un pagador nuevo, agrégalo SOLO aquí (y opcionalmente su color).
+// Se refleja solo en: filtro de nómina, selector de editar, alta de empleado,
+// desglose del dashboard, desglose del cierre, y reportes (Excel / impresión).
+// =============================================
+const PAGADORES = ['Luis', 'Joan', 'Efectivo'];
+const PAGADOR_COLORS = {
+  Luis: 'var(--blue-bg);color:var(--blue)',
+  Joan: 'var(--green-bg);color:var(--green)',
+  Efectivo: 'var(--amber-bg);color:var(--amber)',
+  '': 'var(--gray-bg);color:var(--gray-text)'
+};
+function pagadorLabel(p) { return p ? p : 'Sin asignar'; }
+function pagadorColor(p) { return PAGADOR_COLORS[p] || 'var(--gray-bg);color:var(--gray-text)'; } // color gris por defecto para pagadores nuevos sin color definido
+// Color de TEXTO por pagador (para columnas del historial). Gris por defecto si es nuevo.
+const PAGADOR_TEXT_COLORS = { Luis: 'var(--blue)', Joan: 'var(--green)', Efectivo: 'var(--amber)', '': 'var(--gray-text)' };
+function pagadorTextColor(p) { return PAGADOR_TEXT_COLORS[p] || 'var(--text2)'; }
+// Opciones para el selector de editar nómina / alta de empleado (incluye "Sin asignar").
+// Conserva un pagador viejo ya asignado aunque ya no esté en la lista.
+function opcionesPagadorEdit(sel) {
+  const base = ['', ...PAGADORES];
+  if (sel && !base.includes(sel)) base.push(sel);
+  return base.map(p => `<option value="${p}"${sel === p ? ' selected' : ''}>${p || 'Sin asignar'}</option>`).join('');
+}
+// Opciones para el filtro de la pestaña Nómina actual.
+function opcionesPagadorFiltro() {
+  return ['<option value="">Todos los pagadores</option>',
+    ...PAGADORES.map(p => `<option value="${p}">${p}</option>`),
+    '<option value="__none__">Sin asignar</option>'].join('');
+}
+// Helpers para acumular totales por pagador en reportes (mapea vacío/desconocido -> "Sin asignar").
+function nuevoAcumPagadores() { const o = {}; PAGADORES.forEach(p => o[p] = 0); o['Sin asignar'] = 0; return o; }
+function acumulaPagador(acum, pagador, monto) { const p = (pagador || '').trim(); acum[PAGADORES.includes(p) ? p : 'Sin asignar'] += monto; }
+function clavesPagadorReporte() { return [...PAGADORES, 'Sin asignar']; }
+
 function showToast(msg, dur=2500) {
   const t = $('toast'); t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), dur);
@@ -635,6 +665,9 @@ async function initApp() {
   // Mostrar correo del usuario logueado
   const { data: { user } } = await db.auth.getUser();
   if (user && $('user-email')) $('user-email').textContent = user.email;
+
+  // Poblar el filtro "¿Quién paga?" desde la lista central de pagadores
+  if ($('nom-filtro-pagador')) $('nom-filtro-pagador').innerHTML = opcionesPagadorFiltro();
 
   currentLunes = getLunes(new Date());
   currentSabado = getSabado(currentLunes);
@@ -838,9 +871,7 @@ async function renderDash() {
   $('dash-nom-title').textContent = 'Nómina: ' + fmtD(currentLunes) + ' — ' + fmtD(currentSabado);
 
   // Panel quién paga qué
-  const pagadores = ['Luis','Joan','Efectivo',''];
-  const pagadorLabels = {Luis:'Luis',Joan:'Joan',Efectivo:'Efectivo','':'Sin asignar'};
-  const pagadorColors = {Luis:'var(--blue-bg);color:var(--blue)',Joan:'var(--green-bg);color:var(--green)',Efectivo:'var(--amber-bg);color:var(--amber)','':'var(--gray-bg);color:var(--gray-text)'};
+  const pagadores = [...PAGADORES, ''];
 
   const resumenPagadores = pagadores.map(pag => {
     const empsP = empActivos.filter(e => (e.pagador||'') === pag);
@@ -849,7 +880,7 @@ async function renderDash() {
     const nombres = empsP.map(e=>e.nombre.split(' ')[0]).join(', ');
     return `<div style="background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius);padding:10px 14px;margin-bottom:8px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
-        <span><span style="display:inline-block;background:${pagadorColors[pag]};font-size:11px;font-weight:500;padding:2px 9px;border-radius:var(--radius)">${pagadorLabels[pag]}</span> <span style="font-size:12px;color:var(--text2);margin-left:6px">${empsP.length} trabajador(es)</span></span>
+        <span><span style="display:inline-block;background:${pagadorColor(pag)};font-size:11px;font-weight:500;padding:2px 9px;border-radius:var(--radius)">${pagadorLabel(pag)}</span> <span style="font-size:12px;color:var(--text2);margin-left:6px">${empsP.length} trabajador(es)</span></span>
         <span style="font-size:15px;font-weight:500">${fmt(totP)}</span>
       </div>
       <div style="font-size:11px;color:var(--text2)">${nombres}</div>
@@ -1021,7 +1052,7 @@ function openNomModal(empId) {
   $('ne-desc').value=en.desc||0; $('ne-debe').value=en.debe||0; $('ne-prest').value=getPrestDesc(empId);
   $('ne-tarifa').value=en.tarifa||1.5;
   $('ne-nota').value=en.nota||'';
-  $('ne-pagador').value=en.pagador||emp.pagador||'';
+  $('ne-pagador').innerHTML = opcionesPagadorEdit(en.pagador||emp.pagador||'');
   recalcNom(); $('overlay-nom').classList.add('open');
 }
 
@@ -1089,11 +1120,11 @@ function openCierre() {
   const pDesc = empleados.filter(e=>e.activo).reduce((s,e) => s+getPrestDesc(e.id), 0);
   // Desglose por pagador
   const empActivos2 = empleados.filter(e=>e.activo);
-  const pagResumen = ['Luis','Joan','Efectivo',''].map(pag => {
+  const pagResumen = [...PAGADORES, ''].map(pag => {
     const empsP = empActivos2.filter(e=>(e.pagador||'')=== pag);
     if (!empsP.length) return '';
     const totP = empsP.reduce((s,e)=>s+Math.max(0,calcTotal(e.id,getNom(e.id))),0);
-    const lbl = {Luis:'Luis',Joan:'Joan',Efectivo:'Efectivo','':'Sin asignar'}[pag];
+    const lbl = pagadorLabel(pag);
     const nombres = empsP.map(e=>e.nombre.split(' ')[0]).join(', ');
     return `<div style="display:flex;justify-content:space-between;align-items:flex-start;padding:6px 0;border-bottom:0.5px solid var(--border);font-size:13px;gap:8px">
       <div><span style="font-weight:500">${lbl}</span> <span style="color:var(--text2);font-size:11px">(${empsP.length})</span><br><span style="font-size:11px;color:var(--text2)">${nombres}</span></div>
@@ -1226,6 +1257,16 @@ async function renderHistorial() {
     <div class="mcard"><div class="lbl">Total histórico</div><div class="val" style="font-size:15px">${fmt(tot)}</div></div>
     <div class="mcard"><div class="lbl">Promedio/semana</div><div class="val" style="font-size:15px">${cerradas.length?fmt(tot/cerradas.length):'—'}</div></div>`;
 
+  // Construir cabecera con una columna por pagador (dinámico desde la lista central)
+  const headRow = $('hist-head-row');
+  if (headRow) headRow.innerHTML = [
+    '<th>Período</th>', '<th>Del</th>', '<th>Al (sábado)</th>',
+    '<th class="num">Empleados</th>', '<th class="num">Total pagado</th>',
+    ...PAGADORES.map(p => `<th class="num">${p}</th>`),
+    '<th class="num">Desc. préstamos</th>', '<th>Estado</th>', '<th></th>'
+  ].join('');
+  const totalCols = 8 + PAGADORES.length;
+
   // Sumar lo que paga cada pagador, por semana
   const pagPorSemana = {};
   if (cerradas.length) {
@@ -1233,27 +1274,25 @@ async function renderHistorial() {
     const { data: ents } = await db.from('entradas_nomina').select('semana_id,total,pagador').in('semana_id', ids);
     (ents||[]).forEach(e => {
       const sid = e.semana_id;
-      if (!pagPorSemana[sid]) pagPorSemana[sid] = {Luis:0, Joan:0, Efectivo:0};
-      const pg = (e.pagador||'').trim();
-      if (pg==='Luis'||pg==='Joan'||pg==='Efectivo') pagPorSemana[sid][pg] += (e.total||0);
+      if (!pagPorSemana[sid]) pagPorSemana[sid] = nuevoAcumPagadores();
+      acumulaPagador(pagPorSemana[sid], e.pagador, e.total||0);
     });
   }
 
   $('hist-tbody').innerHTML = cerradas.length ? cerradas.map((h,i) => {
-    const pg = pagPorSemana[h.id] || {Luis:0, Joan:0, Efectivo:0};
+    const pg = pagPorSemana[h.id] || nuevoAcumPagadores();
+    const celdasPag = PAGADORES.map(p => `<td class="num" style="color:${pagadorTextColor(p)}">${pg[p]>0?fmt(pg[p]):'—'}</td>`).join('');
     return `<tr style="cursor:pointer" onclick="openDetail(${h.id})">
     <td style="font-weight:500">Semana #${cerradas.length-i}</td>
     <td>${fmtD(fromISO(h.desde))}</td><td>${fmtD(fromISO(h.hasta))}</td>
     <td class="num">${h.num_empleados||"—"}</td>
     <td class="num" style="font-weight:500">${fmt(h.total_pagado)}</td>
-    <td class="num" style="color:var(--blue)">${pg.Luis>0?fmt(pg.Luis):'—'}</td>
-    <td class="num" style="color:var(--green)">${pg.Joan>0?fmt(pg.Joan):'—'}</td>
-    <td class="num" style="color:var(--amber)">${pg.Efectivo>0?fmt(pg.Efectivo):'—'}</td>
+    ${celdasPag}
     <td class="num">${h.total_prest_desc>0?`<span class="prestamo-badge">-${fmt(h.total_prest_desc)}</span>`:'—'}</td>
     <td><span class="badge b-cerrada">Cerrada</span></td>
     <td style="display:flex;gap:4px"><button class="btn btn-sm" onclick="openDetail(${h.id});event.stopPropagation()">Ver</button><button class="btn btn-sm" style="color:var(--green);border-color:var(--border)" onclick="exportExcel(${h.id});event.stopPropagation()">Excel</button></td>
   </tr>`;
-  }).join('') : `<tr><td colspan="11" class="empty">Aún no hay semanas cerradas</td></tr>`;
+  }).join('') : `<tr><td colspan="${totalCols}" class="empty">Aún no hay semanas cerradas</td></tr>`;
 }
 
 let detalleSemanaActual = null;
@@ -1275,19 +1314,16 @@ async function openDetail(semanaId) {
   $('det-ft-total').textContent = fmt(sem.total_pagado);
 
   // Resumen por pagador
-  const pgSums = {Luis:0, Joan:0, Efectivo:0, SinAsignar:0};
-  (entradas||[]).forEach(e => {
-    const pg = (e.pagador||'').trim();
-    if (pg==='Luis'||pg==='Joan'||pg==='Efectivo') pgSums[pg]+=(e.total||0);
-    else pgSums.SinAsignar+=(e.total||0);
-  });
+  const pgSums = nuevoAcumPagadores();
+  (entradas||[]).forEach(e => { acumulaPagador(pgSums, e.pagador, e.total||0); });
   const chip = (lbl,val,bg,col)=> val>0?`<div style="background:${bg};border-radius:var(--radius);padding:8px 14px;min-width:120px"><div style="font-size:11px;color:${col}">${lbl}</div><div style="font-size:15px;font-weight:500;color:${col}">${fmt(val)}</div></div>`:'';
+  const chipsPag = clavesPagadorReporte().map(k => {
+    const pAsignado = (k === 'Sin asignar') ? '' : k;
+    return chip(k, pgSums[k], pagadorColor(pAsignado).split(';')[0], pagadorTextColor(pAsignado));
+  }).join('');
   $('det-pagadores').innerHTML = `<div style="font-size:12px;font-weight:500;color:var(--text2);margin-bottom:8px">Resumen por pagador</div>
     <div style="display:flex;gap:10px;flex-wrap:wrap">
-      ${chip('Luis',pgSums.Luis,'var(--blue-bg)','var(--blue)')}
-      ${chip('Joan',pgSums.Joan,'var(--green-bg)','var(--green)')}
-      ${chip('Efectivo',pgSums.Efectivo,'var(--amber-bg)','var(--amber)')}
-      ${chip('Sin asignar',pgSums.SinAsignar,'var(--gray-bg)','var(--gray-text)')}
+      ${chipsPag}
     </div>`;
 
   $('overlay-detail').classList.add('open');
@@ -1387,7 +1423,7 @@ function generarExcel(sem, entradas) {
   rows.push(['Empleado','Puesto','Obra','Salario base','Desc. faltas','H. extras','Gasolina','Desc. préstamo','Descuentos','Se le debe','TOTAL A PERCIBIR','Pagador']);
 
   let totalBase=0, totalNeto=0, totalGas=0, totalPrest=0;
-  const pg = {Luis:0, Joan:0, Efectivo:0, 'Sin asignar':0};
+  const pg = nuevoAcumPagadores();
 
   entradas.forEach(e => {
     const emp = empleados.find(x=>x.id===e.empleado_id)||{nombre:'?',puesto:'',obra:''};
@@ -1406,14 +1442,13 @@ function generarExcel(sem, entradas) {
       e.pagador||''
     ]);
     totalBase+=e.salario_base; totalNeto+=e.total; totalGas+=e.gasolina||0; totalPrest+=e.prest_desc||0;
-    const p=(e.pagador||'').trim();
-    if (p==='Luis'||p==='Joan'||p==='Efectivo') pg[p]+=e.total; else pg['Sin asignar']+=e.total;
+    acumulaPagador(pg, e.pagador, e.total);
   });
 
   rows.push(['TOTAL GENERAL','','',totalBase,'','',totalGas,-totalPrest,'','',totalNeto,'']);
   rows.push([]);
   rows.push(['RESUMEN POR PAGADOR']);
-  ['Luis','Joan','Efectivo','Sin asignar'].forEach(k => { if (pg[k]>0) rows.push([k, pg[k]]); });
+  clavesPagadorReporte().forEach(k => { if (pg[k]>0) rows.push([k, pg[k]]); });
 
   const wb = XLSX.utils.book_new();
   const ws = XLSX.utils.aoa_to_sheet(rows);
@@ -1617,7 +1652,7 @@ function openEmpModal() {
   editEmpId=null; $('emp-modal-title').textContent='Nuevo empleado';
   ['ef-nombre','ef-puesto','ef-salario','ef-diario','ef-gasolina'].forEach(id=>$(id).value='');
   $('ef-gasolina').value=0;
-  $('ef-pagador').value='';
+  $('ef-pagador').innerHTML=opcionesPagadorEdit('');
   $('overlay-emp').classList.add('open');
 }
 
@@ -1627,7 +1662,7 @@ function editEmp(id) {
   $('ef-nombre').value=e.nombre; $('ef-puesto').value=e.puesto; $('ef-obra').value=e.obra;
   $('ef-salario').value=e.salario; $('ef-diario').value=Math.round(e.salario/6);
   $('ef-gasolina').value=e.gasolina||0;
-  $('ef-pagador').value=e.pagador||'';
+  $('ef-pagador').innerHTML=opcionesPagadorEdit(e.pagador||'');
   $('overlay-emp').classList.add('open');
 }
 
@@ -2014,9 +2049,9 @@ function imprimirNomina() {
   }).join('');
   const totalNom = entradas.reduce((s,e)=>s+e.total,0);
   const totalBase = entradas.reduce((s,e)=>s+e.salario_base,0);
-  const pg = {Luis:0, Joan:0, Efectivo:0, 'Sin asignar':0};
-  entradas.forEach(e=>{ const p=(e.pagador||'').trim(); if(p==='Luis'||p==='Joan'||p==='Efectivo')pg[p]+=e.total; else pg['Sin asignar']+=e.total; });
-  const pgFilas = ['Luis','Joan','Efectivo','Sin asignar'].map(k => pg[k]>0?`<tr><td>${k}</td><td align="right"><strong>${peso(pg[k])}</strong></td></tr>`:'').join('');
+  const pg = nuevoAcumPagadores();
+  entradas.forEach(e=>{ acumulaPagador(pg, e.pagador, e.total); });
+  const pgFilas = clavesPagadorReporte().map(k => pg[k]>0?`<tr><td>${k}</td><td align="right"><strong>${peso(pg[k])}</strong></td></tr>`:'').join('');
   const win = window.open('','_blank');
   win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
     <title>Nómina Hope Electric</title>
